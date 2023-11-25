@@ -1,6 +1,38 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
+    ":timezone(Asia/Seoul)",
+    ":label(renovate)",
+    "config:base"
+  ],
+  "npm": {
+    "separateMinorPatch": true,
+    "packageRules": [
+      {
+        "packagePatterns": [
+          "^@types/"
+        ],
+        "automerge": true,
+        "major": {
+          "automerge": false
+        }
+      },
+      {
+        "groupName": "EPS",
+        "packageNames": [
+          "eslint",
+          "prettier",
+          "stylelint"
+        ],
+        "packagePatterns": [
+          "^eslint-",
+          "^prettier-",
+          "stylelint-"
+        ]
+      }
+    ]
+  },
+  "enabledManagers": [
+    "npm"
+  ],
+  "ignorePaths": []
 }
