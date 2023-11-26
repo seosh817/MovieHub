@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "MovieHub"
 include(":app")
+include(":common")
 include(":core")
 include(":core:network")
 include(":core:model")
