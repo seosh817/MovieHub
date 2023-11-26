@@ -1,4 +1,7 @@
 [versions]
+minSdk = "24"
+compileSdk = "34"
+targetSdk = "34"
 agp = "8.1.2"
 appcompat = "1.6.1"
 androidDesugarJdkLibs = "2.0.3"
