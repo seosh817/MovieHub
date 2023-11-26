@@ -42,6 +42,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Checkout submodules
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        token: ${{ secrets.ACTION_TOKEN }}
+
     - name: Set TMDB API Key
       run: echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
       
