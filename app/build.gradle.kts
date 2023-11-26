@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace = "com.seosh817.moviehub"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.seosh817.moviehub"
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
