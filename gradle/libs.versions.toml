@@ -14,6 +14,7 @@ androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxComposeNavigation = "2.6.0"
 androidxHiltNavigationCompose = "1.0.0"
 androidxUiToolingPreview = "1.5.4"
+androidxPaging = "3.1.1"
 org-jetbrains-kotlin-android = "1.8.10"
 coreKtx = "1.9.0"
 coroutines = "1.7.3"
@@ -32,6 +33,7 @@ retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 material = "1.10.0"
 googleSecrets = "2.0.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +67,8 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+
+androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
 
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
