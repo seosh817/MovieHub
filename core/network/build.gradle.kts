@@ -25,12 +25,15 @@ android {
 
 dependencies {
     implementation(projects.core.model)
+    implementation(projects.core.data)
+    implementation(projects.common)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.androidx.paging)
 
     testImplementation(libs.junit)
 }
