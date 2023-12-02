@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.moviehub.android.library)
     alias(libs.plugins.moviehub.android.hilt)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("kotlinx-serialization")
 }
 
 android {

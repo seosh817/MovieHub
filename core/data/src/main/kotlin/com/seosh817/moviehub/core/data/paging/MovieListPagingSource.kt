@@ -1,21 +1,22 @@
-package com.seosh817.moviehub.core.network.paging
+package com.seosh817.moviehub.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.seosh817.common.network.exception.NetworkException
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.map
-import com.seosh817.moviehub.core.network.model.movie_list.MovieEntity
-import com.seosh817.moviehub.core.network.model.movie_list.MovieResponseEntity
+import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieResponse
+import javax.inject.Inject
 
-class MovieEntityListPagingSource(
-    private val loader: suspend (Int) -> ResultState<MovieResponseEntity>
-) : PagingSource<Int, MovieEntity>() {
+class MovieListPagingSource @Inject constructor(
+    private val loader: suspend (Int) -> ResultState<MovieResponse>
+): PagingSource<Int, Movie>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieEntity> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val page = params.key ?: MOVIE_INITIAL_PAGE_INDEX
-        
-        return loader(page).map(
+
+        return loader.invoke(page).map(
             {
                 LoadResult.Page(
                     data = it.data.results,
@@ -31,7 +32,7 @@ class MovieEntityListPagingSource(
         )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, MovieEntity>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
