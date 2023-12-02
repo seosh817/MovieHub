@@ -1,19 +1,19 @@
+import com.seosh817.moviehub.configurations.MovieHubBuildType
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.moviehub.android.applicatoin)
+    alias(libs.plugins.moviehub.android.applicaiton.compose)
     alias(libs.plugins.moviehub.android.application.flavors)
     alias(libs.plugins.moviehub.android.detekt)
+    alias(libs.plugins.moviehub.android.hilt)
 }
 
 android {
     namespace = "com.seosh817.moviehub"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.seosh817.moviehub"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -24,23 +24,18 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = MovieHubBuildType.DEBUG.applicationIdSuffix
+        }
         release {
             isMinifyEnabled = false
+            applicationIdSuffix = MovieHubBuildType.RELEASE.applicationIdSuffix
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
     }
     packaging {
         resources {
@@ -53,6 +48,11 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(projects.core.common)
+    implementation(projects.core.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.model)
 
     // Compose
     implementation(libs.androidx.activity.compose)
@@ -72,7 +72,7 @@ dependencies {
     // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }
