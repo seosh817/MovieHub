@@ -1,7 +1,23 @@
-package com.seosh817.moviehub.core.data.mapper
+package com.seosh817.moviehub.core.network.mapper
 
 import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieResponse
 import com.seosh817.moviehub.core.network.model.movie_list.MovieEntity
+import com.seosh817.moviehub.core.network.model.movie_list.MovieResponseEntity
+
+fun MovieResponse.asEntity() = MovieResponseEntity(
+    page = page,
+    results = results.map { it.asEntity() },
+    totalPages = totalPages,
+    totalResults = totalResults,
+)
+
+fun MovieResponseEntity.asExternalModel() = MovieResponse(
+    page = page,
+    results = results.map { it.asExternalModel() },
+    totalPages = totalPages,
+    totalResults = totalResults,
+)
 
 fun Movie.asEntity() = MovieEntity(
     adult = adult,
@@ -20,7 +36,7 @@ fun Movie.asEntity() = MovieEntity(
     voteCount = voteCount,
 )
 
-fun MovieEntity.toDomain() = Movie(
+fun MovieEntity.asExternalModel() = Movie(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
