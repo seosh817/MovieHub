@@ -3,65 +3,45 @@ package com.seosh817.moviehub.core.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
-import com.seosh817.moviehub.core.data.mapper.toDomain
+import com.seosh817.moviehub.core.data.paging.MovieListPagingSource
 import com.seosh817.moviehub.core.data.source.MovieDataSource
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import com.seosh817.moviehub.core.model.Movie
-import com.seosh817.moviehub.core.network.paging.MovieEntityListPagingSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class MovieRepositoryImpl(
+class MovieRepositoryImpl @Inject constructor(
     private val movieDataSource: MovieDataSource,
 ) : MovieRepository {
 
     override fun fetchPopularMovies(language: String): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = {
-                MovieEntityListPagingSource {
-                    movieDataSource.fetchPopularMovies(it, language)
-                }
-            }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
-        }
+        return createPager(MovieListPagingSource {
+            movieDataSource.fetchPopularMovies(it, language)
+        })
     }
 
     override fun fetchTopRatedMovies(language: String): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = {
-                MovieEntityListPagingSource {
-                    movieDataSource.fetchTopRatedMovies(it, language)
-                }
+        return createPager(
+            MovieListPagingSource {
+                movieDataSource.fetchTopRatedMovies(it, language)
             }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
-        }
+        )
     }
 
     override fun fetchUpcomingMovies(language: String): Flow<PagingData<Movie>> {
+        return createPager(MovieListPagingSource {
+            movieDataSource.fetchUpcomingMovies(it, language)
+        })
+    }
+
+    private fun createPager(movieListPagingSource: MovieListPagingSource): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = {
-                MovieEntityListPagingSource {
-                    movieDataSource.fetchUpcomingMovies(it, language)
-                }
-            }
-        ).flow.map { pagingData ->
-            pagingData.map { it.toDomain() }
-        }
+            pagingSourceFactory = { movieListPagingSource }
+        ).flow
     }
 
     companion object {
