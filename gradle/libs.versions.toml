@@ -24,7 +24,6 @@ androidxTestExtJunit = "1.1.5"
 espresso-core = "3.5.1"
 hilt = "2.48.1"
 kotlin = "1.9.10"
-kotlinJvm = "1.8.10"
 kotlinxSerializationJson = "1.6.1"
 ksp = "1.9.10-1.0.13"
 okhttp = "4.11.0"
@@ -110,7 +109,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinJvm" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecrets" }
 
