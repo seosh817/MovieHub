@@ -124,5 +124,6 @@ moviehub-android-library-compose = { id = "moviehub.android.library.compose", ve
 moviehub-android-hilt = { id = "moviehub.android.hilt", version = "unspecified" }
 moviehub-android-room = { id = "moviehub.android.room", version = "unspecified" }
 moviehub-kotlin-jvm-library = { id = "moviehub.kotlin.jvm.library", version = "unspecified" }
+moviehub-android-feature = { id = "moviehub.android.feature", version = "unspecified" }
 
 [bundles]

@@ -59,5 +59,9 @@ gradlePlugin {
             id = "moviehub.kotlin.jvm.library"
             implementationClass = "com.seosh817.moviehub.plugins.KotlinJvmLibraryConventionPlugin"
         }
+        register("androidFeature") {
+            id = "moviehub.android.feature"
+            implementationClass = "com.seosh817.moviehub.plugins.AndroidFeatureConventionPlugin"
+        }
     }
 }
