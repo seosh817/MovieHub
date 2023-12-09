@@ -69,7 +69,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.ui.tooling.preview.android)
-    // implementation(libs.androidx.ui)
+    implementation(libs.kotlinx.immutable)
+
     // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

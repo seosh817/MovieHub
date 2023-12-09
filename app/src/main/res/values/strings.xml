@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieHub</string>
+    <string name="movies">Movies</string>
 </resources>
