@@ -23,6 +23,5 @@ fun MovieHubNavHost(
         moviesGraph(
             onMovieClick = onMovieClick
         )
-
     }
 }
