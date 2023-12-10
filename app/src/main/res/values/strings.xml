@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MovieHub</string>
     <string name="movies">Movies</string>
+    <string name="top_app_bar_navigation_icon_description">Search</string>
+    <string name="top_app_bar_dark_mode_icon_description">Dark Mode</string>
+    <string name="top_app_bar_settings_icon_description">Settings</string>
 </resources>
