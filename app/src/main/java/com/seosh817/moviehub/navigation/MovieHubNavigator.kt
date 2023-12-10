@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 import com.seosh817.moviehub.feature.movies.navigation.navigateToMovies
 
@@ -19,6 +20,12 @@ class MovieHubNavigator(
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
+
+    val currentPrimaryDestination: PrimaryDestination?
+        @Composable get() = when (currentDestination?.route) {
+            moviesNavigationRoute -> MOVIES
+            else -> null
+        }
 
     fun navigate(mainTab: PrimaryDestination) {
         val navOptions = navOptions {
