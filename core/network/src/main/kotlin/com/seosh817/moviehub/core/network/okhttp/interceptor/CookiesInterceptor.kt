@@ -1,6 +1,6 @@
 package com.seosh817.moviehub.core.network.okhttp.interceptor
 
-import com.seosh817.moviehub.network.BuildConfig
+import com.seosh817.moviehub.core.network.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

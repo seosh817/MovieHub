@@ -1,7 +1,7 @@
 package com.seosh817.moviehub.core.network.okhttp.di
 
 import android.content.Context
-import com.seosh817.moviehub.network.BuildConfig
+import com.seosh817.moviehub.core.network.BuildConfig
 import com.seosh817.moviehub.core.network.okhttp.interceptor.CookiesInterceptor
 import dagger.Module
 import dagger.Provides
