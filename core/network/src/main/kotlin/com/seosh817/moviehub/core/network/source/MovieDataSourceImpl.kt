@@ -13,7 +13,7 @@ class MovieDataSourceImpl @Inject constructor(
     private val movieService: MovieService
 ) : MovieDataSource {
 
-    override suspend fun fetchPopularMovies(page: Int, language: String): ResultState<MovieResponse> {
+    override suspend fun fetchPopularMovies(page: Int, language: String?): ResultState<MovieResponse> {
         return handleApi {
             movieService.fetchPopularMovies(page, language)
         }
@@ -22,7 +22,7 @@ class MovieDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun fetchTopRatedMovies(page: Int, language: String): ResultState<MovieResponse> {
+    override suspend fun fetchTopRatedMovies(page: Int, language: String?): ResultState<MovieResponse> {
         return handleApi {
             movieService.fetchTopRatedMovies(page, language)
         }
@@ -31,7 +31,7 @@ class MovieDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun fetchUpcomingMovies(page: Int, language: String): ResultState<MovieResponse> {
+    override suspend fun fetchUpcomingMovies(page: Int, language: String?): ResultState<MovieResponse> {
         return handleApi {
             movieService.fetchUpcomingMovies(page, language)
         }
