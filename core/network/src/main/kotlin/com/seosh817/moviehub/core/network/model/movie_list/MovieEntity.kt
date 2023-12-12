@@ -1,34 +1,36 @@
 package com.seosh817.moviehub.core.network.model.movie_list
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MovieEntity(
     @SerialName("adult")
-    val adult: Boolean,
+    val adult: Boolean?,
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerialName("genre_ids")
-    val genreIds: List<Long>,
+    val genreIds: List<Long>?,
     @SerialName("id")
-    val id: Long,
+    val id: Long?,
     @SerialName("original_language")
-    val originalLanguage: String,
+    val originalLanguage: String?,
     @SerialName("original_title")
-    val originalTitle: String,
+    val originalTitle: String?,
     @SerialName("overview")
-    val overview: String,
+    val overview: String?,
     @SerialName("popularity")
-    val popularity: Double,
+    val popularity: Double?,
     @SerialName("poster_path")
-    val posterPath: String,
+    val posterPath: String?,
     @SerialName("release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     @SerialName("title")
-    val title: String,
+    val title: String?,
     @SerialName("video")
-    val video: Boolean,
+    val video: Boolean?,
     @SerialName("vote_average")
-    val voteAverage: Double,
+    val voteAverage: Double?,
     @SerialName("vote_count")
-    val voteCount: Long,
+    val voteCount: Long?,
 )

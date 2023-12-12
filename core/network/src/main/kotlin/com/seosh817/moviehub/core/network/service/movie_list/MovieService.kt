@@ -9,11 +9,11 @@ import java.util.Locale
 interface MovieService {
 
     @GET("/3/movie/popular")
-    suspend fun fetchPopularMovies(@Query("page") page: Int, @Query("language") language: String = Locale.getDefault().toString()): Response<MovieResponseEntity>
+    suspend fun fetchPopularMovies(@Query("page") page: Int, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieResponseEntity>
 
     @GET("/3/movie/top_rated")
-    suspend fun fetchTopRatedMovies(@Query("page") page: Int, @Query("language") language: String = Locale.getDefault().toString()): Response<MovieResponseEntity>
+    suspend fun fetchTopRatedMovies(@Query("page") page: Int, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieResponseEntity>
 
     @GET("/3/movie/{movie_id}/reviews")
-    suspend fun fetchUpcomingMovies(@Query("page") page: Int, @Query("language") language: String = Locale.getDefault().toString()): Response<MovieResponseEntity>
+    suspend fun fetchUpcomingMovies(@Query("page") page: Int, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieResponseEntity>
 }
