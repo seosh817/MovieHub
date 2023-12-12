@@ -13,9 +13,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SerializationModule {
+
     @Provides
     @Singleton
-    fun provideKotlinSerialization(
+    fun provideJson(): Json {
+        return Json {
+            ignoreUnknownKeys = true
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideConverterFactory(
         json: Json
     ): Converter.Factory {
         return json.asConverterFactory("application/json".toMediaType())
