@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seosh817.moviehub.network"
+    namespace = "com.seosh817.moviehub.core.network"
 
     testOptions {
         unitTests {
