@@ -30,6 +30,8 @@ dependencies {
     implementation(projects.core.model)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
 }
