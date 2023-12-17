@@ -12,7 +12,7 @@ data class MovieEntity(
     @SerialName("genre_ids")
     val genreIds: List<Long>?,
     @SerialName("id")
-    val id: Long?,
+    val id: Long,
     @SerialName("original_language")
     val originalLanguage: String?,
     @SerialName("original_title")

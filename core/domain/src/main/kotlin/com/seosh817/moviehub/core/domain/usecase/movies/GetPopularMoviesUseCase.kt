@@ -16,7 +16,7 @@ class GetPopularMoviesUseCase @Inject constructor(
     @Dispatcher(MovieHubDispatchers.IO) private val dispatcher: CoroutineDispatcher
 ) : GetMoviesUseCase {
 
-    override operator fun invoke(language: String): Flow<PagingData<Movie>> = movieRepository
+    override operator fun invoke(language: String?): Flow<PagingData<Movie>> = movieRepository
         .fetchPopularMovies(language)
         .flowOn(dispatcher)
 }
