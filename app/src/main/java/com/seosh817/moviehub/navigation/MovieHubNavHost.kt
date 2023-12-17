@@ -2,17 +2,16 @@ package com.seosh817.moviehub.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 import com.seosh817.moviehub.feature.movies.navigation.moviesGraph
+import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 
 @Composable
 fun MovieHubNavHost(
-    movieHubNavigator: MovieHubNavigator,
-    onMovieClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    movieHubNavigator: MovieHubNavigator,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onMovieClick: (Long) -> Unit,
     startDestination: String = moviesNavigationRoute
 ) {
     NavHost(
@@ -21,7 +20,8 @@ fun MovieHubNavHost(
         modifier = modifier,
     ) {
         moviesGraph(
-            onMovieClick = onMovieClick
+            onMovieClick = onMovieClick,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }

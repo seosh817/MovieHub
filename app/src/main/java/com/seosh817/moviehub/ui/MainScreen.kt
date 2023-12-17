@@ -1,6 +1,5 @@
 package com.seosh817.moviehub.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,8 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -48,14 +49,14 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun MainScreen(
     movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             MovieHubBottomBar(
                 currentDestination = movieHubNavigator.currentDestination,
@@ -80,7 +81,7 @@ fun MainScreen(
             val destination = movieHubNavigator.currentPrimaryDestination
             if (destination != null) {
                 MainTopAppBar(
-                    titleRes = destination.labelResId,
+                    titleRes = R.string.app_name,
                     navigationIcon = Icons.Default.Search,
                     navigationIconContentDescription = stringResource(
                         id = R.string.top_app_bar_navigation_icon_description,
@@ -111,11 +112,20 @@ fun MainScreen(
                 )
             }
 
+            val onShowSnackBar: suspend (message: String, action: String?) -> Boolean = { message, action ->
+                snackbarHostState.showSnackbar(
+                    message = message,
+                    actionLabel = action,
+                    duration = SnackbarDuration.Short,
+                ) == SnackbarResult.ActionPerformed
+            }
+
             MovieHubNavHost(
                 movieHubNavigator = movieHubNavigator,
                 onMovieClick = { movieId ->
                     // movieHubNavigator.navigateToMovieDetail(movieId)
                 },
+                onShowSnackbar = onShowSnackBar,
             )
         }
     }
