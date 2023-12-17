@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    fun fetchPopularMovies(language: String): Flow<PagingData<Movie>>
+    fun fetchPopularMovies(language: String?): Flow<PagingData<Movie>>
 
-    fun fetchTopRatedMovies(language: String): Flow<PagingData<Movie>>
+    fun fetchTopRatedMovies(language: String?): Flow<PagingData<Movie>>
 
-    fun fetchUpcomingMovies(language: String): Flow<PagingData<Movie>>
+    fun fetchUpcomingMovies(language: String?): Flow<PagingData<Movie>>
 }

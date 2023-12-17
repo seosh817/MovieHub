@@ -7,16 +7,16 @@ interface MovieDataSource {
 
     suspend fun fetchPopularMovies(
         page: Int,
-        language: String
+        language: String?
     ): ResultState<MovieResponse>
 
     suspend fun fetchTopRatedMovies(
         page: Int,
-        language: String
+        language: String?
     ): ResultState<MovieResponse>
 
     suspend fun fetchUpcomingMovies(
         page: Int,
-        language: String
+        language: String?
     ): ResultState<MovieResponse>
 }
