@@ -14,13 +14,13 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDataSource: MovieDataSource,
 ) : MovieRepository {
 
-    override fun fetchPopularMovies(language: String): Flow<PagingData<Movie>> {
+    override fun fetchPopularMovies(language: String?): Flow<PagingData<Movie>> {
         return createPager(MovieListPagingSource {
             movieDataSource.fetchPopularMovies(it, language)
         })
     }
 
-    override fun fetchTopRatedMovies(language: String): Flow<PagingData<Movie>> {
+    override fun fetchTopRatedMovies(language: String?): Flow<PagingData<Movie>> {
         return createPager(
             MovieListPagingSource {
                 movieDataSource.fetchTopRatedMovies(it, language)
@@ -28,7 +28,7 @@ class MovieRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun fetchUpcomingMovies(language: String): Flow<PagingData<Movie>> {
+    override fun fetchUpcomingMovies(language: String?): Flow<PagingData<Movie>> {
         return createPager(MovieListPagingSource {
             movieDataSource.fetchUpcomingMovies(it, language)
         })
