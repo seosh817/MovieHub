@@ -67,7 +67,7 @@ fun MovieContents(
                             noImageText = noImageText,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .height(Dimens.dp_240)
+                                .height(240.dp)
                                 .padding(Dimens.dp_4)
                                 .clip(MaterialTheme.shapes.small)
                                 .background(MaterialTheme.colorScheme.background)
