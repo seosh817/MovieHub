@@ -115,9 +115,9 @@ fun MovieHubTheme(
         }
     }
 
-    val dimensions = if (LocalDensity.current.density <= 160) {
+    val dimensions = if (LocalDensity.current.density <= 1.0) {
         mDpiDimensions
-    } else if (LocalDensity.current.density <= 240) {
+    } else if (LocalDensity.current.density <= 1.5) {
         hDpiDimensions
     } else {
         xhDpiDimensions
