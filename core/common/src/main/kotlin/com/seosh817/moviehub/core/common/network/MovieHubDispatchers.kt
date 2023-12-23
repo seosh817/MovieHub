@@ -7,5 +7,6 @@ import javax.inject.Qualifier
 annotation class Dispatcher(val moviehubDispatchers: MovieHubDispatchers)
 
 enum class MovieHubDispatchers {
+    DEFAULT,
     IO
 }

@@ -56,6 +56,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
+    implementation(projects.core.datastore)
 
     // Compose
     implementation(libs.androidx.activity.compose)
