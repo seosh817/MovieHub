@@ -16,4 +16,8 @@ object DispatchersModule {
     @Provides
     @Dispatcher(MovieHubDispatchers.IO)
     fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    @Dispatcher(MovieHubDispatchers.DEFAULT)
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
