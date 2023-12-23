@@ -1,6 +1,8 @@
 package com.seosh817.moviehub.core.data.di
 
+import com.seosh817.moviehub.core.data.repository.AppStartUpSettingsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MovieRepositoryImpl
+import com.seosh817.moviehub.core.domain.repository.AppStartUpSettingsRepository
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +17,8 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+
+    @Singleton
+    @Binds
+    fun bindAppStartUpSettingsRepository(appStartUpSettingsRepositoryImpl: AppStartUpSettingsRepositoryImpl): AppStartUpSettingsRepository
 }
