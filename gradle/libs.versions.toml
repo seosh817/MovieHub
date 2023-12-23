@@ -17,6 +17,7 @@ androidxUiToolingPreview = "1.5.4"
 androidxPaging = "3.2.1"
 androidxPagingCompose = "3.3.0-alpha02"
 androidxConstraintLayoutCompose = "1.0.1"
+androidxDataStore = "1.0.0"
 org-jetbrains-kotlin-android = "1.8.10"
 coreKtx = "1.9.0"
 coroutines = "1.7.3"
@@ -36,6 +37,8 @@ retrofitKotlinxSerializationJson = "1.0.0"
 material = "1.10.0"
 googleSecrets = "2.0.0"
 detekt = "1.23.3"
+protobuf = "3.24.4"
+protobufPlugin = "0.9.4"
 
 
 [libraries]
@@ -73,6 +76,8 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
 
+androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+
 androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPagingCompose" }
 
@@ -104,6 +109,9 @@ kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collectio
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -124,6 +132,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecrets" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 
 # Plugins defined by this project
 moviehub-android-applicatoin = { id = "moviehub.android.application", version = "unspecified" }
