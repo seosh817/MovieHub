@@ -19,7 +19,8 @@ androidxPagingCompose = "3.3.0-alpha02"
 androidxConstraintLayoutCompose = "1.0.1"
 androidxDataStore = "1.0.0"
 org-jetbrains-kotlin-android = "1.8.10"
-coreKtx = "1.9.0"
+androidxCore = "1.12.0"
+androidxCoreSplashscreen = "1.0.1"
 coroutines = "1.7.3"
 coil = "2.5.0"
 junit = "4.13.2"
@@ -41,7 +42,7 @@ protobufPlugin = "0.9.4"
 
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
@@ -67,6 +68,8 @@ androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-compose-navigation-test = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxComposeNavigation" }
+
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
