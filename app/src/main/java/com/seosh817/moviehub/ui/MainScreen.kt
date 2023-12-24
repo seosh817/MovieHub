@@ -92,7 +92,8 @@ fun MainScreen(
                     ),
                     actions = {
                         IconButton(
-                            onClick = {}
+                            onClick = {
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.DarkMode,
