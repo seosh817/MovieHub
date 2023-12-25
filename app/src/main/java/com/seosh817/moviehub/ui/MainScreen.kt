@@ -134,9 +134,6 @@ fun MainScreen(
 
             MovieHubNavHost(
                 movieHubNavigator = movieHubNavigator,
-                onMovieClick = { movieId ->
-                    // movieHubNavigator.navigateToMovieDetail(movieId)
-                },
                 onShowSnackbar = onShowSnackBar,
             )
         }
