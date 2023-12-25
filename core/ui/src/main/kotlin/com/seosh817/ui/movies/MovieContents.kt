@@ -11,10 +11,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -22,6 +24,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.ui.R
 
 @Composable
 fun MovieContents(
@@ -29,7 +32,6 @@ fun MovieContents(
     lazyGridState: LazyGridState,
     onMovieClick: (Long) -> Unit,
     errorText: @Composable (String) -> Unit,
-    noImageText: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     when (moviePagingItems.loadState.refresh) {
@@ -64,7 +66,14 @@ fun MovieContents(
                         MovieContentItem(
                             context = context,
                             movie = movie,
-                            noImageText = noImageText,
+                            noImageText = {
+                                Text(
+                                    text = stringResource(R.string.no_image),
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                )
+                            },
                             modifier = Modifier
                                 .fillMaxSize()
                                 .height(240.dp)

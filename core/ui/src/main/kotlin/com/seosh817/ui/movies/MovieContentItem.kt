@@ -142,7 +142,13 @@ fun MovieContentsNoImage(
         exit = fadeOut(),
         label = ""
     ) {
-        noImageText()
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            noImageText()
+        }
     }
 }
 
@@ -170,7 +176,7 @@ fun MovieDescription(
         )
         Spacer(modifier = Modifier.height(Dimens.dp_4))
         MovieDescriptionItem(icon = Icons.Default.DateRange, text = releaseDate)
-        MovieDescriptionItem(icon = Icons.Default.Star, text =  String.format("%.1f", voteAverage))
+        MovieDescriptionItem(icon = Icons.Default.Star, text = String.format("%.1f", voteAverage))
     }
 }
 
