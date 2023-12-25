@@ -14,7 +14,7 @@ fun NavController.navigateToMovies(navOptions: NavOptions? = null) {
     navigate(moviesNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.moviesGraph(
+fun NavGraphBuilder.movieScreen(
     onMovieClick: (Long) -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
