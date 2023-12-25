@@ -14,10 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import com.seosh817.moviehub.core.designsystem.theme.ThemePreviews
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +26,7 @@ fun MainTopAppBar(
     @StringRes titleRes: Int,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String?,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onNavigationClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = { },
 ) {
@@ -40,13 +41,18 @@ fun MainTopAppBar(
                 )
             }
         },
+        scrollBehavior = scrollBehavior,
         actions = actions,
-        colors = colors,
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MovieHubTopAppBarDefaults.containerColor(),
+            titleContentColor = MovieHubTopAppBarDefaults.titleContentColor(),
+            actionIconContentColor = MovieHubTopAppBarDefaults.actionIconContentColor(),
+        ),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview("Top App Bar")
+@ThemePreviews
 @Composable
 private fun MainTopAppBarPreview() {
     MainTopAppBar(
@@ -64,4 +70,15 @@ private fun MainTopAppBarPreview() {
             }
         }
     )
+}
+
+object MovieHubTopAppBarDefaults {
+    @Composable
+    fun containerColor() = MaterialTheme.colorScheme.surface
+
+    @Composable
+    fun titleContentColor() = MaterialTheme.colorScheme.onSurface
+
+    @Composable
+    fun actionIconContentColor() = MaterialTheme.colorScheme.onSurfaceVariant
 }

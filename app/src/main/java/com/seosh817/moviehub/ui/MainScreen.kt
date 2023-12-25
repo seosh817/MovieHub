@@ -88,8 +88,6 @@ fun MainScreen(
                     ),
                     onNavigationClick = { },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent,
-                    ),
                     actions = {
                         IconButton(
                             onClick = {
