@@ -7,11 +7,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,24 +39,30 @@ internal fun MoviesRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<Movie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val isRefreshing = viewModel.isRefreshing.collectAsState()
 
     MoviesScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
         showRefreshError = viewModel.showRefreshError,
+        isRefreshing = isRefreshing.value,
+        onRefresh = viewModel::onSwipeRefresh,
         onMovieClick = onMovieClick,
         onShowSnackbar = onShowSnackbar,
-        refreshItems = viewModel::refreshItems,
+        refreshItems = viewModel::onSwipeRefresh,
         showMessage = viewModel::showMessage,
         hideMessage = viewModel::hideMessage,
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
     pagingItems: LazyPagingItems<Movie>,
     showRefreshError: Boolean = false,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onMovieClick: (Long) -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     refreshItems: () -> Unit,
@@ -58,6 +70,10 @@ fun MoviesScreen(
     hideMessage: () -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = onRefresh
+    )
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
     val okText = stringResource(id = R.string.ok)
 
@@ -81,6 +97,7 @@ fun MoviesScreen(
             .fillMaxSize()
     ) {
         MovieContents(
+            isRefreshing = isRefreshing,
             moviePagingItems = pagingItems,
             lazyGridState = lazyGridState,
             errorText = { text ->
@@ -93,7 +110,9 @@ fun MoviesScreen(
                     ),
                 )
             },
+            pullRefreshModifier = Modifier.align(Alignment.TopCenter),
             onMovieClick = onMovieClick,
+            pullRefreshState = pullRefreshState,
         )
     }
 }
