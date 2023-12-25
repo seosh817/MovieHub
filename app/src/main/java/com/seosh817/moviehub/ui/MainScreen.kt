@@ -1,5 +1,8 @@
 package com.seosh817.moviehub.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -24,10 +27,16 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.TopAppBarState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import com.seosh817.moviehub.R
@@ -50,7 +59,10 @@ import kotlinx.collections.immutable.toPersistentList
 fun MainScreen(
     movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    topAppBarState: TopAppBarState = rememberTopAppBarState(),
 ) {
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState, canScroll = { true })
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -66,7 +78,8 @@ fun MainScreen(
                     .toPersistentList(),
                 onTabSelected = { movieHubNavigator.navigate(it) },
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { padding ->
         Column(
             modifier = Modifier
@@ -87,7 +100,7 @@ fun MainScreen(
                         id = R.string.top_app_bar_navigation_icon_description,
                     ),
                     onNavigationClick = { },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    scrollBehavior = scrollBehavior,
                     actions = {
                         IconButton(
                             onClick = {
