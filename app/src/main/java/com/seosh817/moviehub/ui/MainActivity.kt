@@ -5,7 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
     val viewModel: MainViewModel by viewModels()
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -57,6 +61,8 @@ class MainActivity : ComponentActivity() {
             val movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator()
 
             val snackbarHostState = remember { SnackbarHostState() }
+            val topAppBarState = rememberTopAppBarState()
+
 
             val isDarkTheme = shouldUseDarkTheme(uiState)
             val useDynamicColor = shouldUseDynamicColor(uiState)
@@ -68,6 +74,7 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     movieHubNavigator = movieHubNavigator,
                     snackbarHostState = snackbarHostState,
+                    topAppBarState = topAppBarState,
                 )
             }
         }
