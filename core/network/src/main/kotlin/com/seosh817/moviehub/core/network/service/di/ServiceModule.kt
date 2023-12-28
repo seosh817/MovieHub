@@ -1,6 +1,6 @@
 package com.seosh817.moviehub.core.network.service.di
 
-import com.seosh817.moviehub.core.network.service.movie_list.MovieService
+import com.seosh817.moviehub.core.network.service.movie.MovieService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

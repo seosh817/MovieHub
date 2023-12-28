@@ -1,5 +1,6 @@
-package com.seosh817.moviehub.core.network.service.movie_list
+package com.seosh817.moviehub.core.network.service.movie
 
+import com.seosh817.moviehub.core.network.model.movie_detail.MovieDetailEntity
 import com.seosh817.moviehub.core.network.model.movie_list.MovieResponseEntity
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,4 +17,7 @@ interface MovieService {
 
     @GET("/3/movie/{movie_id}/reviews")
     suspend fun fetchUpcomingMovies(@Query("page") page: Int, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieResponseEntity>
+
+    @GET("/3/movie/{movie_id}")
+    suspend fun fetchMovieDetail(@Query("movie_id") movieId: Int, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieDetailEntity>
 }
