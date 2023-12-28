@@ -6,7 +6,7 @@ import com.seosh817.common.result.extension.map
 import com.seosh817.moviehub.core.data.source.MovieDataSource
 import com.seosh817.moviehub.core.model.MovieResponse
 import com.seosh817.moviehub.core.network.mapper.asExternalModel
-import com.seosh817.moviehub.core.network.service.movie_list.MovieService
+import com.seosh817.moviehub.core.network.service.movie.MovieService
 import javax.inject.Inject
 
 class MovieDataSourceImpl @Inject constructor(
