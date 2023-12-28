@@ -70,14 +70,16 @@ fun MainScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            MovieHubBottomBar(
-                currentDestination = movieHubNavigator.currentDestination,
-                destinations = PrimaryDestination
-                    .values()
-                    .toList()
-                    .toPersistentList(),
-                onTabSelected = { movieHubNavigator.navigate(it) },
-            )
+            if (movieHubNavigator.shouldShowBottomBar) {
+                MovieHubBottomBar(
+                    currentDestination = movieHubNavigator.currentDestination,
+                    destinations = PrimaryDestination
+                        .values()
+                        .toList()
+                        .toPersistentList(),
+                    onTabSelected = { movieHubNavigator.navigate(it) },
+                )
+            }
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { padding ->

@@ -27,6 +27,9 @@ class MovieHubNavigator(
             else -> null
         }
 
+    val shouldShowBottomBar: Boolean
+        @Composable get() = currentPrimaryDestination != null
+
     fun navigate(mainTab: PrimaryDestination) {
         val navOptions = navOptions {
             popUpTo(navController.graph.findStartDestination().id) {
