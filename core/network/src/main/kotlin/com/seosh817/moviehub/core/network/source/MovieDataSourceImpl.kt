@@ -4,7 +4,7 @@ import com.seosh817.common.network.handleApi
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.map
 import com.seosh817.moviehub.core.data.source.MovieDataSource
-import com.seosh817.moviehub.core.model.MovieResponse
+import com.seosh817.moviehub.core.model.MoviesResponse
 import com.seosh817.moviehub.core.network.mapper.asExternalModel
 import com.seosh817.moviehub.core.network.service.movie.MovieService
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class MovieDataSourceImpl @Inject constructor(
     private val movieService: MovieService
 ) : MovieDataSource {
 
-    override suspend fun fetchPopularMovies(page: Int, language: String?): ResultState<MovieResponse> {
+    override suspend fun fetchPopularMovies(page: Int, language: String?): ResultState<MoviesResponse> {
         return handleApi {
             movieService.fetchPopularMovies(page, language)
         }
@@ -22,7 +22,7 @@ class MovieDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun fetchTopRatedMovies(page: Int, language: String?): ResultState<MovieResponse> {
+    override suspend fun fetchTopRatedMovies(page: Int, language: String?): ResultState<MoviesResponse> {
         return handleApi {
             movieService.fetchTopRatedMovies(page, language)
         }
@@ -31,7 +31,7 @@ class MovieDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun fetchUpcomingMovies(page: Int, language: String?): ResultState<MovieResponse> {
+    override suspend fun fetchUpcomingMovies(page: Int, language: String?): ResultState<MoviesResponse> {
         return handleApi {
             movieService.fetchUpcomingMovies(page, language)
         }

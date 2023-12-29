@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.seosh817.moviehub.core.domain.usecase.movies.GetPopularMoviesUseCase
-import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieOverview
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +39,7 @@ class MoviesViewModel @Inject constructor(
         tryEmit(Unit)
     }
 
-    val pagingMoviesStateFlow: Flow<PagingData<Movie>> =
+    val pagingMoviesStateFlow: Flow<PagingData<MovieOverview>> =
         _refreshSharedFlow
             .flatMapLatest {
                 getPopularMoviesUseCase
