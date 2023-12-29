@@ -1,8 +1,8 @@
 package com.seosh817.moviehub.core.model
 
-data class MovieResponse(
+data class MoviesResponse(
     val page: Long?,
-    val results: List<Movie>,
+    val results: List<MovieOverview>,
     val totalPages: Long?,
     val totalResults: Long?,
 )

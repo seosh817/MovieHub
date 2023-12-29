@@ -1,25 +1,25 @@
 package com.seosh817.moviehub.core.network.mapper
 
-import com.seosh817.moviehub.core.model.Movie
-import com.seosh817.moviehub.core.model.MovieResponse
-import com.seosh817.moviehub.core.network.model.movie_list.MovieEntity
-import com.seosh817.moviehub.core.network.model.movie_list.MovieResponseEntity
+import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.MoviesResponse
+import com.seosh817.moviehub.core.network.model.movie_list.MovieOverviewEntity
+import com.seosh817.moviehub.core.network.model.movie_list.MoviesResponseEntity
 
-fun MovieResponse.asEntity() = MovieResponseEntity(
+fun MoviesResponse.asEntity() = MoviesResponseEntity(
     page = page,
     results = results.map { it.asEntity() },
     totalPages = totalPages,
     totalResults = totalResults,
 )
 
-fun MovieResponseEntity.asExternalModel() = MovieResponse(
+fun MoviesResponseEntity.asExternalModel() = MoviesResponse(
     page = page,
     results = results.map { it.asExternalModel() },
     totalPages = totalPages,
     totalResults = totalResults,
 )
 
-fun Movie.asEntity() = MovieEntity(
+fun MovieOverview.asEntity() = MovieOverviewEntity(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
@@ -36,7 +36,7 @@ fun Movie.asEntity() = MovieEntity(
     voteCount = voteCount,
 )
 
-fun MovieEntity.asExternalModel() = Movie(
+fun MovieOverviewEntity.asExternalModel() = MovieOverview(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,

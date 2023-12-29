@@ -1,20 +1,18 @@
 package com.seosh817.moviehub.core.data.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.seosh817.common.network.exception.NetworkException
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.map
-import com.seosh817.moviehub.core.model.Movie
-import com.seosh817.moviehub.core.model.MovieResponse
-import javax.inject.Inject
+import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.MoviesResponse
 
 class MovieListPagingSource constructor(
-    private val loader: suspend (Int) -> ResultState<MovieResponse>
-) : PagingSource<Int, Movie>() {
+    private val loader: suspend (Int) -> ResultState<MoviesResponse>
+) : PagingSource<Int, MovieOverview>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieOverview> {
         val page = params.key ?: MOVIE_INITIAL_PAGE_INDEX
 
         return loader
@@ -39,7 +37,7 @@ class MovieListPagingSource constructor(
             )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, MovieOverview>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

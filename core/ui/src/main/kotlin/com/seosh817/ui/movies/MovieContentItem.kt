@@ -39,7 +39,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
-import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.isErrorOrEmpty
 import com.seosh817.ui.ktx.isLoading
@@ -47,7 +47,7 @@ import com.seosh817.ui.ktx.isLoading
 @Composable
 fun MovieContentItem(
     context: Context,
-    movie: Movie,
+    movie: MovieOverview,
     noImageText: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {

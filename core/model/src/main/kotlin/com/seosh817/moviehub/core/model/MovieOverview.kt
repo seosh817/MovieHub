@@ -1,6 +1,6 @@
 package com.seosh817.moviehub.core.model
 
-data class Movie(
+data class MovieOverview(
     val adult: Boolean?,
     val backdropPath: String?,
     val genreIds: List<Long>?,
