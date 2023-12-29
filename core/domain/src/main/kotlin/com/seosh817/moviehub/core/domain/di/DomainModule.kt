@@ -1,18 +1,38 @@
 package com.seosh817.moviehub.core.domain.di
 
+import com.seosh817.moviehub.core.common.network.Dispatcher
+import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
+import com.seosh817.moviehub.core.domain.repository.MovieRepository
+import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.movies.GetMoviesUseCase
 import com.seosh817.moviehub.core.domain.usecase.movies.GetPopularMoviesUseCase
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DomainModule {
+object DomainModule {
 
     @Singleton
-    @Binds
-    fun bindGetPopularMoviesUseCase(getPopularMoviesUseCase: GetPopularMoviesUseCase): GetMoviesUseCase
+    @Provides
+    fun provideGetPopularMoviesUseCase(
+        movieRepository: MovieRepository,
+        @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
+    ): GetPopularMoviesUseCase {
+        return GetPopularMoviesUseCase(movieRepository, dispatcher)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieDetailUseCase(
+        movieRepository: MovieRepository,
+        @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
+    ): GetMovieDetailUseCase {
+        return GetMovieDetailUseCase(movieRepository, dispatcher)
+    }
 }

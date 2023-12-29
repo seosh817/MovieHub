@@ -1,6 +1,7 @@
 package com.seosh817.moviehub.core.data.source
 
 import com.seosh817.common.result.ResultState
+import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.MoviesResponse
 
 interface MovieDataSource {
@@ -19,4 +20,9 @@ interface MovieDataSource {
         page: Int,
         language: String?
     ): ResultState<MoviesResponse>
+
+    suspend fun fetchMovieDetail(
+        movieId: Long,
+        language: String?
+    ): ResultState<MovieDetail>
 }
