@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieResponseEntity(
+data class MoviesResponseEntity(
     @SerialName("page")
     val page: Long?,
     @SerialName("results")
-    val results: List<MovieEntity>,
+    val results: List<MovieOverviewEntity>,
     @SerialName("total_pages")
     val totalPages: Long?,
     @SerialName("total_results")

@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
-import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieOverview
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -16,7 +16,7 @@ class GetPopularMoviesUseCase @Inject constructor(
     @Dispatcher(MovieHubDispatchers.IO) private val dispatcher: CoroutineDispatcher
 ) : GetMoviesUseCase {
 
-    override operator fun invoke(language: String?): Flow<PagingData<Movie>> = movieRepository
+    override operator fun invoke(language: String?): Flow<PagingData<MovieOverview>> = movieRepository
         .fetchPopularMovies(language)
         .flowOn(dispatcher)
 }
