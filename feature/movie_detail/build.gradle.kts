@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.common)
     implementation(libs.androidx.activity.compose)
     implementation(libs.appcompat)
 
