@@ -28,14 +28,14 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
-import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.ui.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieContents(
     isRefreshing: Boolean,
-    moviePagingItems: LazyPagingItems<Movie>,
+    moviePagingItems: LazyPagingItems<MovieOverview>,
     lazyGridState: LazyGridState,
     pullRefreshModifier: Modifier,
     pullRefreshState: PullRefreshState,
@@ -75,7 +75,7 @@ fun MovieContents(
                         key = moviePagingItems.itemKey(),
                         contentType = moviePagingItems.itemContentType()
                     ) { index ->
-                        val movie: Movie? = moviePagingItems[index]
+                        val movie: MovieOverview? = moviePagingItems[index]
                         if (movie != null) {
                             MovieContentItem(
                                 context = context,

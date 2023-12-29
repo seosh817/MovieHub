@@ -28,7 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.seosh817.moviehub.core.model.Movie
+import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.ui.movies.MovieContents
 
 @Composable
@@ -38,7 +38,7 @@ internal fun MoviesRoute(
     viewModel: MoviesViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
-    val moviePagingItems: LazyPagingItems<Movie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing = viewModel.isRefreshing.collectAsState()
 
     MoviesScreen(
@@ -59,7 +59,7 @@ internal fun MoviesRoute(
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
-    pagingItems: LazyPagingItems<Movie>,
+    pagingItems: LazyPagingItems<MovieOverview>,
     showRefreshError: Boolean = false,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
