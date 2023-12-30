@@ -1,6 +1,7 @@
 package com.seosh817.moviehub.core.domain.usecase.movies
 
 import androidx.paging.PagingData
+import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
@@ -18,5 +19,8 @@ class GetPopularMoviesUseCase @Inject constructor(
 
     override operator fun invoke(language: String?): Flow<PagingData<MovieOverview>> = movieRepository
         .fetchPopularMovies(language)
+        .catch {
+            ResultState.Failure.Exception(it)
+        }
         .flowOn(dispatcher)
 }
