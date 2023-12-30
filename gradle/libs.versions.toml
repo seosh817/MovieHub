@@ -39,6 +39,7 @@ material = "1.10.0"
 googleSecrets = "2.0.0"
 protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
+timber = "5.0.1"
 
 
 [libraries]
@@ -115,6 +116,8 @@ retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "re
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -122,7 +125,6 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidxUiToolingPreview" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
