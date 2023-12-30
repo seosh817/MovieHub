@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.common)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging)
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
