@@ -105,6 +105,7 @@ fun MovieHubTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -124,7 +125,8 @@ fun MovieHubTheme(
 
     CompositionLocalProvider(LocalAppDimens provides dimensions) {
         MaterialTheme(
-            colorScheme = colorScheme,
+//            colorScheme = colorScheme,
+            colorScheme = DarkColorScheme,
             typography = Typography,
             content = content
         )
