@@ -19,7 +19,10 @@ fun NavController.navigateToMovieDetail(movieId: Long) {
     }
 }
 
-fun NavGraphBuilder.movieDetailScreen() {
+fun NavGraphBuilder.movieDetailScreen(
+    onBackClick: () -> Unit,
+    onShareClick: (String) -> Unit,
+) {
     composable(
         route = movieDetailNavigationRoute,
         arguments = listOf(
@@ -29,6 +32,9 @@ fun NavGraphBuilder.movieDetailScreen() {
             navDeepLink { uriPattern = DEEP_LINK_URI_PATTERN },
         ),
     ) {
-        MovieDetailRoute()
+        MovieDetailRoute(
+            onBackClick = onBackClick,
+            onShareClick = onShareClick
+        )
     }
 }
