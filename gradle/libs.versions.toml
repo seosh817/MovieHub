@@ -41,6 +41,7 @@ detekt = "1.23.3"
 protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
 timber = "5.0.1"
+landscapist = "2.2.11"
 
 
 [libraries]
@@ -105,6 +106,8 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil", version.ref = "landscapist" }
+landscapist-animation = { group = "com.github.skydoves", name = "landscapist-animation", version.ref = "landscapist" }
 
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
