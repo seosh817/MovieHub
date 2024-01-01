@@ -12,6 +12,8 @@ dependencies {
     implementation(projects.common)
     implementation(libs.androidx.activity.compose)
     implementation(libs.appcompat)
+    implementation(libs.landscapist.coil)
+    implementation(libs.landscapist.animation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
