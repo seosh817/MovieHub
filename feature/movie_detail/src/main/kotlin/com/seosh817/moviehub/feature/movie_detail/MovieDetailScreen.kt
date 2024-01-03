@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -57,6 +59,8 @@ import com.seosh817.moviehub.core.designsystem.component.DetailTopAppBar
 import com.seosh817.moviehub.core.designsystem.component.RatingBar
 import com.seosh817.moviehub.core.designsystem.component.Tag
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
+import com.seosh817.moviehub.core.model.Cast
+import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.ui.ktx.formatBackdropImageUrl
@@ -108,7 +112,8 @@ fun MovieDetailScreen(
             is MovieDetailUiState.Success -> {
                 MovieDetails(
                     modifier = modifier,
-                    movieDetailUiState.movieDetail,
+                    movieDetailUiState.movieDetailResult.movieDetail,
+                    movieDetailUiState.movieDetailResult.movieCredits,
                     onShareClick = onShareClick,
                     onBackClick = onBackClick
                 )
@@ -121,6 +126,7 @@ fun MovieDetailScreen(
 fun MovieDetails(
     modifier: Modifier = Modifier,
     movieDetail: MovieDetail,
+    movieCredits: Credits,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -175,6 +181,7 @@ fun MovieDetails(
             scrollState = scrollState,
             toolbarState = toolbarState,
             movieDetail = movieDetail,
+            movieCredits = movieCredits,
             imageHeight = with(LocalDensity.current) {
                 val candidateHeight = AppDimens.MovieDetailAppBarHeight
                 maxOf(candidateHeight, 1.dp)
@@ -206,6 +213,7 @@ fun MovieDetailContents(
     scrollState: ScrollState,
     toolbarState: ToolbarState,
     movieDetail: MovieDetail,
+    movieCredits: Credits,
     imageHeight: Dp,
     onNamePosition: (Float) -> Unit,
     contentAlpha: () -> Float,
@@ -249,10 +257,11 @@ fun MovieDetailContents(
 
             MovieInfo(
                 name = movieDetail.title.orEmpty(),
-                genres = movieDetail.genreEntities,
                 releaseDate = movieDetail.releaseDate.orEmpty(),
                 average = movieDetail.voteAverage ?: 0.0,
                 overview = movieDetail.overview.orEmpty(),
+                genres = movieDetail.genreEntities,
+                cast = movieCredits.cast,
                 onNamePosition = { onNamePosition(it) },
                 toolbarState = toolbarState,
                 modifier = Modifier.constrainAs(info) {
@@ -355,6 +364,7 @@ private fun MovieInfo(
     name: String,
     releaseDate: String,
     genres: List<Genre>?,
+    cast: List<Cast>?,
     average: Double,
     overview: String,
     onNamePosition: (Float) -> Unit,
@@ -421,7 +431,7 @@ private fun MovieInfo(
             )
         }
 
-        MovieDetailDescription(
+        MovieSection(
             title = stringResource(id = R.string.overview),
             modifier = Modifier
                 .padding(
@@ -434,20 +444,26 @@ private fun MovieInfo(
             )
         }
 
-        MovieDetailDescription(
-            title = stringResource(id = R.string.overview),
+        MovieSection(
+            title = stringResource(id = R.string.cast),
             modifier = Modifier
                 .padding(
                     top = AppDimens.PaddingLarge,
                 )
         ) {
+//            MovieItemsLazyRow(
+//                items = cast.orEmpty(), itemKey = {
+//                    it.id
+//                }) {
+//
+//            }
             Text(
                 text = overview,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
 
-        MovieDetailDescription(
+        MovieSection(
             title = stringResource(id = R.string.overview),
             modifier = Modifier
                 .padding(
@@ -494,10 +510,10 @@ private fun GenreChips(
 }
 
 @Composable
-fun MovieDetailDescription(
+fun MovieSection(
     modifier: Modifier = Modifier,
     title: String,
-    content: @Composable () -> Unit
+    body: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -507,6 +523,29 @@ fun MovieDetailDescription(
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = AppDimens.PaddingSmall)
         )
-        content()
+        body()
+    }
+}
+
+@Composable
+fun <T> MovieItemsLazyRow(
+    modifier: Modifier = Modifier,
+    items: List<T>,
+    itemKey: (T) -> Any,
+    itemContent: @Composable (T, Int) -> Unit
+) {
+    LazyRow(
+        modifier = modifier,
+    ) {
+        items(
+            key = { index -> itemKey(items[index]) },
+            count = items.size,
+            itemContent = { index ->
+                itemContent(items[index], index)
+                if (index != items.lastIndex) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+            },
+        )
     }
 }
