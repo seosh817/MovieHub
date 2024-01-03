@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +42,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -53,9 +52,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.seosh817.moviehub.core.designsystem.component.LikeFab
 import com.seosh817.moviehub.core.designsystem.component.DetailHeaderActions
 import com.seosh817.moviehub.core.designsystem.component.DetailTopAppBar
+import com.seosh817.moviehub.core.designsystem.component.LikeFab
 import com.seosh817.moviehub.core.designsystem.component.RatingBar
 import com.seosh817.moviehub.core.designsystem.component.Tag
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
@@ -63,7 +62,10 @@ import com.seosh817.moviehub.core.model.Cast
 import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
+import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.ktx.formatBackdropImageUrl
+import com.seosh817.ui.ktx.formatProfileImageUrl
+import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.MovieDetailsScroller
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.isShown
@@ -261,7 +263,7 @@ fun MovieDetailContents(
                 average = movieDetail.voteAverage ?: 0.0,
                 overview = movieDetail.overview.orEmpty(),
                 genres = movieDetail.genreEntities,
-                cast = movieCredits.cast,
+                casts = movieCredits.cast,
                 onNamePosition = { onNamePosition(it) },
                 toolbarState = toolbarState,
                 modifier = Modifier.constrainAs(info) {
@@ -364,13 +366,14 @@ private fun MovieInfo(
     name: String,
     releaseDate: String,
     genres: List<Genre>?,
-    cast: List<Cast>?,
+    casts: List<Cast>?,
     average: Double,
     overview: String,
     onNamePosition: (Float) -> Unit,
     toolbarState: ToolbarState,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .padding(horizontal = AppDimens.PaddingNormal)
@@ -451,16 +454,18 @@ private fun MovieInfo(
                     top = AppDimens.PaddingLarge,
                 )
         ) {
-//            MovieItemsLazyRow(
-//                items = cast.orEmpty(), itemKey = {
-//                    it.id
-//                }) {
-//
-//            }
-            Text(
-                text = overview,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            MovieHubLazyRow(
+                items = casts.orEmpty(), itemKey = {
+                    it.id
+                }) { cast, _ ->
+                PersonItem(
+                    context = context,
+                    imageUrl = cast.profilePath?.formatProfileImageUrl,
+                    name = cast.name,
+                    character = cast.character,
+                    contentDescription = cast.name
+                )
+            }
         }
 
         MovieSection(
@@ -524,28 +529,5 @@ fun MovieSection(
             modifier = Modifier.padding(bottom = AppDimens.PaddingSmall)
         )
         body()
-    }
-}
-
-@Composable
-fun <T> MovieItemsLazyRow(
-    modifier: Modifier = Modifier,
-    items: List<T>,
-    itemKey: (T) -> Any,
-    itemContent: @Composable (T, Int) -> Unit
-) {
-    LazyRow(
-        modifier = modifier,
-    ) {
-        items(
-            key = { index -> itemKey(items[index]) },
-            count = items.size,
-            itemContent = { index ->
-                itemContent(items[index], index)
-                if (index != items.lastIndex) {
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
-            },
-        )
     }
 }
