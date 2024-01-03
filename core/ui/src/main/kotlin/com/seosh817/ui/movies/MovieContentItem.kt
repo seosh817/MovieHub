@@ -40,6 +40,7 @@ import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.ui.ktx.formatBackdropImageUrl
+import com.seosh817.ui.ktx.formatPosterImageUrl
 
 @Composable
 fun MovieContentItem(
@@ -62,7 +63,7 @@ fun MovieContentItem(
                 context = context,
                 modifier = Modifier
                     .fillMaxSize(),
-                imageUrl = movie.backdropPath?.formatBackdropImageUrl,
+                imageUrl = movie.posterPath?.formatPosterImageUrl,
                 contentDescription = movie.title ?: "",
                 contentScale = ContentScale.Crop,
                 alpha = 1f
