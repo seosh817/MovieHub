@@ -80,14 +80,6 @@ fun MovieContents(
                             MovieContentItem(
                                 context = context,
                                 movie = movie,
-                                noImageText = {
-                                    Text(
-                                        text = stringResource(R.string.no_image),
-                                        style = MaterialTheme.typography.bodyLarge.copy(
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
-                                    )
-                                },
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .height(240.dp)

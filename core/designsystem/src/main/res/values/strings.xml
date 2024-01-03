@@ -3,4 +3,5 @@
     <string name="back">back</string>
     <string name="menu_item_share_movie">menu item share movie</string>
     <string name="add">add</string>
+    <string name="no_image">No Image</string>
 </resources>

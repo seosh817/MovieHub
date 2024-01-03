@@ -35,24 +35,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import com.seosh817.moviehub.core.designsystem.component.DynamicAsyncImage
 import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.ui.ktx.formatBackdropImageUrl
-import com.seosh817.ui.ktx.isErrorOrEmpty
-import com.seosh817.ui.ktx.isLoading
 
 @Composable
 fun MovieContentItem(
     context: Context,
     movie: MovieOverview,
-    noImageText: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isImageLoading: Boolean by remember { mutableStateOf(true) }
-    var isNoImageVisible: Boolean by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
@@ -64,27 +58,14 @@ fun MovieContentItem(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            AsyncImage(
-                model = ImageRequest
-                    .Builder(context)
-                    .data(movie.backdropPath?.formatBackdropImageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = movie.title ?: "",
+            DynamicAsyncImage(
+                context = context,
                 modifier = Modifier
                     .fillMaxSize(),
-                onState = { state ->
-                    isImageLoading = state.isLoading
-                    isNoImageVisible = state.isErrorOrEmpty
-                },
-                contentScale = ContentScale.Crop
-            )
-
-            MovieContentsLoading(isImageLoading = isImageLoading)
-
-            MovieContentsNoImage(
-                isNoImageVisible = isNoImageVisible,
-                noImageText = noImageText
+                imageUrl = movie.backdropPath?.formatBackdropImageUrl,
+                contentDescription = movie.title ?: "",
+                contentScale = ContentScale.Crop,
+                alpha = 1f
             )
 
             Box(
@@ -102,52 +83,6 @@ fun MovieContentItem(
                     voteAverage = movie.voteAverage,
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun MovieContentsLoading(
-    isImageLoading: Boolean,
-    modifier: Modifier = Modifier
-) {
-    AnimatedVisibility(
-        visible = isImageLoading,
-        modifier = modifier
-            .fillMaxSize(),
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            LoadingAnimation()
-        }
-    }
-}
-
-@Composable
-fun MovieContentsNoImage(
-    isNoImageVisible: Boolean,
-    noImageText: @Composable () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    AnimatedVisibility(
-        visible = isNoImageVisible,
-        modifier = modifier
-            .fillMaxSize(),
-        enter = fadeIn(),
-        exit = fadeOut(),
-        label = ""
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            noImageText()
         }
     }
 }
