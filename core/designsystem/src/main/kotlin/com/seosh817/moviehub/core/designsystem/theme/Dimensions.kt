@@ -158,7 +158,4 @@ object AppDimens {
         @Composable get() = dimensionResource(R.dimen.toolbar_icon_padding)
 }
 
-val MovieDetailAppBarHeight: Dp
-    @Composable get() = dimensionResource(R.dimen.movie_detail_app_bar_height)
-
 val LocalAppDimens = staticCompositionLocalOf { Dimensions() }
