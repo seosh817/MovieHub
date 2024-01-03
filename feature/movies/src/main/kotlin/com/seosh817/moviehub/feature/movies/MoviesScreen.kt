@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -112,7 +109,7 @@ fun MoviesScreen(
                     ),
                 )
             },
-            pullRefreshModifier = Modifier.align(Alignment.TopCenter),
+            modifier = Modifier.align(Alignment.TopCenter),
             onMovieClick = onMovieClick,
             pullRefreshState = pullRefreshState,
         )
