@@ -36,8 +36,6 @@ fun DynamicAsyncImage(
     alpha: Float = 1f,
     shape: Shape = RectangleShape,
 ) {
-
-
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
 
