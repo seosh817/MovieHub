@@ -1,5 +1,6 @@
 package com.seosh817.moviehub.core.network.service.movie
 
+import com.seosh817.moviehub.core.network.model.credits.CreditsEntity
 import com.seosh817.moviehub.core.network.model.movie_detail.MovieDetailEntity
 import com.seosh817.moviehub.core.network.model.movie_list.MoviesResponseEntity
 import retrofit2.Response
@@ -21,4 +22,7 @@ interface MovieService {
 
     @GET("/3/movie/{movie_id}")
     suspend fun fetchMovieDetail(@Path("movie_id") movieId: Long, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieDetailEntity>
+
+    @GET("/3/movie/{movie_id}/credits")
+    suspend fun fetchMovieCredits(@Path("movie_id") movieId: Long, @Query("language") language: String? = Locale.getDefault().toString()): Response<CreditsEntity>
 }
