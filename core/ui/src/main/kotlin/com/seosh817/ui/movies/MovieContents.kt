@@ -15,13 +15,11 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -29,15 +27,14 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
-import com.seosh817.moviehub.core.ui.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieContents(
+    modifier: Modifier,
     isRefreshing: Boolean,
     moviePagingItems: LazyPagingItems<MovieOverview>,
     lazyGridState: LazyGridState,
-    pullRefreshModifier: Modifier,
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
     errorText: @Composable (String) -> Unit,
@@ -96,7 +93,7 @@ fun MovieContents(
                 PullRefreshIndicator(
                     refreshing = isRefreshing,
                     state = pullRefreshState,
-                    modifier = pullRefreshModifier,
+                    modifier = modifier,
                     backgroundColor = Color.White,
                     contentColor = MaterialTheme.colorScheme.primary
                 )
