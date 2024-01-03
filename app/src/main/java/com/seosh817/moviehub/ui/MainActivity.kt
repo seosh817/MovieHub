@@ -1,13 +1,14 @@
 package com.seosh817.moviehub.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.DisposableEffect
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -57,6 +60,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        enableEdgeToEdge()
+
         setContent {
             val movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator()
 
@@ -66,6 +71,20 @@ class MainActivity : ComponentActivity() {
 
             val isDarkTheme = shouldUseDarkTheme(uiState)
             val useDynamicColor = shouldUseDynamicColor(uiState)
+
+            DisposableEffect(isDarkTheme) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                    ) { isDarkTheme },
+                    navigationBarStyle = SystemBarStyle.auto(
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT
+                    ) { isDarkTheme },
+                )
+                onDispose {}
+            }
 
             MovieHubTheme(
                 darkTheme = isDarkTheme,
