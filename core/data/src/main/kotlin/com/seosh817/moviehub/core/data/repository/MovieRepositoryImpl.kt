@@ -8,6 +8,7 @@ import com.seosh817.common.result.extension.map
 import com.seosh817.moviehub.core.data.paging.MovieListPagingSource
 import com.seosh817.moviehub.core.data.source.MovieDataSource
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
+import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.MovieOverview
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,10 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun fetchMovieDetail(movieId: Long, language: String?): ResultState<MovieDetail> {
         return movieDataSource.fetchMovieDetail(movieId, language)
+    }
+
+    override suspend fun fetchMovieCredtis(movieId: Long, language: String?): ResultState<Credits> {
+        return movieDataSource.fetchMovieCredits(movieId, language)
     }
 
     private fun createPager(movieListPagingSource: MovieListPagingSource): Flow<PagingData<MovieOverview>> {
