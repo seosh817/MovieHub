@@ -60,14 +60,15 @@ import com.seosh817.moviehub.core.designsystem.component.Tag
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.model.Cast
 import com.seosh817.moviehub.core.model.Credits
+import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
 import com.seosh817.ui.person.PersonItem
-import com.seosh817.ui.scroll.TransitionScroller
 import com.seosh817.ui.scroll.ToolbarState
+import com.seosh817.ui.scroll.TransitionScroller
 import com.seosh817.ui.scroll.isShown
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
@@ -233,7 +234,6 @@ fun MovieDetailContents(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(Color.Black, Color.White),
-                            //                            startY = 3 * imageHeight.value / 4 // to wrap the title only
                         )
                     )
             )
@@ -262,6 +262,7 @@ fun MovieDetailContents(
                 overview = movieDetail.overview.orEmpty(),
                 genres = movieDetail.genreEntities,
                 casts = movieCredits.cast,
+                crews = movieCredits.crew,
                 onNamePosition = { onNamePosition(it) },
                 toolbarState = toolbarState,
                 modifier = Modifier.constrainAs(info) {
@@ -365,6 +366,7 @@ private fun MovieInfo(
     releaseDate: String,
     genres: List<Genre>?,
     casts: List<Cast>?,
+    crews: List<Crew>?,
     average: Double,
     overview: String,
     onNamePosition: (Float) -> Unit,
@@ -453,7 +455,8 @@ private fun MovieInfo(
                 )
         ) {
             MovieHubLazyRow(
-                items = casts.orEmpty(), itemKey = {
+                items = casts.orEmpty(),
+                itemKey = {
                     it.id
                 }) { cast, _ ->
                 PersonItem(
@@ -467,18 +470,26 @@ private fun MovieInfo(
         }
 
         MovieSection(
-            title = stringResource(id = R.string.overview),
+            title = stringResource(id = R.string.crew),
             modifier = Modifier
                 .padding(
                     top = AppDimens.PaddingLarge,
                 )
         ) {
-            Text(
-                text = overview,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            MovieHubLazyRow(
+                items = crews.orEmpty(),
+                itemKey = {
+                    it.id
+                }) { crew, _ ->
+                PersonItem(
+                    context = context,
+                    imageUrl = crew.profilePath?.formatProfileImageUrl,
+                    name = crew.name,
+                    character = crew.job,
+                    contentDescription = crew.originalName
+                )
+            }
         }
-
     }
 }
 
