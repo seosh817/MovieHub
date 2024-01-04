@@ -2,9 +2,15 @@ package com.seosh817.ui.person
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -29,20 +35,21 @@ fun PersonItem(
 ) {
     Column(
         modifier
-            .padding(4.dp),
+            .padding(4.dp)
+            .width(120.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-            DynamicAsyncImage(
-                context = context,
-                modifier = Modifier
-                    .size(120.dp)
-                    .fillMaxSize(),
-                imageUrl = imageUrl,
-                contentDescription = contentDescription,
-                contentScale = ContentScale.Crop,
-                alpha = 1f,
-                shape = CircleShape
-            )
+        DynamicAsyncImage(
+            context = context,
+            modifier = Modifier
+                .height(120.dp)
+                .fillMaxSize(),
+            imageUrl = imageUrl,
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Crop,
+            alpha = 1f,
+            shape = CircleShape
+        )
         Text(
             text = name.orEmpty(),
             style = MaterialTheme.typography.subtitle1.copy(
@@ -50,7 +57,9 @@ fun PersonItem(
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(top = 4.dp),
+            modifier = Modifier
+                    .padding(top = 4.dp)
+                    .width(IntrinsicSize.Max),
             color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
         )
         Text(
@@ -61,7 +70,9 @@ fun PersonItem(
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(top = 2.dp),
+            modifier = Modifier
+                    .padding(top = 2.dp)
+                    .width(IntrinsicSize.Max),
             color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
         )
     }
