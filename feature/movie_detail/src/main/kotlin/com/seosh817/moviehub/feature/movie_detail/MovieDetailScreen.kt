@@ -66,7 +66,7 @@ import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
 import com.seosh817.ui.person.PersonItem
-import com.seosh817.ui.scroll.MovieDetailsScroller
+import com.seosh817.ui.scroll.TransitionScroller
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.isShown
 import com.skydoves.landscapist.ImageOptions
@@ -134,7 +134,7 @@ fun MovieDetails(
 ) {
     val scrollState = rememberScrollState()
     var movieDetailScroller by remember {
-        mutableStateOf(MovieDetailsScroller(scrollState, Float.MIN_VALUE))
+        mutableStateOf(TransitionScroller(scrollState, Float.MIN_VALUE))
     }
     val transitionState =
         remember(movieDetailScroller) { movieDetailScroller.toolbarTransitionState }
