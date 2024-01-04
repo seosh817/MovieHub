@@ -32,7 +32,6 @@ fun PersonItem(
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
             DynamicAsyncImage(
                 context = context,
                 modifier = Modifier

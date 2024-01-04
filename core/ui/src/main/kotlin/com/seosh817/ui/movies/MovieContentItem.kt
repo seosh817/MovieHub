@@ -48,7 +48,6 @@ fun MovieContentItem(
     movie: MovieOverview,
     modifier: Modifier = Modifier
 ) {
-
     Card(
         modifier = modifier
             .fillMaxSize(),

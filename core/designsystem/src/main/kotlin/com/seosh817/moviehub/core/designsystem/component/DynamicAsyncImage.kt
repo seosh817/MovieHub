@@ -56,10 +56,9 @@ fun DynamicAsyncImage(
         contentAlignment = Alignment.Center,
     ) {
         if (isLoading) {
-            CircularProgressIndicator(
+            LoadingAnimation(
                 modifier = Modifier
                     .align(Alignment.Center),
-                color = MaterialTheme.colorScheme.inversePrimary,
             )
         }
 
