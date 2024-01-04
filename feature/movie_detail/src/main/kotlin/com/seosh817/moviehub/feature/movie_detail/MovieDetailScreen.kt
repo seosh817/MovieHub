@@ -464,7 +464,7 @@ private fun MovieInfo(
                     imageUrl = cast.profilePath?.formatProfileImageUrl,
                     name = cast.name,
                     character = cast.character,
-                    contentDescription = cast.name
+                    contentDescription = cast.name.orEmpty()
                 )
             }
         }
@@ -486,7 +486,7 @@ private fun MovieInfo(
                     imageUrl = crew.profilePath?.formatProfileImageUrl,
                     name = crew.name,
                     character = crew.job,
-                    contentDescription = crew.originalName
+                    contentDescription = crew.originalName.orEmpty()
                 )
             }
         }
