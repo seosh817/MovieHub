@@ -5,9 +5,9 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 
-private val HeaderTransitionOffset = 190.dp
+private val HeaderTransitionOffset = 160.dp
 
-data class MovieDetailsScroller(
+data class TransitionScroller(
     val scrollState: ScrollState,
     val transitionPosition: Float
 ) {
