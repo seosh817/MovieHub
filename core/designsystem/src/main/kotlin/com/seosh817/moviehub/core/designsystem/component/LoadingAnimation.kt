@@ -18,26 +18,28 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingAnimation() {
+fun LoadingAnimation(
+    modifier: Modifier = Modifier
+) {
     val animation = rememberInfiniteTransition(label = "Loading Animation")
     val progress by animation.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000),
+            animation = tween(750),
             repeatMode = RepeatMode.Restart,
         ),
         label = "progress"
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(60.dp)
             .scale(progress)
             .alpha(1f - progress)
             .border(
-                5.dp,
-                color = MaterialTheme.colorScheme.primary,
+                6.dp,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 shape = CircleShape
             )
     )

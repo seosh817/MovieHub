@@ -189,8 +189,6 @@ fun MovieDetails(
                 maxOf(candidateHeight, 1.dp)
             },
             onNamePosition = { newNamePosition ->
-                // Comparing to Float.MIN_VALUE as we are just interested on the original
-                // position of name on the screen
                 if (movieDetailScroller.transitionPosition == Float.MIN_VALUE) {
                     movieDetailScroller = movieDetailScroller.copy(transitionPosition = newNamePosition)
                 }
