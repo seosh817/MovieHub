@@ -19,8 +19,8 @@ class GetCreditsUseCase @Inject constructor(
     }
         .map {
             it.copy(
-                cast = it.cast.distinctBy { cast -> cast.id },
-                crew = it.crew.distinctBy { crew -> crew.id }
+                cast = it.cast?.distinctBy { cast -> cast.id },
+                crew = it.crew?.distinctBy { crew -> crew.id }
             )
         }
         .flowOn(dispatcher)
