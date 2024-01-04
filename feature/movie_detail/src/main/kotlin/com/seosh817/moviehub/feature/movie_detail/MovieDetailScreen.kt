@@ -63,8 +63,12 @@ import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
+import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.ui.MovieHubLazyRow
+import com.seosh817.ui.company.CompanyItem
 import com.seosh817.ui.ktx.formatBackdropImageUrl
+import com.seosh817.ui.ktx.formatLogoImageUrl
+import com.seosh817.ui.ktx.formatPosterImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
@@ -261,6 +265,7 @@ fun MovieDetailContents(
                 average = movieDetail.voteAverage ?: 0.0,
                 overview = movieDetail.overview.orEmpty(),
                 genres = movieDetail.genreEntities,
+                productionCompanies = movieDetail.productionCompanies,
                 casts = movieCredits.cast,
                 crews = movieCredits.crew,
                 onNamePosition = { onNamePosition(it) },
@@ -364,11 +369,12 @@ private fun MovieToolbar(
 private fun MovieInfo(
     name: String,
     releaseDate: String,
+    average: Double,
+    overview: String,
+    productionCompanies: List<ProductionCompany>?,
     genres: List<Genre>?,
     casts: List<Cast>?,
     crews: List<Crew>?,
-    average: Double,
-    overview: String,
     onNamePosition: (Float) -> Unit,
     toolbarState: ToolbarState,
     modifier: Modifier = Modifier
@@ -487,6 +493,27 @@ private fun MovieInfo(
                     name = crew.name,
                     character = crew.job,
                     contentDescription = crew.originalName.orEmpty()
+                )
+            }
+        }
+
+        MovieSection(
+            title = stringResource(id = R.string.production_companies),
+            modifier = Modifier
+                .padding(
+                    top = AppDimens.PaddingLarge,
+                )
+        ) {
+            MovieHubLazyRow(
+                items = productionCompanies.orEmpty(),
+                itemKey = {
+                    it.id
+                }) { productionCompany, _ ->
+                CompanyItem(
+                    context = context,
+                    imageUrl = productionCompany.logoPath?.formatLogoImageUrl,
+                    name = productionCompany.name,
+                    contentDescription = productionCompany.name.orEmpty()
                 )
             }
         }
