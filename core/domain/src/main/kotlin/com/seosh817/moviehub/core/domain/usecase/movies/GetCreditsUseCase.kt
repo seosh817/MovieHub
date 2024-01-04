@@ -6,6 +6,7 @@ import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetCreditsUseCase @Inject constructor(
@@ -16,5 +17,11 @@ class GetCreditsUseCase @Inject constructor(
     operator fun invoke(movieId: Long, language: String? = null) = fetchDataToFlow {
         movieRepository.fetchMovieCredtis(movieId, language)
     }
+        .map {
+            it.copy(
+                cast = it.cast.distinctBy { cast -> cast.id },
+                crew = it.crew.distinctBy { crew -> crew.id }
+            )
+        }
         .flowOn(dispatcher)
 }
