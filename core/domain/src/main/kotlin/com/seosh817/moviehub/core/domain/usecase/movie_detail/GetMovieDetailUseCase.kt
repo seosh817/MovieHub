@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,5 +23,12 @@ class GetMovieDetailUseCase @Inject constructor(
     operator fun invoke(movieId: Long, language: String? = null): Flow<MovieDetail> = fetchDataToFlow {
         movieRepository.fetchMovieDetail(movieId, language)
     }
+            .map {
+                it.copy(
+                        productionCompanies = it
+                                .productionCompanies
+                                ?.distinctBy { it.id }
+                )
+            }
         .flowOn(dispatcher)
 }
