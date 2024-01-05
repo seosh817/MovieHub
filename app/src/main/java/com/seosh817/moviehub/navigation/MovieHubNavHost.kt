@@ -13,6 +13,7 @@ import com.seosh817.moviehub.feature.movie_detail.navigation.movieDetailScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.navigateToMovieDetail
 import com.seosh817.moviehub.feature.movies.navigation.movieScreen
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
+import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
 
 @Composable
 fun MovieHubNavHost(
@@ -36,6 +37,9 @@ fun MovieHubNavHost(
         movieDetailScreen(
             onBackClick = navController::popBackStack,
             onShareClick = activity::createShareIntent
+        )
+        settingsScreen(
+            onBackClick = navController::popBackStack
         )
     }
 }
