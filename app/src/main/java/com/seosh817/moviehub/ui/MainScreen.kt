@@ -115,7 +115,7 @@ fun MainScreen(
                         }
 
                         IconButton(
-                            onClick = { }
+                            onClick = movieHubNavigator::navigateToSettings
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Settings,
