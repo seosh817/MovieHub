@@ -36,6 +36,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.seosh817.moviehub.core.designsystem.R
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.designsystem.theme.ThemePreviews
@@ -175,6 +176,46 @@ fun DetailHeaderActions(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DefaultTopAppBar(
+    modifier: Modifier = Modifier,
+    title: String,
+    onBackClick: () -> Unit,
+    actions: @Composable RowScope.() -> Unit,
+) {
+    Surface {
+        TopAppBar(
+            modifier = modifier
+                .statusBarsPadding()
+                .background(color = MaterialTheme.colorScheme.surface),
+            navigationIcon = {
+                IconButton(
+                    onBackClick,
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back)
+                    )
+                }
+            },
+            actions = actions,
+            title = {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    // As title in TopAppBar has extra inset on the left, need to do this: b/158829169
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @ThemePreviews
 @Composable
 private fun MainTopAppBarPreview() {
@@ -192,6 +233,25 @@ private fun MainTopAppBarPreview() {
                 Icon(imageVector = Icons.Default.Settings, contentDescription = "Settings")
             }
         }
+    )
+}
+
+@Preview
+@Composable
+fun DetailTopAppBarPreview() {
+    DetailTopAppBar(
+        title = "Movie Title",
+        onShareClick = { },
+        onBackClick = { }
+    )
+}
+
+@Preview
+@Composable
+private fun DetailHeaderActionsPreview() {
+    DetailHeaderActions(
+        onShareClick = { },
+        onBackClick = { }
     )
 }
 
