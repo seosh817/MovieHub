@@ -15,7 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -37,13 +38,13 @@ internal fun MoviesRoute(
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
-    val isRefreshing = viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     MoviesScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
         showRefreshError = viewModel.showRefreshError,
-        isRefreshing = isRefreshing.value,
+        isRefreshing = isRefreshing,
         onRefresh = viewModel::onSwipeRefresh,
         onMovieClick = onMovieClick,
         onShowSnackbar = onShowSnackbar,
