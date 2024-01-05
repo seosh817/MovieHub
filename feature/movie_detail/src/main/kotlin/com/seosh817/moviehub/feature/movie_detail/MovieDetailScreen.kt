@@ -69,6 +69,7 @@ import com.seosh817.ui.company.CompanyItem
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
+import com.seosh817.ui.movies.MovieContentsLoading
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.TransitionScroller
@@ -108,11 +109,14 @@ fun MovieDetailScreen(
     ) {
         when (movieDetailUiState) {
             is MovieDetailUiState.Loading -> Box(Modifier.fillMaxSize()) {
-                Text("Now Loading...", modifier = Modifier.fillMaxSize())
+                MovieContentsLoading(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
             }
 
             is MovieDetailUiState.Error -> Box(Modifier.fillMaxSize()) {
-                Text("MovieDetail error: ${movieDetailUiState.e}", modifier = Modifier.fillMaxSize())
+                Text("MovieDetail error: ${movieDetailUiState.e}", modifier = Modifier.align(Alignment.Center))
             }
 
             is MovieDetailUiState.Success -> {
