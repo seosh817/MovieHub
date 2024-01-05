@@ -12,6 +12,7 @@ import androidx.navigation.navOptions
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 import com.seosh817.moviehub.feature.movies.navigation.navigateToMovies
+import com.seosh817.moviehub.feature.settings.navigation.navigateToSettings
 
 class MovieHubNavigator(
     val navController: NavHostController
@@ -42,6 +43,10 @@ class MovieHubNavigator(
         when (mainTab) {
             MOVIES -> navController.navigateToMovies(navOptions)
         }
+    }
+
+    fun navigateToSettings() {
+        navController.navigateToSettings()
     }
 }
 
