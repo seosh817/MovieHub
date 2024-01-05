@@ -69,7 +69,7 @@ import com.seosh817.ui.company.CompanyItem
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
-import com.seosh817.ui.movies.MovieContentsLoading
+import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.TransitionScroller
@@ -109,7 +109,7 @@ fun MovieDetailScreen(
     ) {
         when (movieDetailUiState) {
             is MovieDetailUiState.Loading -> Box(Modifier.fillMaxSize()) {
-                MovieContentsLoading(
+                ContentsLoading(
                     modifier = Modifier
                         .align(Alignment.Center)
                 )

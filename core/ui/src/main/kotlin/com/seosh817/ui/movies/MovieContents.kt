@@ -27,6 +27,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.ui.ContentsLoading
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -42,7 +43,7 @@ fun MovieContents(
     val context = LocalContext.current
     when (moviePagingItems.loadState.refresh) {
         is LoadState.Loading -> {
-            MovieContentsLoading(
+            ContentsLoading(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
