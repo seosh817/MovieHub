@@ -22,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seosh817.moviehub.core.designsystem.component.DetailHeaderActions
 import com.seosh817.moviehub.core.designsystem.component.DetailTopAppBar
 import com.seosh817.moviehub.core.designsystem.component.LikeFab
@@ -68,7 +68,6 @@ import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.company.CompanyItem
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
-import com.seosh817.ui.ktx.formatPosterImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
@@ -86,11 +85,11 @@ internal fun MovieDetailRoute(
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val movieDetailUiState = movieDetailViewModel.movieDetailUiStateFlow.collectAsState()
+    val movieDetailUiState by movieDetailViewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
 
     MovieDetailScreen(
         modifier = modifier,
-        movieDetailUiState = movieDetailUiState.value,
+        movieDetailUiState = movieDetailUiState,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
     )
