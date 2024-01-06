@@ -70,6 +70,7 @@ import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
 import com.seosh817.ui.ContentsLoading
+import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.TransitionScroller
@@ -385,7 +386,6 @@ private fun MovieInfo(
     val context = LocalContext.current
     Column(
         modifier = modifier
-            .padding(horizontal = AppDimens.PaddingNormal)
     ) {
         AnimatedVisibility(visible = toolbarState == ToolbarState.HIDDEN) {
             Text(
@@ -443,7 +443,7 @@ private fun MovieInfo(
             )
         }
 
-        MovieSection(
+        ContentsSection(
             title = stringResource(id = R.string.overview),
             modifier = Modifier
                 .padding(
@@ -456,7 +456,7 @@ private fun MovieInfo(
             )
         }
 
-        MovieSection(
+        ContentsSection(
             title = stringResource(id = R.string.cast),
             modifier = Modifier
                 .padding(
@@ -478,7 +478,7 @@ private fun MovieInfo(
             }
         }
 
-        MovieSection(
+        ContentsSection(
             title = stringResource(id = R.string.crew),
             modifier = Modifier
                 .padding(
@@ -500,7 +500,7 @@ private fun MovieInfo(
             }
         }
 
-        MovieSection(
+        ContentsSection(
             title = stringResource(id = R.string.production_companies),
             modifier = Modifier
                 .padding(
@@ -550,23 +550,5 @@ private fun GenreChips(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
             }
-    }
-}
-
-@Composable
-fun MovieSection(
-    modifier: Modifier = Modifier,
-    title: String,
-    body: @Composable () -> Unit
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = AppDimens.PaddingSmall)
-        )
-        body()
     }
 }
