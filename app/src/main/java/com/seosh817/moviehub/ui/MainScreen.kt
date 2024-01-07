@@ -1,8 +1,5 @@
 package com.seosh817.moviehub.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,13 +24,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,6 +39,7 @@ import com.seosh817.moviehub.core.designsystem.component.MovieHubNavigationBarIt
 import com.seosh817.moviehub.core.designsystem.component.MainTopAppBar
 import com.seosh817.moviehub.navigation.MovieHubNavHost
 import com.seosh817.moviehub.navigation.MovieHubNavigator
+import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.navigation.PrimaryDestination
 import com.seosh817.moviehub.navigation.isPrimaryDestinationInHierarchy
 import com.seosh817.moviehub.navigation.rememberMovieHubNavigator
@@ -60,6 +55,7 @@ fun MainScreen(
     movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
+    openDialog: (OpenDialog) -> Unit
 ) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState, canScroll = { true })
@@ -74,8 +70,7 @@ fun MainScreen(
                 MovieHubBottomBar(
                     currentDestination = movieHubNavigator.currentDestination,
                     destinations = PrimaryDestination
-                        .values()
-                        .toList()
+                        .entries
                         .toPersistentList(),
                     onTabSelected = { movieHubNavigator.navigate(it) },
                 )
@@ -106,6 +101,7 @@ fun MainScreen(
                     actions = {
                         IconButton(
                             onClick = {
+                                openDialog(OpenDialog.APP_THEME_SETTINGS)
                             }
                         ) {
                             Icon(
@@ -126,17 +122,19 @@ fun MainScreen(
                 )
             }
 
-            val onShowSnackBar: suspend (message: String, action: String?) -> Boolean = { message, action ->
-                snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = action,
-                    duration = SnackbarDuration.Short,
-                ) == SnackbarResult.ActionPerformed
-            }
+            val onShowSnackBar: suspend (message: String, action: String?) -> Boolean =
+                { message, action ->
+                    snackbarHostState.showSnackbar(
+                        message = message,
+                        actionLabel = action,
+                        duration = SnackbarDuration.Short,
+                    ) == SnackbarResult.ActionPerformed
+                }
 
             MovieHubNavHost(
                 movieHubNavigator = movieHubNavigator,
                 onShowSnackbar = onShowSnackBar,
+                openDialog = openDialog,
             )
         }
     }
