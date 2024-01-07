@@ -9,10 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.seosh817.moviehub.feature.bookmarks.navigation.bookmarksNavigationRoute
+import com.seosh817.moviehub.feature.bookmarks.navigation.navigateToBookmarks
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
-import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 import com.seosh817.moviehub.feature.movies.navigation.navigateToMovies
 import com.seosh817.moviehub.feature.settings.navigation.navigateToSettings
+import com.seosh817.moviehub.navigation.PrimaryDestination.BOOK_MARKS
+import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 
 class MovieHubNavigator(
     val navController: NavHostController
@@ -25,6 +28,7 @@ class MovieHubNavigator(
     val currentPrimaryDestination: PrimaryDestination?
         @Composable get() = when (currentDestination?.route) {
             moviesNavigationRoute -> MOVIES
+            bookmarksNavigationRoute -> BOOK_MARKS
             else -> null
         }
 
@@ -42,6 +46,7 @@ class MovieHubNavigator(
 
         when (mainTab) {
             MOVIES -> navController.navigateToMovies(navOptions)
+            BOOK_MARKS -> navController.navigateToBookmarks(navOptions)
         }
     }
 
