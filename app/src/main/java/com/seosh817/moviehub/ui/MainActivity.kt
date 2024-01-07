@@ -29,11 +29,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.seosh817.moviehub.feature.settings.AppThemeSettingsDialog
+import com.seosh817.moviehub.core.model.OpenDialog
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +45,6 @@ class MainActivity : ComponentActivity() {
 
         var uiState by mutableStateOf<MainUiState>(MainUiState.Loading)
 
-        // Update the uiState
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState
@@ -67,10 +69,29 @@ class MainActivity : ComponentActivity() {
 
             val snackbarHostState = remember { SnackbarHostState() }
             val topAppBarState = rememberTopAppBarState()
-
+            var openDialog by rememberSaveable {
+                mutableStateOf(OpenDialog.NONE)
+            }
 
             val isDarkTheme = shouldUseDarkTheme(uiState)
             val useDynamicColor = shouldUseDynamicColor(uiState)
+
+            if (openDialog != OpenDialog.NONE) {
+                when (openDialog) {
+                    OpenDialog.NONE -> {}
+                    OpenDialog.APP_THEME_SETTINGS -> {
+                        if (uiState is MainUiState.Success) {
+                            AppThemeSettingsDialog(
+                                appThemeMode = (uiState as MainUiState.Success).appSettings.darkThemeMode,
+                                onThemeClick = viewModel::updateDarkThemeMode,
+                                onDismiss = {
+                                    openDialog = OpenDialog.NONE
+                                },
+                            )
+                        }
+                    }
+                }
+            }
 
             DisposableEffect(isDarkTheme) {
                 enableEdgeToEdge(
@@ -94,6 +115,9 @@ class MainActivity : ComponentActivity() {
                     movieHubNavigator = movieHubNavigator,
                     snackbarHostState = snackbarHostState,
                     topAppBarState = topAppBarState,
+                    openDialog = {
+                        openDialog = it
+                    },
                 )
             }
         }

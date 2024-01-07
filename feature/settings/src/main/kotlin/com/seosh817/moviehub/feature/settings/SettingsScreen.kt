@@ -18,6 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seosh817.moviehub.core.designsystem.component.DefaultTopAppBar
+import com.seosh817.moviehub.core.designsystem.theme.AppDimens
+import com.seosh817.moviehub.core.model.DarkThemeMode
+import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
@@ -28,13 +31,15 @@ fun SettingsRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
+    openDialog: (OpenDialog) -> Unit
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
 
     SettingsScreen(
         modifier = modifier,
         settingsUiState = settingsUiState,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        openDialog = openDialog,
     )
 }
 
@@ -42,7 +47,8 @@ fun SettingsRoute(
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsUiState: SettingsUiState,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    openDialog: (OpenDialog) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -59,7 +65,8 @@ fun SettingsScreen(
                 SettingsContent(
                     darkThemeMode = settingsUiState.settings.darkThemeMode,
                     useDynamicColor = settingsUiState.settings.useDynamicColor,
-                    onBackClick = onBackClick
+                    onBackClick = onBackClick,
+                    openDialog = openDialog,
                 )
             }
         }
@@ -72,7 +79,8 @@ fun SettingsContent(
     modifier: Modifier = Modifier,
     darkThemeMode: DarkThemeMode,
     useDynamicColor: Boolean,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    openDialog: (OpenDialog) -> Unit,
 ) {
     Scaffold(
         modifier = modifier
@@ -92,11 +100,10 @@ fun SettingsContent(
             ContentsSection(
                 title = stringResource(id = R.string.preferences)) {
                 SettingsItem(
-                    modifier = Modifier.fillMaxWidth(),
                     titleText = stringResource(id = R.string.app_theme),
                     valueText = darkThemeMode.name,
                     onClick = {
-
+                        openDialog(OpenDialog.APP_THEME_SETTINGS)
                     }
                 )
 
