@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.feature.settings.SettingsRoute
 
 const val settingsNavigationRoute = "settings_route"
@@ -16,6 +17,7 @@ fun NavController.navigateToSettings(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.settingsScreen(
     onBackClick: () -> Unit,
+    openDialog: (OpenDialog) -> Unit,
 ) {
     composable(
         route = settingsNavigationRoute,
@@ -24,7 +26,8 @@ fun NavGraphBuilder.settingsScreen(
         ),
     ) {
         SettingsRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            openDialog = openDialog
         )
     }
 }
