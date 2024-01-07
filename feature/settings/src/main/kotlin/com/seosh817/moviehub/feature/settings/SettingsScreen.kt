@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
@@ -21,10 +21,10 @@ import com.seosh817.moviehub.core.designsystem.component.DefaultTopAppBar
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import com.seosh817.moviehub.core.model.OpenDialog
-import com.seosh817.moviehub.core.model.DarkThemeMode
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
-import com.seosh817.ui.SettingsItem
+import com.seosh817.ui.settings.SettingsItem
+import com.seosh817.ui.settings.SettingsSwitchItem
 
 @Composable
 fun SettingsRoute(
@@ -40,6 +40,7 @@ fun SettingsRoute(
         settingsUiState = settingsUiState,
         onBackClick = onBackClick,
         openDialog = openDialog,
+        onUseDynamicColorClick = settingsViewModel::updateDynamicColorPreference
     )
 }
 
@@ -49,6 +50,7 @@ fun SettingsScreen(
     settingsUiState: SettingsUiState,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
+    onUseDynamicColorClick: (Boolean) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -67,6 +69,7 @@ fun SettingsScreen(
                     useDynamicColor = settingsUiState.settings.useDynamicColor,
                     onBackClick = onBackClick,
                     openDialog = openDialog,
+                    onUseDynamicColorClick = onUseDynamicColorClick
                 )
             }
         }
@@ -81,6 +84,7 @@ fun SettingsContent(
     useDynamicColor: Boolean,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
+    onUseDynamicColorClick: (Boolean) -> Unit,
 ) {
     Scaffold(
         modifier = modifier
@@ -107,22 +111,18 @@ fun SettingsContent(
                     }
                 )
 
-                SettingsItem(
-                    modifier = Modifier.fillMaxWidth(),
+                SettingsSwitchItem(
                     titleText = stringResource(id = R.string.dynamic_color),
-                    valueText = useDynamicColor.toString(),
+                    isChecked = useDynamicColor,
                     onClick = {
-
+                        onUseDynamicColorClick(!useDynamicColor)
                     }
                 )
-                SettingsItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    titleText = stringResource(id = R.string.app_version),
-                    valueText = useDynamicColor.toString(),
-                    onClick = {
+            }
 
-                    }
-                )
+            ContentsSection(
+                modifier = Modifier.padding(top = AppDimens.PaddingLarge),
+                title = stringResource(id = R.string.about)) {
             }
         }
     }

@@ -126,8 +126,7 @@ fun MovieHubTheme(
 
     CompositionLocalProvider(LocalAppDimens provides dimensions) {
         MaterialTheme(
-//            colorScheme = colorScheme,
-            colorScheme = DarkColorScheme,
+            colorScheme = colorScheme,
             typography = Typography,
             content = content
         )
