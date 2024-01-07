@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.navigation.compose.NavHost
 import com.seosh817.moviehub.R
@@ -13,6 +12,7 @@ import com.seosh817.moviehub.feature.movie_detail.navigation.movieDetailScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.navigateToMovieDetail
 import com.seosh817.moviehub.feature.movies.navigation.movieScreen
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
+import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
 
 @Composable
@@ -20,6 +20,7 @@ fun MovieHubNavHost(
     modifier: Modifier = Modifier,
     movieHubNavigator: MovieHubNavigator,
     onShowSnackbar: suspend (String, String?) -> Boolean,
+    openDialog: (OpenDialog) -> Unit,
     startDestination: String = moviesNavigationRoute
 ) {
     val navController = movieHubNavigator.navController
@@ -39,7 +40,8 @@ fun MovieHubNavHost(
             onShareClick = activity::createShareIntent
         )
         settingsScreen(
-            onBackClick = navController::popBackStack
+            onBackClick = navController::popBackStack,
+            openDialog = openDialog
         )
     }
 }
