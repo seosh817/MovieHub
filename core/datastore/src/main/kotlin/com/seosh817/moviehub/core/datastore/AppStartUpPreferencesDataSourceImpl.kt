@@ -17,12 +17,11 @@ class AppStartUpPreferencesDataSourceImpl @Inject constructor(
             AppSettings(
                 useDynamicColor = it.useDynamicColor,
                 darkThemeMode = when (it.darkThemeMode) {
+                    DarkThemeModeProto.DARK_THEME_MODE_FOLLOW_SYSTEM -> DarkThemeMode.FOLLOW_SYSTEM
+                    DarkThemeModeProto.DARK_THEME_MODE_LIGHT -> DarkThemeMode.LIGHT
                     null,
                     DarkThemeModeProto.DARK_THEME_MODE_UNSPECIFIED,
                     DarkThemeModeProto.UNRECOGNIZED,
-                    DarkThemeModeProto.DARK_THEME_MODE_FOLLOW_SYSTEM -> DarkThemeMode.FOLLOW_SYSTEM
-
-                    DarkThemeModeProto.DARK_THEME_MODE_LIGHT -> DarkThemeMode.LIGHT
                     DarkThemeModeProto.DARK_THEME_MODE_DARK -> DarkThemeMode.DARK
                 },
                 bookmarkedMovieIds = it.bookmarkedMovieIdsMap.keys,
