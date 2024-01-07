@@ -11,14 +11,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    appSettings: AppStartUpSettingsRepository
+    private val appStartUpSettingsRepository: AppStartUpSettingsRepository
 ) : ViewModel() {
 
-    val uiState: StateFlow<MainUiState> = appSettings.appSettings
+    val uiState: StateFlow<MainUiState> = appStartUpSettingsRepository.appSettings
         .map {
             MainUiState.Success(it)
         }
@@ -27,4 +28,10 @@ class MainViewModel @Inject constructor(
             initialValue = MainUiState.Loading,
             started = SharingStarted.WhileSubscribed(5_000),
         )
+
+    fun updateDarkThemeMode(darkThemeMode: DarkThemeMode) {
+        viewModelScope.launch {
+            appStartUpSettingsRepository.setDarkThemeMode(darkThemeMode)
+        }
+    }
 }

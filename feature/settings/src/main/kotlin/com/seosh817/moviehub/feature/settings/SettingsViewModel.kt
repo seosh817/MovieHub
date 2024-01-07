@@ -38,12 +38,6 @@ class SettingsViewModel @Inject constructor(
             appStartUpSettingsRepository.setDynamicColorPreference(useDynamicColor)
         }
     }
-
-    fun updateDarkThemeMode(darkThemeMode: DarkThemeMode) {
-        viewModelScope.launch {
-            appStartUpSettingsRepository.setDarkThemeMode(darkThemeMode)
-        }
-    }
 }
 
 data class UserEditableSettings(
