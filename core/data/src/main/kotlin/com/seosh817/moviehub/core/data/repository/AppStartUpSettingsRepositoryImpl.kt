@@ -22,7 +22,7 @@ class AppStartUpSettingsRepositoryImpl @Inject constructor(
         return appStartUpPreferencesDataSource.setDarkThemeMode(darkThemeMode)
     }
 
-    override suspend fun setBookMarkedMovieIds(movieIds: Set<String>) {
+    override suspend fun setBookMarkedMovieIds(movieIds: Set<Long>) {
         return appStartUpPreferencesDataSource.setBookMarkedMovieIds(movieIds)
     }
 }
