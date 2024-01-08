@@ -48,7 +48,7 @@ class AppStartUpPreferencesDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun setBookMarkedMovieIds(movieIds: Set<String>) {
+    override suspend fun setBookMarkedMovieIds(movieIds: Set<Long>) {
         try {
             appStartUpPreferences.updateData {
                 it.copy {
