@@ -10,9 +10,11 @@ android {
 }
 
 dependencies {
+    implementation(projects.common)
+
     implementation(projects.core.model)
     implementation(projects.core.common)
-    implementation(projects.common)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging)
     implementation(libs.timber)

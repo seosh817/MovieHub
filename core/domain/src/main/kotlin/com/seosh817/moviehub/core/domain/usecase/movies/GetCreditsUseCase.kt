@@ -15,7 +15,7 @@ class GetCreditsUseCase @Inject constructor(
 ) {
 
     operator fun invoke(movieId: Long, language: String? = null) = fetchDataToFlow {
-        movieRepository.fetchMovieCredtis(movieId, language)
+        movieRepository.fetchMovieCredits(movieId, language)
     }
         .map {
             it.copy(
