@@ -1,6 +1,6 @@
 package com.seosh817.moviehub.core.data.repository
 
-import com.seosh817.moviehub.core.data.source.AppStartUpPreferencesDataSource
+import com.seosh817.moviehub.core.datastore.source.AppStartUpPreferencesDataSource
 import com.seosh817.moviehub.core.domain.repository.AppStartUpSettingsRepository
 import com.seosh817.moviehub.core.model.AppSettings
 import com.seosh817.moviehub.core.model.DarkThemeMode

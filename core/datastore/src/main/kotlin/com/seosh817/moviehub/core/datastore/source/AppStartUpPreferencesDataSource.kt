@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.data.source
+package com.seosh817.moviehub.core.datastore.source
 
 import com.seosh817.moviehub.core.model.AppSettings
 import com.seosh817.moviehub.core.model.DarkThemeMode
