@@ -12,5 +12,5 @@ interface AppStartUpPreferencesDataSource {
 
     suspend fun setDarkThemeMode(darkThemeMode: DarkThemeMode)
 
-    suspend fun setBookMarkedMovieIds(movieIds: Set<String>)
+    suspend fun setBookMarkedMovieIds(movieIds: Set<Long>)
 }
