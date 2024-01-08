@@ -17,9 +17,14 @@ android {
 
 dependencies {
 
+    implementation(projects.common)
+
     implementation(projects.core.model)
     implementation(projects.core.domain)
-    implementation(projects.common)
+    implementation(projects.core.network)
+    implementation(projects.core.datastore)
+    implementation(projects.core.database)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
