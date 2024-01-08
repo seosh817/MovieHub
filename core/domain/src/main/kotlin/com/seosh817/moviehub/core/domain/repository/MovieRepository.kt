@@ -17,5 +17,5 @@ interface MovieRepository {
 
     suspend fun fetchMovieDetail(movieId: Long, language: String?): ResultState<MovieDetail>
 
-    suspend fun fetchMovieCredtis(movieId: Long, language: String?): ResultState<Credits>
+    suspend fun fetchMovieCredits(movieId: Long, language: String?): ResultState<Credits>
 }

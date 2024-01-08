@@ -25,9 +25,10 @@ android {
 }
 
 dependencies {
+    
     implementation(projects.core.model)
-    implementation(projects.core.data)
     implementation(projects.common)
+
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
     implementation(libs.okhttp.logging)
