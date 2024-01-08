@@ -1,8 +1,11 @@
-package com.seosh817.moviehub.core.datastore
+package com.seosh817.moviehub.core.datastore.impl
 
 import android.util.Log
 import androidx.datastore.core.DataStore
-import com.seosh817.moviehub.core.data.source.AppStartUpPreferencesDataSource
+import com.seosh817.moviehub.core.datastore.AppStartUpSettings
+import com.seosh817.moviehub.core.datastore.DarkThemeModeProto
+import com.seosh817.moviehub.core.datastore.copy
+import com.seosh817.moviehub.core.datastore.source.AppStartUpPreferencesDataSource
 import com.seosh817.moviehub.core.model.AppSettings
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import kotlinx.coroutines.flow.map

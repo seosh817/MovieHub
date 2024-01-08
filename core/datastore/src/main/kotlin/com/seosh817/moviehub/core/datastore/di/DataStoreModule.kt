@@ -7,8 +7,6 @@ import androidx.datastore.dataStoreFile
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.common.network.di.ApplicationScope
-import com.seosh817.moviehub.core.data.source.AppStartUpPreferencesDataSource
-import com.seosh817.moviehub.core.datastore.AppStartUpPreferencesDataSourceImpl
 import com.seosh817.moviehub.core.datastore.AppStartUpSettings
 import com.seosh817.moviehub.core.datastore.AppStartUpSettingsSerializer
 import dagger.Module
