@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.asResult
+import com.seosh817.moviehub.core.domain.repository.AppStartUpSettingsRepository
 import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.movies.GetCreditsUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
@@ -16,13 +17,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
+    private val appStartUpSettingsRepository: AppStartUpSettingsRepository,
     savedStateHandle: SavedStateHandle,
     getMovieDetailUseCase: GetMovieDetailUseCase,
-    getMovieCreditsUseCase: GetCreditsUseCase
+    getMovieCreditsUseCase: GetCreditsUseCase,
 ) : ViewModel() {
 
     private val movieId: Long = checkNotNull(savedStateHandle["movieId"])
@@ -33,6 +36,20 @@ class MovieDetailViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = MovieDetailUiState.Loading,
         )
+
+    val isBookmarked: StateFlow<Boolean> = appStartUpSettingsRepository.appSettings
+        .map { it.bookmarkedMovieIds.contains(movieId) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false,
+        )
+
+    fun updateBookmarkedMovieId(isChecked: Boolean) {
+        viewModelScope.launch {
+            appStartUpSettingsRepository.setBookMarkedMovieIds(movieId, isChecked)
+        }
+    }
 }
 
 private fun movieDetailUiState(
