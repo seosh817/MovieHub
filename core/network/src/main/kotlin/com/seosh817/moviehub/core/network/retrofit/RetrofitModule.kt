@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.network.retrofit.di
+package com.seosh817.moviehub.core.network.retrofit
 
 import com.seosh817.moviehub.core.network.BuildConfig
 import dagger.Module
