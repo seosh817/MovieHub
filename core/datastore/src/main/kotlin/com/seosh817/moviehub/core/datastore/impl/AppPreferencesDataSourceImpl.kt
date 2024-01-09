@@ -5,19 +5,19 @@ import androidx.datastore.core.DataStore
 import com.seosh817.moviehub.core.datastore.AppStartUpSettings
 import com.seosh817.moviehub.core.datastore.DarkThemeModeProto
 import com.seosh817.moviehub.core.datastore.copy
-import com.seosh817.moviehub.core.datastore.source.AppStartUpPreferencesDataSource
-import com.seosh817.moviehub.core.model.AppSettings
+import com.seosh817.moviehub.core.datastore.source.AppPreferencesDataSource
+import com.seosh817.moviehub.core.model.UserSettings
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class AppStartUpPreferencesDataSourceImpl @Inject constructor(
+class AppPreferencesDataSourceImpl @Inject constructor(
     private val appStartUpPreferences: DataStore<AppStartUpSettings>,
-) : AppStartUpPreferencesDataSource {
-    override val appSettings = appStartUpPreferences.data
+) : AppPreferencesDataSource {
+    override val userSettings = appStartUpPreferences.data
         .map {
-            AppSettings(
+            UserSettings(
                 useDynamicColor = it.useDynamicColor,
                 darkThemeMode = when (it.darkThemeMode) {
                     DarkThemeModeProto.DARK_THEME_MODE_FOLLOW_SYSTEM -> DarkThemeMode.FOLLOW_SYSTEM
@@ -68,6 +68,6 @@ class AppStartUpPreferencesDataSourceImpl @Inject constructor(
     }
 
     companion object {
-        private val TAG: String = AppStartUpPreferencesDataSourceImpl::class.java.simpleName
+        private val TAG: String = AppPreferencesDataSourceImpl::class.java.simpleName
     }
 }

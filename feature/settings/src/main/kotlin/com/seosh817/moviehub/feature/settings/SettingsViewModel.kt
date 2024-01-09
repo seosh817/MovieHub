@@ -2,7 +2,7 @@ package com.seosh817.moviehub.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seosh817.moviehub.core.domain.repository.AppStartUpSettingsRepository
+import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,16 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val appStartUpSettingsRepository: AppStartUpSettingsRepository
+    private val appPreferencesRepository: AppPreferencesRepository
 ) : ViewModel() {
 
     val settingsUiState: StateFlow<SettingsUiState> =
-        appStartUpSettingsRepository.appSettings
-            .map { appSettings ->
+        appPreferencesRepository.userSettings
+            .map { settings ->
                 SettingsUiState.Success(
                     settings = UserEditableSettings(
-                        useDynamicColor = appSettings.useDynamicColor,
-                        darkThemeMode = appSettings.darkThemeMode,
+                        useDynamicColor = settings.useDynamicColor,
+                        darkThemeMode = settings.darkThemeMode,
                     ),
                 )
             }
@@ -35,7 +35,7 @@ class SettingsViewModel @Inject constructor(
 
     fun updateDynamicColorPreference(useDynamicColor: Boolean) {
         viewModelScope.launch {
-            appStartUpSettingsRepository.setDynamicColorPreference(useDynamicColor)
+            appPreferencesRepository.setDynamicColorPreference(useDynamicColor)
         }
     }
 }
