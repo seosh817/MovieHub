@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.network.serialization.di
+package com.seosh817.moviehub.core.network.serialization
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
