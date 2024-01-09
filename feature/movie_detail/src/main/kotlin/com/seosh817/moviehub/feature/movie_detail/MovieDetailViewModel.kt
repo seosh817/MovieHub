@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.asResult
-import com.seosh817.moviehub.core.domain.repository.AppStartUpSettingsRepository
+import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.movies.GetCreditsUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
-    private val appStartUpSettingsRepository: AppStartUpSettingsRepository,
+    private val appPreferencesSettingsRepository: AppPreferencesRepository,
     savedStateHandle: SavedStateHandle,
     getMovieDetailUseCase: GetMovieDetailUseCase,
     getMovieCreditsUseCase: GetCreditsUseCase,
@@ -37,7 +37,7 @@ class MovieDetailViewModel @Inject constructor(
             initialValue = MovieDetailUiState.Loading,
         )
 
-    val isBookmarked: StateFlow<Boolean> = appStartUpSettingsRepository.appSettings
+    val isBookmarked: StateFlow<Boolean> = appPreferencesSettingsRepository.userSettings
         .map { it.bookmarkedMovieIds.contains(movieId) }
         .stateIn(
             scope = viewModelScope,
@@ -47,7 +47,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun updateBookmarkedMovieId(isChecked: Boolean) {
         viewModelScope.launch {
-            appStartUpSettingsRepository.setBookMarkedMovieIds(movieId, isChecked)
+            appPreferencesSettingsRepository.setBookMarkedMovieIds(movieId, isChecked)
         }
     }
 }

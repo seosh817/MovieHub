@@ -1,12 +1,12 @@
-package com.seosh817.moviehub.core.datastore.source
+package com.seosh817.moviehub.core.domain.repository
 
-import com.seosh817.moviehub.core.model.AppSettings
+import com.seosh817.moviehub.core.model.UserSettings
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import kotlinx.coroutines.flow.Flow
 
-interface AppStartUpPreferencesDataSource {
+interface AppPreferencesRepository {
 
-    val appSettings: Flow<AppSettings>
+    val userSettings: Flow<UserSettings>
 
     suspend fun setDynamicColorPreference(useDynamicColor: Boolean)
 
