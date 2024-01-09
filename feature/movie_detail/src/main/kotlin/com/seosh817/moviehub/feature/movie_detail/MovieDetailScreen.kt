@@ -88,10 +88,13 @@ internal fun MovieDetailRoute(
     onBackClick: () -> Unit,
 ) {
     val movieDetailUiState by movieDetailViewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
+    val isBookmarked by movieDetailViewModel.isBookmarked.collectAsStateWithLifecycle()
 
     MovieDetailScreen(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
+        isBookmarked = isBookmarked,
+        onFabClick = movieDetailViewModel::updateBookmarkedMovieId,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
     )
@@ -101,6 +104,8 @@ internal fun MovieDetailRoute(
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
+    isBookmarked: Boolean,
+    onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -125,6 +130,8 @@ fun MovieDetailScreen(
                     modifier = modifier,
                     movieDetailUiState.movieDetailResult.movieDetail,
                     movieDetailUiState.movieDetailResult.movieCredits,
+                    isBookmarked = isBookmarked,
+                    onFabClick = onFabClick,
                     onShareClick = onShareClick,
                     onBackClick = onBackClick
                 )
@@ -138,6 +145,8 @@ fun MovieDetails(
     modifier: Modifier = Modifier,
     movieDetail: MovieDetail,
     movieCredits: Credits,
+    isBookmarked: Boolean,
+    onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -202,7 +211,9 @@ fun MovieDetails(
                     movieDetailScroller = movieDetailScroller.copy(transitionPosition = newNamePosition)
                 }
             },
-            contentAlpha = { contentAlpha.value }
+            contentAlpha = { contentAlpha.value },
+            isBookmarked = isBookmarked,
+            onFabClick = onFabClick
         )
         MovieToolbar(
             toolbarState = toolbarState,
@@ -226,7 +237,8 @@ fun MovieDetailContents(
     imageHeight: Dp,
     onNamePosition: (Float) -> Unit,
     contentAlpha: () -> Float,
-    onFabClick: () -> Unit = {}
+    isBookmarked: Boolean,
+    onFabClick: (Boolean) -> Unit
 ) {
     Column(Modifier.verticalScroll(scrollState)) {
         ConstraintLayout {
@@ -248,9 +260,9 @@ fun MovieDetailContents(
 
             val fabEndMargin = 32.dp
             LikeFab(
-                checked = fabChecked,
+                checked = isBookmarked,
                 onFabClick = { checked ->
-                    fabChecked = checked
+                    onFabClick(checked)
                 },
                 modifier = Modifier
                     .constrainAs(fab) {

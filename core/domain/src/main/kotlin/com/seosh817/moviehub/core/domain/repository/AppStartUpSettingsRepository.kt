@@ -12,5 +12,5 @@ interface AppStartUpSettingsRepository {
 
     suspend fun setDarkThemeMode(darkThemeMode: DarkThemeMode)
 
-    suspend fun setBookMarkedMovieIds(movieIds: Set<Long>)
+    suspend fun setBookMarkedMovieIds(movieId: Long, bookmarked: Boolean)
 }
