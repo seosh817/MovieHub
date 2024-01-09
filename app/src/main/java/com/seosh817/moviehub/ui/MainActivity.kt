@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
                     OpenDialog.APP_THEME_SETTINGS -> {
                         if (uiState is MainUiState.Success) {
                             AppThemeSettingsDialog(
-                                appThemeMode = (uiState as MainUiState.Success).appSettings.darkThemeMode,
+                                appThemeMode = (uiState as MainUiState.Success).userSettings.darkThemeMode,
                                 onThemeClick = viewModel::updateDarkThemeMode,
                                 onDismiss = {
                                     openDialog = OpenDialog.NONE
@@ -129,7 +129,7 @@ private fun shouldUseDarkTheme(
     uiState: MainUiState,
 ): Boolean = when (uiState) {
     MainUiState.Loading -> isSystemInDarkTheme()
-    is MainUiState.Success -> when (uiState.appSettings.darkThemeMode) {
+    is MainUiState.Success -> when (uiState.userSettings.darkThemeMode) {
         DarkThemeMode.FOLLOW_SYSTEM -> isSystemInDarkTheme()
         DarkThemeMode.LIGHT -> false
         DarkThemeMode.DARK -> true
@@ -141,5 +141,5 @@ private fun shouldUseDynamicColor(
     uiState: MainUiState,
 ): Boolean = when (uiState) {
     MainUiState.Loading -> false
-    is MainUiState.Success -> uiState.appSettings.useDynamicColor
+    is MainUiState.Success -> uiState.userSettings.useDynamicColor
 }
