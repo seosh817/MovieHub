@@ -51,12 +51,15 @@ class AppStartUpPreferencesDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun setBookMarkedMovieIds(movieIds: Set<Long>) {
+    override suspend fun setBookMarkedMovieIds(movieId: Long, bookmarked: Boolean) {
         try {
             appStartUpPreferences.updateData {
                 it.copy {
-                    bookmarkedMovieIds.clear()
-                    bookmarkedMovieIds.putAll(movieIds.associateWith { true })
+                    if (bookmarked) {
+                        bookmarkedMovieIds.put(movieId, true)
+                    } else {
+                        bookmarkedMovieIds.remove(movieId)
+                    }
                 }
             }
         } catch (exception: IOException) {
