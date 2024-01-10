@@ -41,6 +41,7 @@ protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
 timber = "5.0.1"
 landscapist = "2.2.11"
+spotless = "6.22.0"
 
 
 [libraries]
@@ -125,6 +126,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidxUiToolingPreview" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -139,6 +141,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecrets" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 # Plugins defined by this project
 moviehub-android-applicatoin = { id = "moviehub.android.application", version = "unspecified" }
