@@ -17,7 +17,7 @@ enum class MovieHubFlavor(val dimension: FlavorDimension, val applicationIdSuffi
 }
 
 internal fun configureFlavors(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
     flavorConfigurationBlock: ProductFlavor.(flavor: MovieHubFlavor) -> Unit = {}
 ) {
 
