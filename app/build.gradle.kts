@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.moviehub.android.application.flavors)
+    alias(libs.plugins.moviehub.android.detekt)
 }
 
 android {

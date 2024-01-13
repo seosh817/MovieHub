@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.android.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
     implementation(libs.ksp.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -50,6 +51,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "moviehub.android.hilt"
             implementationClass = "com.seosh817.moviehub.plugins.AndroidHiltConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "moviehub.android.detekt"
+            implementationClass = "com.seosh817.moviehub.plugins.AndroidDetektConventionPlugin"
         }
         register("kotlinHilt") {
             id = "moviehub.kotlin.hilt"
