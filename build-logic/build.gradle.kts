@@ -15,12 +15,6 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-dependencies {
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.kotlin.gradlePlugin)
-    implementation(libs.ksp.gradlePlugin)
-}
-
 gradlePlugin {
     plugins {
         register("androidApplication") {
@@ -51,6 +45,10 @@ gradlePlugin {
             id = "moviehub.android.hilt"
             implementationClass = "com.seosh817.moviehub.plugins.AndroidHiltConventionPlugin"
         }
+        register("androidLint") {
+            id = "moviehub.android.lint"
+            implementationClass = "com.seosh817.moviehub.plugins.AndroidLintConventionPlugin"
+        }
         register("kotlinHilt") {
             id = "moviehub.kotlin.hilt"
             implementationClass = "com.seosh817.moviehub.plugins.KotlinHiltConventionPlugin"
@@ -64,4 +62,11 @@ gradlePlugin {
             implementationClass = "com.seosh817.moviehub.plugins.AndroidFeatureConventionPlugin"
         }
     }
+}
+
+dependencies {
+    implementation(libs.android.gradlePlugin)
+    implementation(libs.kotlin.gradlePlugin)
+    implementation(libs.ksp.gradlePlugin)
+    implementation(libs.ktlint.gradlePlugin)
 }

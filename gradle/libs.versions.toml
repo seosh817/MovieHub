@@ -41,6 +41,8 @@ protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
 timber = "5.0.1"
 landscapist = "2.2.11"
+ktlint = "1.1.1"
+ktlint-jlleitschuh = "12.1.0"
 
 
 [libraries]
@@ -128,7 +130,7 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidxUiToolingPreview" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
+ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint-jlleitschuh" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -140,6 +142,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecrets" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-jlleitschuh" }
 
 # Plugins defined by this project
 moviehub-android-applicatoin = { id = "moviehub.android.application", version = "unspecified" }
@@ -149,6 +152,7 @@ moviehub-android-library = { id = "moviehub.android.library", version = "unspeci
 moviehub-android-library-compose = { id = "moviehub.android.library.compose", version = "unspecified" }
 moviehub-android-hilt = { id = "moviehub.android.hilt", version = "unspecified" }
 moviehub-android-room = { id = "moviehub.android.room", version = "unspecified" }
+moviehub-android-lint = { id = "moviehub.android.lint", version = "unspecified" }
 moviehub-kotlin-jvm-library = { id = "moviehub.kotlin.jvm.library", version = "unspecified" }
 moviehub-kotlin-hilt = { id = "moviehub.kotlin.hilt", version = "unspecified" }
 moviehub-android-feature = { id = "moviehub.android.feature", version = "unspecified" }

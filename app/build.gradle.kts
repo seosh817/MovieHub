@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.moviehub.android.applicaiton.compose)
     alias(libs.plugins.moviehub.android.application.flavors)
     alias(libs.plugins.moviehub.android.hilt)
+    alias(libs.plugins.moviehub.android.lint)
 }
 
 android {
