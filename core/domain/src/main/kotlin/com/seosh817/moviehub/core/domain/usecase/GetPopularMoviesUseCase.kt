@@ -1,10 +1,11 @@
-package com.seosh817.moviehub.core.domain.usecase.movies
+package com.seosh817.moviehub.core.domain.usecase
 
 import androidx.paging.PagingData
 import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
+import com.seosh817.moviehub.core.domain.usecase.GetMoviesUseCase
 import com.seosh817.moviehub.core.model.MovieOverview
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

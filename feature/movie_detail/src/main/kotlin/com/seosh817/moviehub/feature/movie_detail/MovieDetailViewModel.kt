@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.asResult
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
-import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
-import com.seosh817.moviehub.core.domain.usecase.credits.GetCreditsUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

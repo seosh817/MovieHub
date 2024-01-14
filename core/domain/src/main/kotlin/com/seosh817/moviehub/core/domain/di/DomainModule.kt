@@ -4,11 +4,9 @@ import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
-import com.seosh817.moviehub.core.domain.usecase.credits.GetCreditsUseCase
-import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
-import com.seosh817.moviehub.core.domain.usecase.movies.GetMoviesUseCase
-import com.seosh817.moviehub.core.domain.usecase.movies.GetPopularMoviesUseCase
-import dagger.Binds
+import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetPopularMoviesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
