@@ -1,8 +1,10 @@
 package com.seosh817.moviehub.core.data.di
 
 import com.seosh817.moviehub.core.data.repository.AppPreferencesRepositoryImpl
+import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MovieRepositoryImpl
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import dagger.Binds
 import dagger.Module
@@ -17,6 +19,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+
+    @Singleton
+    @Binds
+    fun bindCreditsRepository(creditsRepositoryImpl: CreditsRepositoryImpl): CreditsRepository
 
     @Singleton
     @Binds
