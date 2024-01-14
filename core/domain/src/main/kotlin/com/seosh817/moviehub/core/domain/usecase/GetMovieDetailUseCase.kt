@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.domain.usecase.movie_detail
+package com.seosh817.moviehub.core.domain.usecase
 
 import com.seosh817.common.result.extension.fetchDataToFlow
 import com.seosh817.moviehub.core.common.network.Dispatcher

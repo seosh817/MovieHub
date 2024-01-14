@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.domain.usecase.movies
+package com.seosh817.moviehub.core.domain.usecase
 
 import androidx.paging.PagingData
 import com.seosh817.moviehub.core.model.MovieOverview
