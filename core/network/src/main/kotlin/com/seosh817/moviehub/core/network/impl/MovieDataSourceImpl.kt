@@ -50,13 +50,4 @@ class MovieDataSourceImpl @Inject constructor(
                 it.asExternalModel()
             }
     }
-
-    override suspend fun fetchMovieCredits(movieId: Long, language: String?): ResultState<Credits> {
-        return handleApi {
-            movieService.fetchMovieCredits(movieId, language)
-        }
-            .map {
-                it.asExternalModel()
-            }
-    }
 }

@@ -14,6 +14,4 @@ interface MovieRemoteDataSource {
     suspend fun fetchUpcomingMovies(page: Int, language: String?): ResultState<MoviesResponse>
 
     suspend fun fetchMovieDetail(movieId: Long, language: String?): ResultState<MovieDetail>
-
-    suspend fun fetchMovieCredits(movieId: Long, language: String?): ResultState<Credits>
 }
