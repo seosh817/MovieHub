@@ -7,7 +7,7 @@ import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.asResult
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.usecase.movie_detail.GetMovieDetailUseCase
-import com.seosh817.moviehub.core.domain.usecase.movies.GetCreditsUseCase
+import com.seosh817.moviehub.core.domain.usecase.credits.GetCreditsUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -25,12 +25,12 @@ class MovieDetailViewModel @Inject constructor(
     private val appPreferencesSettingsRepository: AppPreferencesRepository,
     savedStateHandle: SavedStateHandle,
     getMovieDetailUseCase: GetMovieDetailUseCase,
-    getMovieCreditsUseCase: GetCreditsUseCase,
+    getCreditsUseCase: GetCreditsUseCase,
 ) : ViewModel() {
 
     private val movieId: Long = checkNotNull(savedStateHandle["movieId"])
 
-    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> = movieDetailUiState(movieId, getMovieDetailUseCase, getMovieCreditsUseCase)
+    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> = movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

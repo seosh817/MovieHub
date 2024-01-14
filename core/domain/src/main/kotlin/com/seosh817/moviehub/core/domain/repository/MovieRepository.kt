@@ -16,6 +16,4 @@ interface MovieRepository {
     fun fetchUpcomingMovies(language: String?): Flow<PagingData<MovieOverview>>
 
     suspend fun fetchMovieDetail(movieId: Long, language: String?): ResultState<MovieDetail>
-
-    suspend fun fetchMovieCredits(movieId: Long, language: String?): ResultState<Credits>
 }

@@ -41,10 +41,6 @@ class MovieRepositoryImpl @Inject constructor(
         return movieDataSource.fetchMovieDetail(movieId, language)
     }
 
-    override suspend fun fetchMovieCredits(movieId: Long, language: String?): ResultState<Credits> {
-        return movieDataSource.fetchMovieCredits(movieId, language)
-    }
-
     private fun createPager(movieListPagingSource: MovieListPagingSource): Flow<PagingData<MovieOverview>> {
         return Pager(
             config = PagingConfig(

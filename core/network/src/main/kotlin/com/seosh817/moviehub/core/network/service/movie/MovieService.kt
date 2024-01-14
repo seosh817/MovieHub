@@ -24,5 +24,5 @@ interface MovieService {
     suspend fun fetchMovieDetail(@Path("movie_id") movieId: Long, @Query("language") language: String? = Locale.getDefault().toString()): Response<MovieDetailEntity>
 
     @GET("/3/movie/{movie_id}/credits")
-    suspend fun fetchMovieCredits(@Path("movie_id") movieId: Long, @Query("language") language: String? = Locale.getDefault().toString()): Response<CreditsEntity>
+    suspend fun fetchCredits(@Path("movie_id") movieId: Long, @Query("language") language: String? = Locale.getDefault().toString()): Response<CreditsEntity>
 }
