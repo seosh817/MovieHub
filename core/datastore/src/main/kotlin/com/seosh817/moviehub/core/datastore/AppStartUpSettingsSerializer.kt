@@ -5,18 +5,18 @@ import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
 import javax.inject.Inject
 
-class AppStartUpSettingsSerializer @Inject constructor() : Serializer<AppStartUpSettings> {
-    override val defaultValue: AppStartUpSettings = AppStartUpSettings.getDefaultInstance()
+class AppStartUpSettingsSerializer @Inject constructor() : Serializer<UserPreferences> {
+    override val defaultValue: UserPreferences = UserPreferences.getDefaultInstance()
 
-    override suspend fun readFrom(input: java.io.InputStream): AppStartUpSettings {
+    override suspend fun readFrom(input: java.io.InputStream): UserPreferences {
         return try {
-            AppStartUpSettings.parseFrom(input)
+            UserPreferences.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
         }
     }
 
-    override suspend fun writeTo(t: AppStartUpSettings, output: java.io.OutputStream) {
+    override suspend fun writeTo(t: UserPreferences, output: java.io.OutputStream) {
         t.writeTo(output)
     }
 }
