@@ -21,8 +21,11 @@ import "com/seosh817/moviehub/core/data/dark_theme_mode.proto";
 option java_package = "com.seosh817.moviehub.core.datastore";
 option java_multiple_files = true;
 
-message AppStartUpSettings {
+message UserPreferences {
     bool use_dynamic_color = 1;
     DarkThemeModeProto dark_theme_mode = 2;
-    map<int64, bool> bookmarked_movie_ids = 3;
+    repeated int64 deprecated_long_bookmarked_movie_ids = 3;
+    bool has_done_list_to_map_migration = 4;
+
+    map<int64, bool> bookmarked_movie_ids = 5;
 }

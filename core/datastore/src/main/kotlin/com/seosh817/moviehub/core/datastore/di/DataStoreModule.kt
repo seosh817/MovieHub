@@ -7,8 +7,9 @@ import androidx.datastore.dataStoreFile
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.common.network.di.ApplicationScope
-import com.seosh817.moviehub.core.datastore.AppStartUpSettings
+import com.seosh817.moviehub.core.datastore.UserPreferences
 import com.seosh817.moviehub.core.datastore.AppStartUpSettingsSerializer
+import com.seosh817.moviehub.core.datastore.ListToMapMigration
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,10 +30,13 @@ object DataStoreModule {
         @Dispatcher(MovieHubDispatchers.IO) ioDispatcher: CoroutineDispatcher,
         @ApplicationScope scope: CoroutineScope,
         appStartUpSettingsSerializer: AppStartUpSettingsSerializer,
-    ): DataStore<AppStartUpSettings> =
+    ): DataStore<UserPreferences> =
         DataStoreFactory.create(
             serializer = appStartUpSettingsSerializer,
             scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
+            migrations = listOf(
+                ListToMapMigration,
+            )
         ) {
             context.dataStoreFile("app_start_up_settings.pb")
         }
