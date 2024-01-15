@@ -22,11 +22,11 @@ object OkHttpModule {
 
     private const val CALL_TIMEOUT_SECONDS = 0L
 
-    private const val CONNECT_TIMEOUT_SECONDS = 10L
+    private const val CONNECT_TIMEOUT_SECONDS = 3L
 
-    private const val READ_TIMEOUT_SECONDS = 10L
+    private const val READ_TIMEOUT_SECONDS = 3L
 
-    private const val WRITE_TIMEOUT_SECONDS = 10L
+    private const val WRITE_TIMEOUT_SECONDS = 3L
 
     @Provides
     @Singleton

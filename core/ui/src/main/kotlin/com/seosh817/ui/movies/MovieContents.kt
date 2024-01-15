@@ -1,5 +1,6 @@
 package com.seosh817.ui.movies
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

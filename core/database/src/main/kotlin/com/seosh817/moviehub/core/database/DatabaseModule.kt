@@ -17,9 +17,11 @@ object DatabaseModule {
     @Singleton
     fun providesMovieHubDatabase(
         @ApplicationContext context: Context,
-    ): MovieHubDatabase = Room.databaseBuilder(
+    ): AppDatabase = Room.databaseBuilder(
         context,
-        MovieHubDatabase::class.java,
+        AppDatabase::class.java,
         "moviehub-database",
-    ).build()
+    )
+        .addMigrations(MigrationFrom1to2)
+        .build()
 }

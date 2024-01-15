@@ -1,6 +1,6 @@
 package com.seosh817.moviehub.core.database.dao.di
 
-import com.seosh817.moviehub.core.database.MovieHubDatabase
+import com.seosh817.moviehub.core.database.AppDatabase
 import com.seosh817.moviehub.core.database.dao.MovieDao
 import dagger.Module
 import dagger.Provides
@@ -15,6 +15,6 @@ object DaoModule {
     @Singleton
     @Provides
     fun providesMovieDao(
-        database: MovieHubDatabase,
+        database: AppDatabase,
     ): MovieDao = database.movieDao()
 }
