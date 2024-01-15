@@ -2,7 +2,7 @@ package com.seosh817.moviehub.core.datastore.impl
 
 import android.util.Log
 import androidx.datastore.core.DataStore
-import com.seosh817.moviehub.core.datastore.AppStartUpSettings
+import com.seosh817.moviehub.core.datastore.UserPreferences
 import com.seosh817.moviehub.core.datastore.DarkThemeModeProto
 import com.seosh817.moviehub.core.datastore.copy
 import com.seosh817.moviehub.core.datastore.source.AppPreferencesDataSource
@@ -13,7 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class AppPreferencesDataSourceImpl @Inject constructor(
-    private val appStartUpPreferences: DataStore<AppStartUpSettings>,
+    private val appStartUpPreferences: DataStore<UserPreferences>,
 ) : AppPreferencesDataSource {
     override val userSettings = appStartUpPreferences.data
         .map {
