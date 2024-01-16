@@ -2,24 +2,24 @@ package com.seosh817.moviehub.core.network.mapper
 
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MoviesResponse
-import com.seosh817.moviehub.core.network.model.movie_list.MovieOverviewEntity
-import com.seosh817.moviehub.core.network.model.movie_list.MoviesResponseEntity
+import com.seosh817.moviehub.core.network.model.movie_list.NetworkMovieOverview
+import com.seosh817.moviehub.core.network.model.movie_list.NetworkMoviesResponse
 
-fun MoviesResponse.asEntity() = MoviesResponseEntity(
+fun MoviesResponse.asEntity() = NetworkMoviesResponse(
     page = page,
     results = results.map { it.asEntity() },
     totalPages = totalPages,
     totalResults = totalResults,
 )
 
-fun MoviesResponseEntity.asExternalModel() = MoviesResponse(
+fun NetworkMoviesResponse.asExternalModel() = MoviesResponse(
     page = page,
     results = results.map { it.asExternalModel() },
     totalPages = totalPages,
     totalResults = totalResults,
 )
 
-fun MovieOverview.asEntity() = MovieOverviewEntity(
+fun MovieOverview.asEntity() = NetworkMovieOverview(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
@@ -36,7 +36,7 @@ fun MovieOverview.asEntity() = MovieOverviewEntity(
     voteCount = voteCount,
 )
 
-fun MovieOverviewEntity.asExternalModel() = MovieOverview(
+fun NetworkMovieOverview.asExternalModel() = MovieOverview(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,

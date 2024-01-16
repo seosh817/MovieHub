@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreditsEntity(
+data class NetworkCredits(
     @SerialName("id")
     val id: Long,
     @SerialName("cast")
-    val castEntity: List<CastEntity>,
+    val networkCast: List<NetworkCast>,
     @SerialName("crew")
-    val crewEntity: List<CrewEntity>,
+    val crewEntity: List<NetworkCrew>,
 )

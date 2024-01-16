@@ -4,9 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProductionCountryEntity(
-    @SerialName("iso_3166_1")
-    val iso31661: String?,
+data class NetworkSpokenLanguage(
+    @SerialName("english_name")
+    val englishName: String?,
+    @SerialName("iso_639_1")
+    val iso6391: String?,
     @SerialName("name")
     val name: String?,
 )

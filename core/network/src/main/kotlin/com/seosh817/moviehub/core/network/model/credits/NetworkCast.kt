@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastEntity(
+data class NetworkCast(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("gender")
