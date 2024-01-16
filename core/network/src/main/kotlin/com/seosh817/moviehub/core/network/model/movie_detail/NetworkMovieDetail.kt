@@ -4,17 +4,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieDetailEntity(
+data class NetworkMovieDetail(
     @SerialName("adult")
     val adult: Boolean?,
     @SerialName("backdrop_path")
     val backdropPath: String?,
     @SerialName("belongs_to_collection")
-    val belongsToCollection: BelongsToCollectionEntity?,
+    val belongsToCollection: NetworkBelongsToCollection?,
     @SerialName("budget")
     val budget: Long?,
     @SerialName("genres")
-    val genreEntities: List<GenreEntity>?,
+    val genreEntities: List<NetworkGenre>?,
     @SerialName("homepage")
     val homepage: String?,
     @SerialName("id")
@@ -32,9 +32,9 @@ data class MovieDetailEntity(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("production_companies")
-    val productionCompanies: List<ProductionCompanyEntity>?,
+    val productionCompanies: List<NetworkProductionCompany>?,
     @SerialName("production_countries")
-    val productionCountries: List<ProductionCountryEntity>?,
+    val productionCountries: List<NetworkProductionCountry>?,
     @SerialName("release_date")
     val releaseDate: String?,
     @SerialName("revenue")
@@ -42,7 +42,7 @@ data class MovieDetailEntity(
     @SerialName("runtime")
     val runtime: Long?,
     @SerialName("spoken_languages")
-    val spokenLanguageEntities: List<SpokenLanguageEntity>?,
+    val spokenLanguageEntities: List<NetworkSpokenLanguage>?,
     @SerialName("status")
     val status: String?,
     @SerialName("tagline")

@@ -6,14 +6,14 @@ import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.moviehub.core.model.ProductionCountry
 import com.seosh817.moviehub.core.model.SpokenLanguage
-import com.seosh817.moviehub.core.network.model.movie_detail.BelongsToCollectionEntity
-import com.seosh817.moviehub.core.network.model.movie_detail.GenreEntity
-import com.seosh817.moviehub.core.network.model.movie_detail.MovieDetailEntity
-import com.seosh817.moviehub.core.network.model.movie_detail.ProductionCompanyEntity
-import com.seosh817.moviehub.core.network.model.movie_detail.ProductionCountryEntity
-import com.seosh817.moviehub.core.network.model.movie_detail.SpokenLanguageEntity
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkBelongsToCollection
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkGenre
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkProductionCompany
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkProductionCountry
+import com.seosh817.moviehub.core.network.model.movie_detail.NetworkSpokenLanguage
 
-fun MovieDetailEntity.asExternalModel() = MovieDetail(
+fun NetworkMovieDetail.asExternalModel() = MovieDetail(
     adult = adult,
     backdropPath = backdropPath,
     belongsToCollection = belongsToCollection?.asExternalModel(),
@@ -41,31 +41,31 @@ fun MovieDetailEntity.asExternalModel() = MovieDetail(
     voteCount = voteCount,
 )
 
-fun BelongsToCollectionEntity.asExternalModel() = BelongsToCollection(
+fun NetworkBelongsToCollection.asExternalModel() = BelongsToCollection(
     backdropPath = backdropPath,
     id = id,
     name = name,
     posterPath = posterPath
 )
 
-fun GenreEntity.asExternalModel() = Genre(
+fun NetworkGenre.asExternalModel() = Genre(
     id = id,
     name = name,
 )
 
-fun ProductionCompanyEntity.asExternalModel() = ProductionCompany(
+fun NetworkProductionCompany.asExternalModel() = ProductionCompany(
     id = id,
     logoPath = logoPath,
     name = name,
     originCountry = originCountry,
 )
 
-fun ProductionCountryEntity.asExternalModel() = ProductionCountry(
+fun NetworkProductionCountry.asExternalModel() = ProductionCountry(
     iso31661 = iso31661,
     name = name,
 )
 
-fun SpokenLanguageEntity.asExternalModel() = SpokenLanguage(
+fun NetworkSpokenLanguage.asExternalModel() = SpokenLanguage(
     englishName = englishName,
     iso6391 = iso6391,
     name = name,
