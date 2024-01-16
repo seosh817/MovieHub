@@ -3,19 +3,19 @@ package com.seosh817.moviehub.core.network.mapper
 import com.seosh817.moviehub.core.model.Cast
 import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Crew
-import com.seosh817.moviehub.core.network.model.credits.CastEntity
-import com.seosh817.moviehub.core.network.model.credits.CreditsEntity
-import com.seosh817.moviehub.core.network.model.credits.CrewEntity
+import com.seosh817.moviehub.core.network.model.credits.NetworkCast
+import com.seosh817.moviehub.core.network.model.credits.NetworkCredits
+import com.seosh817.moviehub.core.network.model.credits.NetworkCrew
 
-fun CreditsEntity.asExternalModel(): Credits {
+fun NetworkCredits.asExternalModel(): Credits {
     return Credits(
         id = id,
-        cast = castEntity.map { it.asExternalModel() },
+        cast = networkCast.map { it.asExternalModel() },
         crew = crewEntity.map { it.asExternalModel() },
     )
 }
 
-fun CastEntity.asExternalModel(): Cast {
+fun NetworkCast.asExternalModel(): Cast {
     return Cast(
         adult = adult,
         gender = gender,
@@ -32,7 +32,7 @@ fun CastEntity.asExternalModel(): Cast {
     )
 }
 
-fun CrewEntity.asExternalModel(): Crew {
+fun NetworkCrew.asExternalModel(): Crew {
     return Crew(
         adult = adult,
         gender = gender,
