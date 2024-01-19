@@ -13,5 +13,7 @@ data class RemoteKey(
     @ColumnInfo(name = "prev_key")
     val prevKey: Long?,
     @ColumnInfo(name = "next_key")
-    val nextKey: Long?
+    val nextKey: Long?,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Long = System.currentTimeMillis()
 )

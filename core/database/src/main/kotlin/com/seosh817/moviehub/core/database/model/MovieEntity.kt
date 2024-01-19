@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     tableName = "movies"
 )
 data class MovieEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val id: Long,
     val adult: Boolean?,
     @ColumnInfo(name = "back_drop_path")
@@ -31,4 +31,6 @@ data class MovieEntity(
     val voteAverage: Double?,
     @ColumnInfo(name = "vote_count")
     val voteCount: Long?,
+    @ColumnInfo(name = "page")
+    val page: Long = 0,
 )

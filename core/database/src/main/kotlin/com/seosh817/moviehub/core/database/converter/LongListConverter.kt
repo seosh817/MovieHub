@@ -11,6 +11,12 @@ class LongListConverter {
 
     @TypeConverter
     fun toLongList(longListString: String?): List<Long>? {
-        return longListString?.split(",")?.map { it.toLong() }
+        return longListString?.let {
+            if (it.isNotEmpty()) {
+                it.split(",").map { str -> str.trim().toLong() }
+            } else {
+                null
+            }
+        }
     }
 }

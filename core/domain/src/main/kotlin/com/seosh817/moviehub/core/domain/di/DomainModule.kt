@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DomainModule {
 
-    @Singleton
+//    @Singleton
     @Provides
     fun provideGetPopularMoviesUseCase(
         movieRepository: MovieRepository,

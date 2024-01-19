@@ -14,7 +14,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.seosh817.moviehub.core.model.MovieOverview
@@ -37,7 +35,7 @@ internal fun MoviesRoute(
     viewModel: MoviesViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
-    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.moviesPagingFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     MoviesScreen(
@@ -76,20 +74,20 @@ fun MoviesScreen(
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
     val okText = stringResource(id = R.string.ok)
 
-    LaunchedEffect(showRefreshError) {
-        if (showRefreshError) {
-            val result = onShowSnackbar(moviesRefreshErrorMessage, okText)
-            if (result) {
-                refreshItems()
-            } else {
-                hideMessage()
-            }
-        }
-    }
-
-    if (pagingItems.loadState.refresh is LoadState.Error) {
-        showMessage()
-    }
+//    LaunchedEffect(showRefreshError) {
+//        if (showRefreshError) {
+//            val result = onShowSnackbar(moviesRefreshErrorMessage, okText)
+//            if (result) {
+//                refreshItems()
+//            } else {
+//                hideMessage()
+//            }
+//        }
+//    }
+//
+//    if (pagingItems.loadState.refresh is LoadState.Error) {
+//        showMessage()
+//    }
 
     Box(
         modifier = modifier

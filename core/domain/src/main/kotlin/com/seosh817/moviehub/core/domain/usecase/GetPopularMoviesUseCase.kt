@@ -20,8 +20,8 @@ class GetPopularMoviesUseCase @Inject constructor(
 
     override operator fun invoke(language: String?): Flow<PagingData<MovieOverview>> = movieRepository
         .fetchPopularMovies(language)
-        .catch {
-            ResultState.Failure.Exception(it)
-        }
-        .flowOn(dispatcher)
+//        .catch {
+//            ResultState.Failure.Exception(it)
+//        }
+//        .flowOn(dispatcher)
 }

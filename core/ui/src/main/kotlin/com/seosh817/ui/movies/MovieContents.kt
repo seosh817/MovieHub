@@ -42,64 +42,109 @@ fun MovieContents(
     errorText: @Composable (String) -> Unit,
 ) {
     val context = LocalContext.current
-    when (moviePagingItems.loadState.refresh) {
-        is LoadState.Loading -> {
-            ContentsLoading(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        MaterialTheme.colorScheme.background
+    Log.d("!!!", "refresh: ${moviePagingItems.loadState.refresh}")
+    Log.d("!!!", "mediator: ${moviePagingItems.loadState.mediator}")
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)
+    ) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            state = lazyGridState,
+            contentPadding = PaddingValues(horizontal = Dimens.dp_4, vertical = Dimens.dp_4),
+        ) {
+            items(
+                count = moviePagingItems.itemCount,
+                key = moviePagingItems.itemKey(),
+                contentType = moviePagingItems.itemContentType()
+            ) { index ->
+                val movie: MovieOverview? = moviePagingItems[index]
+                if (movie != null) {
+                    MovieContentItem(
+                        context = context,
+                        movie = movie,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(240.dp)
+                            .padding(Dimens.dp_4)
+                            .clip(MaterialTheme.shapes.small)
+                            .background(MaterialTheme.colorScheme.background)
+                            .clickable {
+                                onMovieClick.invoke(movie.id)
+                            }
                     )
-            )
-        }
-
-        is LoadState.Error -> {
-            val text = (moviePagingItems.loadState.refresh as LoadState.Error).error.message ?: ""
-            errorText(text)
-        }
-
-        else -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pullRefresh(pullRefreshState)
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    state = lazyGridState,
-                    contentPadding = PaddingValues(horizontal = Dimens.dp_4, vertical = Dimens.dp_4),
-                ) {
-                    items(
-                        count = moviePagingItems.itemCount,
-                        key = moviePagingItems.itemKey(),
-                        contentType = moviePagingItems.itemContentType()
-                    ) { index ->
-                        val movie: MovieOverview? = moviePagingItems[index]
-                        if (movie != null) {
-                            MovieContentItem(
-                                context = context,
-                                movie = movie,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .height(240.dp)
-                                    .padding(Dimens.dp_4)
-                                    .clip(MaterialTheme.shapes.small)
-                                    .background(MaterialTheme.colorScheme.background)
-                                    .clickable {
-                                        onMovieClick.invoke(movie.id)
-                                    }
-                            )
-                        }
-                    }
                 }
-                PullRefreshIndicator(
-                    refreshing = isRefreshing,
-                    state = pullRefreshState,
-                    modifier = modifier,
-                    backgroundColor = Color.White,
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
             }
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = modifier,
+            backgroundColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.primary
+        )
     }
+
+//    when (moviePagingItems.loadState.mediator?.refresh) {
+//        is LoadState.Loading -> {
+//            ContentsLoading(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(
+//                        MaterialTheme.colorScheme.background
+//                    )
+//            )
+//        }
+//
+//        is LoadState.Error -> {
+//            val text = (moviePagingItems.loadState.refresh as LoadState.Error).error.message ?: ""
+//            errorText(text)
+//        }
+//
+//        else -> {
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .pullRefresh(pullRefreshState)
+//            ) {
+//                LazyVerticalGrid(
+//                    columns = GridCells.Fixed(2),
+//                    state = lazyGridState,
+//                    contentPadding = PaddingValues(horizontal = Dimens.dp_4, vertical = Dimens.dp_4),
+//                ) {
+//                    items(
+//                        count = moviePagingItems.itemCount,
+//                        key = moviePagingItems.itemKey(),
+//                        contentType = moviePagingItems.itemContentType()
+//                    ) { index ->
+//                        val movie: MovieOverview? = moviePagingItems[index]
+//                        if (movie != null) {
+//                            MovieContentItem(
+//                                context = context,
+//                                movie = movie,
+//                                modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .height(240.dp)
+//                                    .padding(Dimens.dp_4)
+//                                    .clip(MaterialTheme.shapes.small)
+//                                    .background(MaterialTheme.colorScheme.background)
+//                                    .clickable {
+//                                        onMovieClick.invoke(movie.id)
+//                                    }
+//                            )
+//                        }
+//                    }
+//                }
+//                PullRefreshIndicator(
+//                    refreshing = isRefreshing,
+//                    state = pullRefreshState,
+//                    modifier = modifier,
+//                    backgroundColor = Color.White,
+//                    contentColor = MaterialTheme.colorScheme.primary
+//                )
+//            }
+//        }
+//    }
 }

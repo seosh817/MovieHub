@@ -33,8 +33,8 @@ dependencies {
     implementation(libs.coil.kt.svg)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
+    api(libs.retrofit.core)
+    api(libs.retrofit.kotlin.serialization)
     implementation(libs.androidx.paging)
 
     testImplementation(libs.junit)

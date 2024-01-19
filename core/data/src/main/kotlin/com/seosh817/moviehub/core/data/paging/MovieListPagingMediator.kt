@@ -1,162 +1,152 @@
 package com.seosh817.moviehub.core.data.paging
 
+import android.net.http.HttpException
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresExtension
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.data.model.asEntity
 import com.seosh817.moviehub.core.database.AppDatabase
-import com.seosh817.moviehub.core.database.dao.MovieDao
-import com.seosh817.moviehub.core.database.dao.RemoteKeyDao
 import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.database.model.RemoteKey
 import com.seosh817.moviehub.core.model.MovieListType
-import com.seosh817.moviehub.core.network.model.movie_list.NetworkMovieOverview
-import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
+import com.seosh817.moviehub.core.network.service.movie.MovieService
+import kotlinx.coroutines.delay
 import java.io.IOException
-import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
-class MovieListPagingMediator @Inject constructor(
-    private val database: AppDatabase,
-    private val remoteSource: MovieRemoteDataSource,
+class MovieListPagingMediator(
+    private val moviesApiService: MovieService,
+    private val moviesDatabase: AppDatabase,
     private val type: MovieListType
 ) : RemoteMediator<Int, MovieEntity>() {
-    private val movieDao: MovieDao = database.movieDao()
-    private val remoteKeyDao: RemoteKeyDao = database.remoteKeyDao()
 
     override suspend fun initialize(): InitializeAction {
-        // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
-        // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
-        // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
-        // triggering remote refresh.
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
-    }
+        val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
-    override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, MovieEntity>
-    ): MediatorResult {
-        return try {
-            // The network load method takes an optional after=<user.id>
-            // parameter. For every page after the first, pass the last user
-            // ID to let it continue from where it left off. For REFRESH,
-            // pass null to load the first page.
-
-            Log.d("!!!", "mediator loadType: ${loadType}, state: ${state}")
-
-            val page = when (loadType) {
-                LoadType.REFRESH -> {
-                    val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                    remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
-                }
-
-                LoadType.PREPEND -> {
-                    val remoteKeys = getRemoteKeyForFirstItem(state)
-                    val prevKey = remoteKeys?.prevKey
-                    Log.d("!!!", "mediator prepend remoteKey: ${remoteKeys != null}")
-                    prevKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-                }
-
-                LoadType.APPEND -> {
-                    val remoteKeys = getRemoteKeyForLastItem(state)
-                    val nextKey = remoteKeys?.nextKey
-                    Log.d("!!!", "mediator append remoteKey: ${remoteKeys != null}")
-                    nextKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-                }
-            }
-
-            Log.d("!!!", "mediator loadkey: ${page}")
-
-            // Suspending network load via Retrofit. This doesn't need to be
-            // wrapped in a withContext(Dispatcher.IO) { ... } block since
-            // Retrofit's Coroutine CallAdapter dispatches on a worker
-            // thread.
-
-            val response = when (type) {
-                MovieListType.POPULAR -> {
-                    remoteSource.fetchPopularMovies(page = page.toInt())
-                }
-
-                MovieListType.TOP_RATED -> {
-                    remoteSource.fetchTopRatedMovies(page = page.toInt())
-                }
-
-                MovieListType.UPCOMING -> {
-                    remoteSource.fetchUpcomingMovies(page = page.toInt())
-                }
-            }
-
-            database.withTransaction {
-                if (loadType == LoadType.REFRESH) {
-                    movieDao.clearAll()
-                    remoteKeyDao.clearAll()
-                }
-
-                when (response) {
-                    is ResultState.Success -> {
-                        val movies = response.data.results
-                        val endOfPaginationReached = movies.isEmpty()
-                        val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
-                        val nextKey = if (endOfPaginationReached) null else page + 1
-
-                        val remoteKeys = movies.map {
-                            RemoteKey(
-                                label = type.value,
-                                movieId = it.id,
-                                prevKey = prevKey,
-                                nextKey = nextKey
-                            )
-                        }
-
-                        remoteKeyDao.insertOrReplaceAll(remoteKeys)
-                        movieDao.insertOrReplaceAll(movies.map(NetworkMovieOverview::asEntity))
-
-                        MediatorResult.Success(
-                            endOfPaginationReached = endOfPaginationReached
-                        )
-                    }
-
-                    is ResultState.Failure<*> -> {
-                        MediatorResult.Error(response.e)
-                    }
-                }
-            }
-        } catch (e: IOException) {
-            MediatorResult.Error(e)
-        } catch (e: Exception) {
-            MediatorResult.Error(e)
+        return if (System.currentTimeMillis() - (moviesDatabase.remoteKeyDao().getCreationTime()
+                ?: 0) < cacheTimeout
+        ) {
+            // Cached data is up-to-date, so there is no need to re-fetch
+            // from the network.
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            // Need to refresh cached data from network; returning
+            // LAUNCH_INITIAL_REFRESH here will also block RemoteMediator's
+            // APPEND and PREPEND from running until REFRESH succeeds.
+            InitializeAction.LAUNCH_INITIAL_REFRESH
         }
     }
 
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): RemoteKey? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
-                database.remoteKeyDao().getRemoteKeyByMovieID(id)
-            }
-        }
-    }
-
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, MovieEntity>): RemoteKey? {
-        return state.pages.firstOrNull {
-            it.data.isNotEmpty()
-        }?.data?.firstOrNull()?.let { movie ->
-            database.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
-        }
-    }
-
+    /** LoadType.Append
+     * When we need to load data at the end of the currently loaded data set, the load parameter is LoadType.APPEND
+     */
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, MovieEntity>): RemoteKey? {
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { movie ->
-            database.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
+            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
         }
     }
 
-    companion object {
-        private const val STARTING_PAGE_INDEX: Long = 1
+    /** LoadType.Prepend
+     * When we need to load data at the beginning of the currently loaded data set, the load parameter is LoadType.PREPEND
+     */
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, MovieEntity>): RemoteKey? {
+        return state.pages.firstOrNull {
+            it.data.isNotEmpty()
+        }?.data?.firstOrNull()?.let { movie ->
+            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
+        }
+    }
+
+    /** LoadType.REFRESH
+     * Gets called when it's the first time we're loading data, or when PagingDataAdapter.refresh() is called;
+     * so now the point of reference for loading our data is the state.anchorPosition.
+     * If this is the first load, then the anchorPosition is null.
+     * When PagingDataAdapter.refresh() is called, the anchorPosition is the first visible position in the displayed list, so we will need to load the page that contains that specific item.
+     */
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): RemoteKey? {
+        return state.anchorPosition?.let { position ->
+            state.closestItemToPosition(position)?.id?.let { id ->
+                moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(id)
+            }
+        }
+    }
+
+    /**.
+     *
+     * @param state This gives us information about the pages that were loaded before,
+     * the most recently accessed index in the list, and the PagingConfig we defined when initializing the paging stream.
+     * @param loadType this tells us whether we need to load data at the end (LoadType.APPEND)
+     * or at the beginning of the data (LoadType.PREPEND) that we previously loaded,
+     * or if this the first time we're loading data (LoadType.REFRESH).
+     */
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, MovieEntity>
+    ): MediatorResult {
+        val page: Long = when (loadType) {
+            LoadType.REFRESH -> {
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: 1
+            }
+
+            LoadType.PREPEND -> {
+                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val prevKey = remoteKeys?.prevKey
+                prevKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+            }
+
+            LoadType.APPEND -> {
+                val remoteKeys = getRemoteKeyForLastItem(state)
+                val nextKey = remoteKeys?.nextKey
+                nextKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+            }
+        }
+
+        try {
+            val apiResponse = moviesApiService.fetchPopularMovies2(page = page.toInt())
+
+            delay(1000L) //TODO For testing only!
+
+            val movies = apiResponse.results
+            val endOfPaginationReached = movies.isEmpty()
+
+            moviesDatabase.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    moviesDatabase.remoteKeyDao().clearAll()
+                    moviesDatabase.movieDao().clearAll()
+                }
+                val prevKey = if (page > 1) page - 1 else null
+                val nextKey = if (endOfPaginationReached) null else page.plus(1)
+                val remoteKeys = movies.map {
+                    RemoteKey(
+                        label = type.value,
+                        movieId = it.id,
+                        prevKey = prevKey,
+                        nextKey = nextKey
+                    )
+                }
+
+                moviesDatabase.remoteKeyDao().insertOrReplaceAll(remoteKeys)
+                moviesDatabase.movieDao().insertAll(movies.mapIndexed { _, movie ->
+                    movie.asEntity().copy(page = page)
+                })
+            }
+            return MediatorResult.Success(endOfPaginationReached = false)
+        } catch (error: IOException) {
+            Log.d("!!!", "error: $error")
+            return MediatorResult.Error(error)
+        } catch (error: HttpException) {
+            Log.d("!!!", "error: $error")
+            return MediatorResult.Error(error)
+        }
     }
 }

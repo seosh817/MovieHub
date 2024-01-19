@@ -14,7 +14,6 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    @Singleton
     fun providesMovieHubDatabase(
         @ApplicationContext context: Context,
     ): AppDatabase = Room.databaseBuilder(

@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import com.seosh817.moviehub.core.database.model.MovieEntity
 
 /**
@@ -17,17 +16,18 @@ interface MovieDao {
     @Query(
         value = """
             SELECT * FROM movies
+            ORDER BY page ASC
     """)
     fun pagingSource(): PagingSource<Int, MovieEntity>
 
     /**
      * Inserts [entities] into the db if they don't exist, and replace those that do
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(entities: List<MovieEntity>): List<Long>
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAll(entities: List<MovieEntity>): List<Long>
 
-    @Upsert
-    suspend fun upsertNewsResources(newsResourceEntities: List<MovieEntity>)
+//    @Upsert
+//    suspend fun upsertNewsResources(newsResourceEntities: List<MovieEntity>)
 
     /**
      * Deletes rows in the db matching the specified [ids]

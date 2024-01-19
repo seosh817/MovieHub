@@ -18,6 +18,7 @@ import com.seosh817.moviehub.core.database.mapper.asExternalModel
 import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.model.MovieListType
 import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
+import com.seosh817.moviehub.core.network.service.movie.MovieService
 import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,25 +27,46 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val movieHubDatabase: AppDatabase,
     private val movieDataSource: MovieRemoteDataSource,
+    private val movieApiService: MovieService
 ) : MovieRepository {
 
+    @OptIn(ExperimentalPagingApi::class)
     override fun fetchPopularMovies(language: String?): Flow<PagingData<MovieOverview>> {
-        return createPager(
-            pagingSource = movieHubDatabase.movieDao().pagingSource(),
-            movieListPagingMediator = MovieListPagingMediator(
-                database = movieHubDatabase,
-                remoteSource = movieDataSource,
+//        return createPager(
+//            pagingSource = movieHubDatabase.movieDao().pagingSource(),
+//            movieListPagingMediator = MovieListPagingMediator(
+//                moviesDatabase = movieHubDatabase,
+//                moviesApiService = movieApiService,
+//                type = MovieListType.POPULAR,
+//            )
+//        )
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = 5,
+                initialLoadSize = PAGE_SIZE,
+            ),
+            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource() },
+            remoteMediator = MovieListPagingMediator(
+                moviesDatabase = movieHubDatabase,
+                moviesApiService = movieApiService,
                 type = MovieListType.POPULAR,
             )
-        )
+        ).flow
+            .map { pagingData ->
+                pagingData.map { movieEntity ->
+                    movieEntity.asExternalModel()
+                }
+            }
     }
 
     override fun fetchTopRatedMovies(language: String?): Flow<PagingData<MovieOverview>> {
         return createPager(
             pagingSource = movieHubDatabase.movieDao().pagingSource(),
             movieListPagingMediator = MovieListPagingMediator(
-                database = movieHubDatabase,
-                remoteSource = movieDataSource,
+                moviesDatabase = movieHubDatabase,
+                moviesApiService = movieApiService,
                 type = MovieListType.TOP_RATED,
             )
         )
@@ -54,8 +76,8 @@ class MovieRepositoryImpl @Inject constructor(
         return createPager(
             pagingSource = movieHubDatabase.movieDao().pagingSource(),
             movieListPagingMediator = MovieListPagingMediator(
-                database = movieHubDatabase,
-                remoteSource = movieDataSource,
+                moviesDatabase = movieHubDatabase,
+                moviesApiService = movieApiService,
                 type = MovieListType.UPCOMING,
             )
         )
@@ -77,12 +99,13 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                enablePlaceholders = false,
+                prefetchDistance = 10,
+                initialLoadSize = PAGE_SIZE,
             ),
             pagingSourceFactory = { pagingSource },
             remoteMediator = movieListPagingMediator
         ).flow
-            .map {pagingData ->
+            .map { pagingData ->
                 pagingData.map { movieEntity ->
                     movieEntity.asExternalModel()
                 }
