@@ -28,6 +28,7 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
             dependencies {
                 add("api", libs.findLibrary("room.runtime").get())
                 add("api", libs.findLibrary("room.ktx").get())
+                add("api", libs.findLibrary("room.paging").get())
                 add("ksp", libs.findLibrary("room.compiler").get())
             }
         }
