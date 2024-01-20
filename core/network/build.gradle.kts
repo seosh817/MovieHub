@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.androidx.paging)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
 
 secrets {
