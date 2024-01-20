@@ -1,4 +1,4 @@
-package com.seosh817.moviehub.core.network.mapper
+package com.seosh817.moviehub.core.data.model
 
 import com.seosh817.moviehub.core.model.BelongsToCollection
 import com.seosh817.moviehub.core.model.Genre

@@ -2,11 +2,6 @@ package com.seosh817.moviehub.core.network.impl
 
 import com.seosh817.common.network.handleApi
 import com.seosh817.common.result.ResultState
-import com.seosh817.common.result.extension.map
-import com.seosh817.moviehub.core.model.Credits
-import com.seosh817.moviehub.core.model.MovieDetail
-import com.seosh817.moviehub.core.model.MoviesResponse
-import com.seosh817.moviehub.core.network.mapper.asExternalModel
 import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
 import com.seosh817.moviehub.core.network.model.movie_list.NetworkMoviesResponse
 import com.seosh817.moviehub.core.network.service.movie.MovieService
