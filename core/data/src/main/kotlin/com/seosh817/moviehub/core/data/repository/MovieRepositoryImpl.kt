@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.seosh817.common.result.ResultState
 import com.seosh817.common.result.extension.map
-import com.seosh817.moviehub.core.data.paging.MovieListPagingSource
+import com.seosh817.moviehub.core.data.model.asExternalModel
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.MovieDetail
