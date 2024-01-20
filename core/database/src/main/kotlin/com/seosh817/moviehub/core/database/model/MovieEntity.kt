@@ -31,4 +31,6 @@ data class MovieEntity(
     val voteAverage: Double?,
     @ColumnInfo(name = "vote_count")
     val voteCount: Long?,
+    @ColumnInfo(name = "page")
+    var page: Long = 0,
 )
