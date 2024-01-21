@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_image">No Image</string>
-    <string name="movies_refresh_error">영화 목록 불러오기에 실패하였습니다.</string>
-    <string name="ok">OK</string>
+    <string name="movies_refresh_error">Failed to load movie list.</string>
+    <string name="refresh">Refresh</string>
 </resources>

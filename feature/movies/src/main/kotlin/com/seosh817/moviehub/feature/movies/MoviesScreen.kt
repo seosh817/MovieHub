@@ -74,7 +74,7 @@ fun MoviesScreen(
         onRefresh = onRefresh
     )
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
-    val okText = stringResource(id = R.string.ok)
+    val okText = stringResource(id = R.string.refresh)
 
     LaunchedEffect(showRefreshError) {
         if (showRefreshError) {
