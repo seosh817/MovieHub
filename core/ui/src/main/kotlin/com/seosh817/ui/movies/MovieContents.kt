@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.ExperimentalMaterialApi
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -27,6 +29,8 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.ui.R
+import com.seosh817.ui.ContentsError
 import com.seosh817.ui.ContentsLoading
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -38,10 +42,13 @@ fun MovieContents(
     lazyGridState: LazyGridState,
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
-    errorText: @Composable (String) -> Unit,
+    onRefresh: () -> Unit,
 ) {
     val context = LocalContext.current
-    when (moviePagingItems.loadState.refresh) {
+
+    val loadState = moviePagingItems.loadState
+
+    when (moviePagingItems.loadState.mediator?.refresh) {
         is LoadState.Loading -> {
             ContentsLoading(
                 modifier = Modifier
@@ -53,8 +60,12 @@ fun MovieContents(
         }
 
         is LoadState.Error -> {
-            val text = (moviePagingItems.loadState.refresh as LoadState.Error).error.message ?: ""
-            errorText(text)
+            val error = (moviePagingItems.loadState.refresh as LoadState.Error).error.message ?: ""
+            ContentsError(
+                message = stringResource(id = R.string.refresh_error),
+                cause = error,
+                onRefresh = onRefresh,
+            )
         }
 
         else -> {
@@ -87,6 +98,37 @@ fun MovieContents(
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
                                     }
+                            )
+                        }
+
+                        if (loadState.refresh == LoadState.Loading) {
+                            ContentsLoading(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        MaterialTheme.colorScheme.background
+                                    )
+                            )
+                        }
+                    }
+
+                    item(
+                        span = {
+                            GridItemSpan(maxLineSpan)
+                        }
+                    ) {
+                        if (loadState.append == LoadState.Loading) {
+                            ContentsLoading(
+                                text = stringResource(id = R.string.append_loading)
+                            )
+                        }
+                        if (loadState.append is LoadState.Error && moviePagingItems.itemCount > 1) {
+                            val error = (loadState.append as LoadState.Error).error
+
+                            ContentsError(
+                                cause = error.message ?: "",
+                                message = stringResource(id = R.string.append_error),
+                                onRefresh = onRefresh
                             )
                         }
                     }
