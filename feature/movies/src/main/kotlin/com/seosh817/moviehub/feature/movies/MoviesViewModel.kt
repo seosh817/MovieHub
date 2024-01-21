@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     getPopularMoviesUseCase: GetPopularMoviesUseCase
@@ -34,16 +33,9 @@ class MoviesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    private val _refreshSharedFlow = MutableSharedFlow<Unit>(replay = 1).apply {
-        tryEmit(Unit)
-    }
-
     val pagingMoviesStateFlow: Flow<PagingData<MovieOverview>> =
-        _refreshSharedFlow
-            .flatMapLatest {
-                getPopularMoviesUseCase
-                    .invoke()
-            }
+        getPopularMoviesUseCase
+            .invoke()
             .onStart {
                 _isRefreshing.emit(true)
             }
@@ -62,10 +54,6 @@ class MoviesViewModel @Inject constructor(
             )
 
     var showRefreshError by mutableStateOf(false)
-
-    fun onSwipeRefresh() = viewModelScope.launch {
-        _refreshSharedFlow.emit(Unit)
-    }
 
     fun showMessage() {
         showRefreshError = true
