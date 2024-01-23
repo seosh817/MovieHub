@@ -2,6 +2,7 @@ package com.seosh817.moviehub.core.database
 
 import android.content.Context
 import androidx.room.Room
+import com.seosh817.moviehub.core.database.migration.MIGRATION_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +22,7 @@ object DatabaseModule {
         context,
         MovieHubDatabase::class.java,
         "moviehub-database",
-    ).build()
+    )
+        .addMigrations(MIGRATION_1_2)
+        .build()
 }
