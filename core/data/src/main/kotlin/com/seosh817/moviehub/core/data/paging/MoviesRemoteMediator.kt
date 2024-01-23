@@ -13,9 +13,12 @@ import com.seosh817.moviehub.core.data.model.asEntity
 import com.seosh817.moviehub.core.database.MovieHubDatabase
 import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.database.model.RemoteKey
-import com.seosh817.moviehub.core.model.MovieListType
+import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +26,7 @@ import java.util.concurrent.TimeUnit
 class MoviesRemoteMediator(
     private val remoteSource: MovieRemoteDataSource,
     private val moviesDatabase: MovieHubDatabase,
-    private val type: MovieListType
+    private val type: MovieType
 ) : RemoteMediator<Int, MovieEntity>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -48,7 +51,7 @@ class MoviesRemoteMediator(
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { movie ->
-            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
+            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.movieId)
         }
     }
 
@@ -59,7 +62,7 @@ class MoviesRemoteMediator(
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
         }?.data?.firstOrNull()?.let { movie ->
-            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.id)
+            moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(movie.movieId)
         }
     }
 
@@ -71,7 +74,7 @@ class MoviesRemoteMediator(
      */
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): RemoteKey? {
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
+            state.closestItemToPosition(position)?.movieId?.let { id ->
                 moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(id)
             }
         }
@@ -93,7 +96,7 @@ class MoviesRemoteMediator(
         val page: Long = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: 1
+                remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
             }
 
             LoadType.PREPEND -> {
@@ -121,14 +124,14 @@ class MoviesRemoteMediator(
 
                     moviesDatabase.withTransaction {
                         if (loadType == LoadType.REFRESH) {
-                            moviesDatabase.remoteKeyDao().clearAll()
-                            moviesDatabase.movieDao().clearAll()
+                            moviesDatabase.remoteKeyDao().clearAll(type)
+                            moviesDatabase.movieDao().clearAll(type)
                         }
                         val prevKey = if (page > 1) page - 1 else null
                         val nextKey = if (endOfPaginationReached) null else page.plus(1)
                         val remoteKeys = movies.map {
                             RemoteKey(
-                                label = type.value,
+                                type = type,
                                 movieId = it.id,
                                 prevKey = prevKey,
                                 nextKey = nextKey
@@ -137,7 +140,12 @@ class MoviesRemoteMediator(
 
                         moviesDatabase.remoteKeyDao().insertOrReplaceAll(remoteKeys)
                         moviesDatabase.movieDao().insertAll(movies.mapIndexed { _, movie ->
-                            movie.asEntity().copy(page = page)
+                            movie
+                                .asEntity()
+                                .copy(
+                                    page = page,
+                                    type = type
+                                )
                         })
                     }
                     return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
@@ -152,5 +160,9 @@ class MoviesRemoteMediator(
         } catch (error: HttpException) {
             return MediatorResult.Error(error)
         }
+    }
+
+    companion object {
+        private const val STARTING_PAGE_INDEX: Long = 1
     }
 }

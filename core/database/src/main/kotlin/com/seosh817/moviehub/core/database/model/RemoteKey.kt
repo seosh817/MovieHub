@@ -3,11 +3,13 @@ package com.seosh817.moviehub.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.seosh817.moviehub.core.model.MovieType
 
 @Entity(tableName = "remote_keys")
 data class RemoteKey(
-    val label: String,
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0L,
+    val type: MovieType = MovieType.UNKNOWN,
     @ColumnInfo(name = "movie_id")
     val movieId: Long,
     @ColumnInfo(name = "prev_key")

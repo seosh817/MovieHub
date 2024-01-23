@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.seosh817.moviehub.core.database.model.MovieEntity
+import com.seosh817.moviehub.core.model.MovieType
 
 /**
  * DAO for [MovieEntity] access
@@ -16,9 +17,10 @@ interface MovieDao {
     @Query(
         value = """
             SELECT * FROM movies
+            WHERE type = :type
             ORDER BY page ASC
     """)
-    fun pagingSource(): PagingSource<Int, MovieEntity>
+    fun pagingSource(type: MovieType): PagingSource<Int, MovieEntity>
 
     /**
      * Inserts [entities] into the db if they don't exist, and ignores those that do
@@ -26,6 +28,6 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(entities: List<MovieEntity>): List<Long>
 
-    @Query("DELETE FROM movies")
-    suspend fun clearAll()
+    @Query("DELETE FROM movies WHERE type NOT IN (:type)")
+    suspend fun clearAll(type: MovieType)
 }
