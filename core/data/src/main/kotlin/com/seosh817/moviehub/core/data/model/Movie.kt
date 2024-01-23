@@ -5,7 +5,7 @@ import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.network.model.movie_list.NetworkMovieOverview
 
 fun MovieEntity.asExternalModel() = MovieOverview(
-    id = id,
+    id = movieId,
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
@@ -25,7 +25,7 @@ fun NetworkMovieOverview.asEntity() = MovieEntity(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
-    id = id,
+    movieId = id,
     originalLanguage = originalLanguage,
     originalTitle = originalTitle,
     overview = overview,

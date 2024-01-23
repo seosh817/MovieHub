@@ -10,9 +10,10 @@ import com.seosh817.common.result.extension.map
 import com.seosh817.moviehub.core.data.model.asExternalModel
 import com.seosh817.moviehub.core.data.paging.MoviesRemoteMediator
 import com.seosh817.moviehub.core.database.MovieHubDatabase
+import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.repository.MovieRepository
 import com.seosh817.moviehub.core.model.MovieDetail
-import com.seosh817.moviehub.core.model.MovieListType
+import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
 import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
@@ -33,11 +34,11 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PAGE_SIZE,
                 initialLoadSize = PAGE_SIZE,
             ),
-            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource() },
+            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource(MovieType.POPULAR) },
             remoteMediator = MoviesRemoteMediator(
                 moviesDatabase = movieHubDatabase,
                 remoteSource = movieDataSource,
-                type = MovieListType.POPULAR,
+                type = MovieType.POPULAR,
             )
         ).flow
             .map { pagingData ->
@@ -54,11 +55,11 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PAGE_SIZE,
                 initialLoadSize = PAGE_SIZE,
             ),
-            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource() },
+            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource(MovieType.TOP_RATED) },
             remoteMediator = MoviesRemoteMediator(
                 moviesDatabase = movieHubDatabase,
                 remoteSource = movieDataSource,
-                type = MovieListType.TOP_RATED,
+                type = MovieType.TOP_RATED,
             )
         ).flow
             .map { pagingData ->
@@ -75,11 +76,11 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PAGE_SIZE,
                 initialLoadSize = PAGE_SIZE,
             ),
-            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource() },
+            pagingSourceFactory = { movieHubDatabase.movieDao().pagingSource(MovieType.UPCOMING) },
             remoteMediator = MoviesRemoteMediator(
                 moviesDatabase = movieHubDatabase,
                 remoteSource = movieDataSource,
-                type = MovieListType.UPCOMING,
+                type = MovieType.UPCOMING,
             )
         ).flow
             .map { pagingData ->

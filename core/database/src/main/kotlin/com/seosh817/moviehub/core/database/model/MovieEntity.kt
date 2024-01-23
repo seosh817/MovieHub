@@ -3,13 +3,16 @@ package com.seosh817.moviehub.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.seosh817.moviehub.core.model.MovieType
 
 @Entity(
     tableName = "movies"
 )
 data class MovieEntity(
-    @PrimaryKey
-    val id: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    @ColumnInfo(name = "movie_id")
+    val movieId: Long,
     val adult: Boolean?,
     @ColumnInfo(name = "back_drop_path")
     val backdropPath: String?,
@@ -31,6 +34,8 @@ data class MovieEntity(
     val voteAverage: Double?,
     @ColumnInfo(name = "vote_count")
     val voteCount: Long?,
+    @ColumnInfo(name = "type")
+    val type: MovieType = MovieType.UNKNOWN,
     @ColumnInfo(name = "page")
     var page: Long = 0,
 )

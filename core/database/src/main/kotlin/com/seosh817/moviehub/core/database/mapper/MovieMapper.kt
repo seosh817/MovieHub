@@ -4,7 +4,7 @@ import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.model.MovieOverview
 
 fun MovieEntity.asExternalModel() = MovieOverview(
-    id = id,
+    id = movieId,
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,

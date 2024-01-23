@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.seosh817.moviehub.core.database.model.RemoteKey
+import com.seosh817.moviehub.core.model.MovieType
 
 @Dao
 interface RemoteKeyDao {
@@ -14,8 +15,8 @@ interface RemoteKeyDao {
     @Query("Select * From remote_keys Where movie_id = :id")
     suspend fun getRemoteKeyByMovieID(id: Long): RemoteKey?
 
-    @Query("DELETE FROM remote_keys")
-    suspend fun clearAll()
+    @Query("DELETE FROM remote_keys WHERE type = :type")
+    suspend fun clearAll(type: MovieType)
 
     @Query("Select created_at From remote_keys Order By created_at DESC LIMIT 1")
     suspend fun getCreationTime(): Long?
