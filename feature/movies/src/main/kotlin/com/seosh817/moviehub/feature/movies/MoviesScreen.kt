@@ -18,17 +18,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.movies.MovieContents
 
 @Composable
 internal fun MoviesRoute(
-    onMovieClick: (Long) -> Unit,
+    onMovieClick: (MovieType, Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MoviesViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
-    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     MoviesScreen(
@@ -50,10 +51,10 @@ internal fun MoviesRoute(
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
-    pagingItems: LazyPagingItems<MovieOverview>,
+    pagingItems: LazyPagingItems<UserMovie>,
     showRefreshError: Boolean = false,
     isRefreshing: Boolean,
-    onMovieClick: (Long) -> Unit,
+    onMovieClick: (MovieType, Long) -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     onRefresh: () -> Unit,
     showMessage: () -> Unit,
@@ -92,7 +93,9 @@ fun MoviesScreen(
             moviePagingItems = pagingItems,
             lazyGridState = lazyGridState,
             modifier = Modifier.align(Alignment.TopCenter),
-            onMovieClick = onMovieClick,
+            onMovieClick = {
+                onMovieClick(MovieType.POPULAR, it)
+            },
             pullRefreshState = pullRefreshState,
             onRefresh = onRefresh,
         )

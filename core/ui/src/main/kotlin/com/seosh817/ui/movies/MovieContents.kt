@@ -29,6 +29,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.ui.R
 import com.seosh817.ui.ContentsError
 import com.seosh817.ui.ContentsLoading
@@ -38,7 +39,7 @@ import com.seosh817.ui.ContentsLoading
 fun MovieContents(
     modifier: Modifier,
     isRefreshing: Boolean,
-    moviePagingItems: LazyPagingItems<MovieOverview>,
+    moviePagingItems: LazyPagingItems<UserMovie>,
     lazyGridState: LazyGridState,
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
@@ -84,7 +85,7 @@ fun MovieContents(
                         key = moviePagingItems.itemKey(),
                         contentType = moviePagingItems.itemContentType()
                     ) { index ->
-                        val movie: MovieOverview? = moviePagingItems[index]
+                        val movie: UserMovie? = moviePagingItems[index]
                         if (movie != null) {
                             MovieContentItem(
                                 context = context,
@@ -97,7 +98,7 @@ fun MovieContents(
                                     .background(MaterialTheme.colorScheme.background)
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
-                                    }
+                                    },
                             )
                         }
 

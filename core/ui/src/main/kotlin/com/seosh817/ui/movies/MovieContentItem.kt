@@ -34,19 +34,23 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seosh817.moviehub.core.designsystem.component.DynamicAsyncImage
+import com.seosh817.moviehub.core.designsystem.component.LikeToggleButton
 import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
+import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatPosterImageUrl
 
 @Composable
 fun MovieContentItem(
     context: Context,
-    movie: MovieOverview,
-    modifier: Modifier = Modifier
+    movie: UserMovie,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
