@@ -21,7 +21,7 @@ enum class PrimaryDestination(
         contentDescription = "Movies",
         labelResId = R.string.movies
     ),
-    BOOK_MARKS(
+    BOOKMARKS(
         selectedIcon = Icons.Filled.Favorite,
         unSelectedIcon = Icons.Outlined.Favorite,
         contentDescription = "Bookmarks",
