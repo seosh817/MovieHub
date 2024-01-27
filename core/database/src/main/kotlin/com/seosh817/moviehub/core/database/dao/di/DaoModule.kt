@@ -1,6 +1,7 @@
 package com.seosh817.moviehub.core.database.dao.di
 
 import com.seosh817.moviehub.core.database.MovieHubDatabase
+import com.seosh817.moviehub.core.database.dao.FavoritesDao
 import com.seosh817.moviehub.core.database.dao.MovieDao
 import dagger.Module
 import dagger.Provides
@@ -17,4 +18,10 @@ object DaoModule {
     fun providesMovieDao(
         database: MovieHubDatabase,
     ): MovieDao = database.movieDao()
+
+    @Singleton
+    @Provides
+    fun providesFavoritesDao(
+        database: MovieHubDatabase,
+    ): FavoritesDao = database.favoritesDao()
 }

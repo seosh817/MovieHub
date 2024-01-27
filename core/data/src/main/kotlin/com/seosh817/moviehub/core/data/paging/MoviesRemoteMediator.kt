@@ -12,13 +12,10 @@ import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.data.model.asEntity
 import com.seosh817.moviehub.core.database.MovieHubDatabase
 import com.seosh817.moviehub.core.database.model.MovieEntity
-import com.seosh817.moviehub.core.database.model.RemoteKey
-import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.database.model.RemoteKeyEntity
 import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.lastOrNull
-import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -47,7 +44,7 @@ class MoviesRemoteMediator(
     /** LoadType.Append
      * When we need to load data at the end of the currently loaded data set, the load parameter is LoadType.APPEND
      */
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, MovieEntity>): RemoteKey? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, MovieEntity>): RemoteKeyEntity? {
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { movie ->
@@ -58,7 +55,7 @@ class MoviesRemoteMediator(
     /** LoadType.Prepend
      * When we need to load data at the beginning of the currently loaded data set, the load parameter is LoadType.PREPEND
      */
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, MovieEntity>): RemoteKey? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, MovieEntity>): RemoteKeyEntity? {
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
         }?.data?.firstOrNull()?.let { movie ->
@@ -72,7 +69,7 @@ class MoviesRemoteMediator(
      * If this is the first load, then the anchorPosition is null.
      * When PagingDataAdapter.refresh() is called, the anchorPosition is the first visible position in the displayed list, so we will need to load the page that contains that specific item.
      */
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): RemoteKey? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): RemoteKeyEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.movieId?.let { id ->
                 moviesDatabase.remoteKeyDao().getRemoteKeyByMovieID(id)
@@ -130,7 +127,7 @@ class MoviesRemoteMediator(
                         val prevKey = if (page > 1) page - 1 else null
                         val nextKey = if (endOfPaginationReached) null else page.plus(1)
                         val remoteKeys = movies.map {
-                            RemoteKey(
+                            RemoteKeyEntity(
                                 type = type,
                                 movieId = it.id,
                                 prevKey = prevKey,
@@ -138,7 +135,7 @@ class MoviesRemoteMediator(
                             )
                         }
 
-                        moviesDatabase.remoteKeyDao().insertOrReplaceAll(remoteKeys)
+                        moviesDatabase.remoteKeyDao().insertAll(remoteKeys)
                         moviesDatabase.movieDao().insertAll(movies.mapIndexed { _, movie ->
                             movie
                                 .asEntity()
