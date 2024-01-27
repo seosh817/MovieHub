@@ -14,20 +14,43 @@ import com.seosh817.moviehub.core.model.MovieType
 @Dao
 interface MovieDao {
 
+    /**
+     * Returns a [PagingSource] of [MovieEntity] of a given [type]
+     */
     @Query(
         value = """
             SELECT * FROM movies
             WHERE type = :type
             ORDER BY page ASC
-    """)
+    """
+    )
     fun pagingSource(type: MovieType): PagingSource<Int, MovieEntity>
 
     /**
-     * Inserts [entities] into the db if they don't exist, and ignores those that do
+     * Returns list of [MovieEntity] of a given [id]
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query(
+        value = """
+            SELECT * from movies
+            WHERE type = :type
+            AND movie_id = :id
+            """
+    )
+    suspend fun getMovieById(
+        type: MovieType,
+        id: Long,
+    ): MovieEntity?
+
+    /**
+     * Inserts a list of [MovieEntity] into the movies table
+     * @return a list of row ids
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entities: List<MovieEntity>): List<Long>
 
+    /**
+     * Deletes all movies of a given [type]
+     */
     @Query("DELETE FROM movies WHERE type NOT IN (:type)")
     suspend fun clearAll(type: MovieType)
 }

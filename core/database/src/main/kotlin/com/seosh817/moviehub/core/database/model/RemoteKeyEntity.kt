@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.RemoteKey
 
 @Entity(tableName = "remote_keys")
-data class RemoteKey(
+data class RemoteKeyEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val type: MovieType = MovieType.UNKNOWN,
