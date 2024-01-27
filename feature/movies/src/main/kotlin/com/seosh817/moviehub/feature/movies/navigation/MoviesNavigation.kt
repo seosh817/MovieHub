@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.feature.movies.MoviesRoute
 
 const val moviesNavigationRoute = "movies_route"
@@ -15,7 +16,7 @@ fun NavController.navigateToMovies(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.movieScreen(
-    onMovieClick: (Long) -> Unit,
+    onMovieClick: (MovieType, Long) -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     composable(
