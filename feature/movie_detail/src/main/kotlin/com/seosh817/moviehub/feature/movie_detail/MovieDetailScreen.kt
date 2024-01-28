@@ -94,7 +94,7 @@ internal fun MovieDetailRoute(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
         isBookmarked = isBookmarked,
-        onFabClick = movieDetailViewModel::updateBookmarkedMovieId,
+        onFabClick = movieDetailViewModel::updateBookmark,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
     )
