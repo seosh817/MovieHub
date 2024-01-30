@@ -7,7 +7,7 @@ import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
+interface MoviesRepository {
 
     fun fetchPopularMovies(language: String?): Flow<PagingData<MovieOverview>>
 

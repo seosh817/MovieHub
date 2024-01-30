@@ -5,12 +5,12 @@ import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
 import com.seosh817.moviehub.core.network.model.movie_list.NetworkMoviesResponse
 import com.seosh817.moviehub.core.network.service.movie.MovieService
-import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
+import com.seosh817.moviehub.core.network.source.MoviesRemoteDataSource
 import javax.inject.Inject
 
-class MovieDataSourceImpl @Inject constructor(
+class MoviesDataSourceImpl @Inject constructor(
     private val movieService: MovieService
-) : MovieRemoteDataSource {
+) : MoviesRemoteDataSource {
 
     override suspend fun fetchPopularMovies(page: Int, language: String?): ResultState<NetworkMoviesResponse> {
         return handleApi {

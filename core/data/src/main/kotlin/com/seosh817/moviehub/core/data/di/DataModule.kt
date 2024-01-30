@@ -2,16 +2,16 @@ package com.seosh817.moviehub.core.data.di
 
 import com.seosh817.moviehub.core.data.repository.AppPreferencesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.CompositeFavoritesRepository
-import com.seosh817.moviehub.core.data.repository.CompositeMovieRepository
+import com.seosh817.moviehub.core.data.repository.CompositeMoviesRepository
 import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.FavoritesRepositoryImpl
-import com.seosh817.moviehub.core.data.repository.MovieRepositoryImpl
+import com.seosh817.moviehub.core.data.repository.MoviesRepositoryImpl
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
-import com.seosh817.moviehub.core.domain.repository.MovieRepository
+import com.seosh817.moviehub.core.domain.repository.MoviesRepository
 import com.seosh817.moviehub.core.domain.repository.UserFavoritesRepository
-import com.seosh817.moviehub.core.domain.repository.UserMovieRepository
+import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,7 +24,7 @@ interface DataModule {
 
     @Singleton
     @Binds
-    fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+    fun bindMoviesRepository(moviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
 
     @Singleton
     @Binds
@@ -36,7 +36,7 @@ interface DataModule {
 
     @Singleton
     @Binds
-    fun bindCompositeMovieRepository(compositeMovieRepositoryImpl: CompositeMovieRepository): UserMovieRepository
+    fun bindCompositeMoviesRepository(compositeMoviesRepositoryImpl: CompositeMoviesRepository): UserMoviesRepository
 
     @Singleton
     @Binds
