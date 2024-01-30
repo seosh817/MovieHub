@@ -32,9 +32,11 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.findLibrary("androidx.compose.foundation").get())
             add("implementation", libs.findLibrary("androidx.compose.foundation.layout").get())
             add("implementation", libs.findLibrary("androidx.constraintlayout.compose").get())
+
             add("androidTestImplementation", libs.findLibrary("androidx.test.ext.junit").get())
             add("androidTestImplementation", libs.findLibrary("androidx.test.espresso.core").get())
             add("debugImplementation", libs.findLibrary("androidx.compose.ui.testManifest").get())
+            add("testImplementation", libs.findLibrary("robolectric").get())
         }
 
         testOptions {
