@@ -1,9 +1,9 @@
 package com.seosh817.moviehub.core.network.di
 
 import com.seosh817.moviehub.core.network.impl.CreditsDataSourceImpl
-import com.seosh817.moviehub.core.network.impl.MovieDataSourceImpl
+import com.seosh817.moviehub.core.network.impl.MoviesDataSourceImpl
 import com.seosh817.moviehub.core.network.source.CreditsRemoteDataSource
-import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
+import com.seosh817.moviehub.core.network.source.MoviesRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ interface NetworkModule {
 
     @Singleton
     @Binds
-    fun bindMovieDataSource(movieDataSourceImpl: MovieDataSourceImpl): MovieRemoteDataSource
+    fun bindMoviesDataSource(moviesDataSourceImpl: MoviesDataSourceImpl): MoviesRemoteDataSource
 
     @Singleton
     @Binds

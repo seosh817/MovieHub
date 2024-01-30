@@ -14,14 +14,14 @@ import com.seosh817.moviehub.core.database.MovieHubDatabase
 import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.database.model.RemoteKeyEntity
 import com.seosh817.moviehub.core.model.MovieType
-import com.seosh817.moviehub.core.network.source.MovieRemoteDataSource
+import com.seosh817.moviehub.core.network.source.MoviesRemoteDataSource
 import kotlinx.coroutines.delay
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class MoviesRemoteMediator(
-    private val remoteSource: MovieRemoteDataSource,
+    private val remoteSource: MoviesRemoteDataSource,
     private val moviesDatabase: MovieHubDatabase,
     private val type: MovieType
 ) : RemoteMediator<Int, MovieEntity>() {

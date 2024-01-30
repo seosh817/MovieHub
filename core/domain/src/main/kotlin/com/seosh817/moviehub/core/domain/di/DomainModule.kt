@@ -5,8 +5,8 @@ import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
-import com.seosh817.moviehub.core.domain.repository.MovieRepository
-import com.seosh817.moviehub.core.domain.repository.UserMovieRepository
+import com.seosh817.moviehub.core.domain.repository.MoviesRepository
+import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetPopularMoviesUseCase
@@ -25,19 +25,19 @@ object DomainModule {
     @Singleton
     @Provides
     fun provideGetPopularMoviesUseCase(
-        movieRepository: UserMovieRepository,
+        moviesRepository: UserMoviesRepository,
         @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
     ): GetPopularMoviesUseCase {
-        return GetPopularMoviesUseCase(movieRepository, dispatcher)
+        return GetPopularMoviesUseCase(moviesRepository, dispatcher)
     }
 
     @Singleton
     @Provides
     fun provideMovieDetailUseCase(
-        movieRepository: MovieRepository,
+        moviesRepository: MoviesRepository,
         @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
     ): GetMovieDetailUseCase {
-        return GetMovieDetailUseCase(movieRepository, dispatcher)
+        return GetMovieDetailUseCase(moviesRepository, dispatcher)
     }
 
     @Singleton
@@ -53,13 +53,13 @@ object DomainModule {
     @Provides
     fun providePostBookmarkUseCase(
         appPreferencesRepository: AppPreferencesRepository,
-        movieRepository: MovieRepository,
+        moviesRepository: MoviesRepository,
         favoritesRepository: FavoritesRepository,
         @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
     ): PostBookmarkUseCase {
         return PostBookmarkUseCase(
             appPreferencesRepository,
-            movieRepository,
+            moviesRepository,
             favoritesRepository,
             dispatcher
         )

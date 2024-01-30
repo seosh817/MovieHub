@@ -4,10 +4,7 @@ import androidx.paging.PagingData
 import com.seosh817.common.result.ResultState
 import com.seosh817.moviehub.core.common.network.Dispatcher
 import com.seosh817.moviehub.core.common.network.MovieHubDispatchers
-import com.seosh817.moviehub.core.domain.repository.MovieRepository
-import com.seosh817.moviehub.core.domain.repository.UserMovieRepository
-import com.seosh817.moviehub.core.domain.usecase.GetMoviesUseCase
-import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import com.seosh817.moviehub.core.model.UserMovie
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -17,11 +14,11 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class GetPopularMoviesUseCase @Inject constructor(
-    private val movieRepository: UserMovieRepository,
+    private val moviesRepository: UserMoviesRepository,
     @Dispatcher(MovieHubDispatchers.IO) private val dispatcher: CoroutineDispatcher
 ) : GetMoviesUseCase {
 
-    override operator fun invoke(language: String?, scope: CoroutineScope): Flow<PagingData<UserMovie>> = movieRepository
+    override operator fun invoke(language: String?, scope: CoroutineScope): Flow<PagingData<UserMovie>> = moviesRepository
         .observePopularUserMovies(language, scope)
         .catch {
             ResultState.Failure.Exception(it)

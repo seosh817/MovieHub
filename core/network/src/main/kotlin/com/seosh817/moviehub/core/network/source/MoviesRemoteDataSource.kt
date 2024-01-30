@@ -1,13 +1,10 @@
 package com.seosh817.moviehub.core.network.source
 
 import com.seosh817.common.result.ResultState
-import com.seosh817.moviehub.core.model.Credits
-import com.seosh817.moviehub.core.model.MovieDetail
-import com.seosh817.moviehub.core.model.MoviesResponse
 import com.seosh817.moviehub.core.network.model.movie_detail.NetworkMovieDetail
 import com.seosh817.moviehub.core.network.model.movie_list.NetworkMoviesResponse
 
-interface MovieRemoteDataSource {
+interface MoviesRemoteDataSource {
 
     suspend fun fetchPopularMovies(page: Int, language: String? = null): ResultState<NetworkMoviesResponse>
 
