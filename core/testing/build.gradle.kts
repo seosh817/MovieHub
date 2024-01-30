@@ -1,40 +1,28 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.moviehub.android.library)
+    alias(libs.plugins.moviehub.android.library.compose)
+    alias(libs.plugins.moviehub.android.hilt)
 }
 
 android {
     namespace = "com.seosh817.moviehub.core.testing"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
+    api(libs.androidx.compose.ui.test.junit4)
+    api(libs.androidx.test.core)
+    api(libs.androidx.test.espresso.core)
+    api(libs.androidx.test.rules)
+    api(libs.androidx.test.runner)
+    api(libs.hilt.android.testing)
+    api(libs.junit4)
+    api(libs.kotlinx.coroutines.test)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    debugApi(libs.androidx.compose.ui.testManifest)
+
+    implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.domain)
+    implementation(projects.core.model)
 }
