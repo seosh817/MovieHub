@@ -1,6 +1,6 @@
 import com.seosh817.moviehub.configurations.MovieHubBuildType
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+
 plugins {
     alias(libs.plugins.moviehub.android.applicatoin)
     alias(libs.plugins.moviehub.android.applicaiton.compose)
