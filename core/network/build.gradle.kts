@@ -26,6 +26,7 @@ android {
 dependencies {
     
     implementation(projects.core.model)
+    implementation(projects.core.common)
     implementation(projects.common)
 
     implementation(libs.coil.kt)
@@ -36,8 +37,7 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.androidx.paging)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.test.ext.junit)
+    testImplementation(projects.core.testing)
 }
 
 secrets {
