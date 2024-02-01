@@ -11,7 +11,7 @@ fun NetworkCredits.asExternalModel(): Credits {
     return Credits(
         id = id,
         cast = networkCast.map { it.asExternalModel() },
-        crew = crewEntity.map { it.asExternalModel() },
+        crew = networkCrew.map { it.asExternalModel() },
     )
 }
 

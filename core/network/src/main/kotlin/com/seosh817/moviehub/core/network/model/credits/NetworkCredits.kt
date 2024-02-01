@@ -10,5 +10,5 @@ data class NetworkCredits(
     @SerialName("cast")
     val networkCast: List<NetworkCast>,
     @SerialName("crew")
-    val crewEntity: List<NetworkCrew>,
+    val networkCrew: List<NetworkCrew>,
 )
