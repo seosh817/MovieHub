@@ -5,6 +5,10 @@ plugins {
 }
 
 android {
+    defaultConfig {
+        testInstrumentationRunner =
+            "com.seosh817.moviehub.core.testing.MovieHubTestRunner"
+    }
     namespace = "com.seosh817.moviehub.core.database"
 }
 
@@ -13,7 +17,5 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(projects.core.testing)
 }
