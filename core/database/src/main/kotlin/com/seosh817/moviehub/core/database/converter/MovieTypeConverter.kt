@@ -6,7 +6,7 @@ import com.seosh817.moviehub.core.model.MovieType
 class MovieTypeConverter {
 
     @TypeConverter
-    fun fromMovieType(value: MovieType) = value.name
+    fun fromMovieType(type: MovieType) = type.value
 
     @TypeConverter
     fun toMovieType(value: String) = MovieType.fromValue(value)
