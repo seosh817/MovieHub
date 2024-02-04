@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.movies.MovieContents
@@ -29,7 +30,7 @@ internal fun MoviesRoute(
     viewModel: MoviesViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
-    val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     MoviesScreen(
@@ -51,7 +52,7 @@ internal fun MoviesRoute(
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
-    pagingItems: LazyPagingItems<UserMovie>,
+    pagingItems: LazyPagingItems<MovieOverview>,
     showRefreshError: Boolean = false,
     isRefreshing: Boolean,
     onMovieClick: (MovieType, Long) -> Unit,

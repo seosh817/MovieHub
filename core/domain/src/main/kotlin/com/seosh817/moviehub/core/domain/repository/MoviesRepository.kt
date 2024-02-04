@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
 
-    fun fetchPopularMovies(language: String?): Flow<PagingData<MovieOverview>>
+    fun fetchPopularMovies(language: String? = null): Flow<PagingData<MovieOverview>>
 
-    fun fetchTopRatedMovies(language: String?): Flow<PagingData<MovieOverview>>
+    fun fetchTopRatedMovies(language: String? = null): Flow<PagingData<MovieOverview>>
 
-    fun fetchUpcomingMovies(language: String?): Flow<PagingData<MovieOverview>>
+    fun fetchUpcomingMovies(language: String? = null): Flow<PagingData<MovieOverview>>
 
-    fun fetchFavoritesMovies(language: String?): Flow<PagingData<MovieOverview>>
+    fun fetchFavoritesMovies(language: String? = null): Flow<PagingData<MovieOverview>>
 
-    suspend fun fetchMovieDetail(movieId: Long, language: String?): ResultState<MovieDetail>
+    suspend fun fetchMovieDetail(movieId: Long, language: String? = null): ResultState<MovieDetail>
 
     suspend fun getMovieById(movieType: MovieType, id: Long): MovieOverview?
 }

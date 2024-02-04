@@ -39,7 +39,7 @@ import com.seosh817.ui.ContentsLoading
 fun MovieContents(
     modifier: Modifier,
     isRefreshing: Boolean,
-    moviePagingItems: LazyPagingItems<UserMovie>,
+    moviePagingItems: LazyPagingItems<MovieOverview>,
     lazyGridState: LazyGridState,
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
@@ -85,7 +85,7 @@ fun MovieContents(
                         key = moviePagingItems.itemKey(),
                         contentType = moviePagingItems.itemContentType()
                     ) { index ->
-                        val movie: UserMovie? = moviePagingItems[index]
+                        val movie: MovieOverview? = moviePagingItems[index]
                         if (movie != null) {
                             MovieContentItem(
                                 context = context,

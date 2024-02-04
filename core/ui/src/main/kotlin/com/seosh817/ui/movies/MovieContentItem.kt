@@ -49,7 +49,7 @@ import com.seosh817.ui.ktx.formatPosterImageUrl
 @Composable
 fun MovieContentItem(
     context: Context,
-    movie: UserMovie,
+    movie: MovieOverview,
     modifier: Modifier = Modifier,
 ) {
     Card(

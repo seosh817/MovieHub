@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.seosh817.moviehub.core.domain.usecase.GetFavoritesUseCase
-import com.seosh817.moviehub.core.domain.usecase.GetPopularMoviesUseCase
 import com.seosh817.moviehub.core.model.UserMovie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

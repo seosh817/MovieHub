@@ -9,7 +9,6 @@ import com.seosh817.moviehub.core.domain.repository.MoviesRepository
 import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
-import com.seosh817.moviehub.core.domain.usecase.GetPopularMoviesUseCase
 import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
 import dagger.Module
 import dagger.Provides
@@ -21,15 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DomainModule {
-
-    @Singleton
-    @Provides
-    fun provideGetPopularMoviesUseCase(
-        moviesRepository: UserMoviesRepository,
-        @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
-    ): GetPopularMoviesUseCase {
-        return GetPopularMoviesUseCase(moviesRepository, dispatcher)
-    }
 
     @Singleton
     @Provides

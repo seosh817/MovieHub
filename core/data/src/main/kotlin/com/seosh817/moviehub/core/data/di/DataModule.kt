@@ -2,7 +2,6 @@ package com.seosh817.moviehub.core.data.di
 
 import com.seosh817.moviehub.core.data.repository.AppPreferencesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.CompositeFavoritesRepository
-import com.seosh817.moviehub.core.data.repository.CompositeMoviesRepository
 import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.FavoritesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MoviesRepositoryImpl
@@ -33,10 +32,6 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindAppPreferencesSettingsRepository(appPreferencesRepositoryImpl: AppPreferencesRepositoryImpl): AppPreferencesRepository
-
-    @Singleton
-    @Binds
-    fun bindCompositeMoviesRepository(compositeMoviesRepositoryImpl: CompositeMoviesRepository): UserMoviesRepository
 
     @Singleton
     @Binds
