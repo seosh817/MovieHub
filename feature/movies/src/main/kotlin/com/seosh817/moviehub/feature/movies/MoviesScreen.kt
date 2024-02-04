@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,7 +21,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
-import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.movies.MovieContents
 
 @Composable
@@ -28,21 +28,22 @@ internal fun MoviesRoute(
     onMovieClick: (MovieType, Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MoviesViewModel = hiltViewModel(),
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val showRefreshError by viewModel.showRefreshError
 
     MoviesScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
-        showRefreshError = viewModel.showRefreshError,
+        showRefreshError = showRefreshError,
         isRefreshing = isRefreshing,
+        onMovieClick = onMovieClick,
+        onShowSnackbar = onShowSnackbar,
         onRefresh = {
             moviePagingItems.refresh()
         },
-        onMovieClick = onMovieClick,
-        onShowSnackbar = onShowSnackbar,
         showMessage = viewModel::showMessage,
         hideMessage = viewModel::hideMessage,
     )
@@ -56,7 +57,7 @@ fun MoviesScreen(
     showRefreshError: Boolean = false,
     isRefreshing: Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onRefresh: () -> Unit,
     showMessage: () -> Unit,
     hideMessage: () -> Unit,
@@ -67,21 +68,21 @@ fun MoviesScreen(
         onRefresh = onRefresh
     )
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
-    val okText = stringResource(id = R.string.refresh)
+    val refreshText = stringResource(id = R.string.refresh)
 
     LaunchedEffect(showRefreshError) {
         if (showRefreshError) {
-            val result = onShowSnackbar(moviesRefreshErrorMessage, okText)
+            val result = onShowSnackbar(moviesRefreshErrorMessage, refreshText, SnackbarDuration.Indefinite)
             if (result) {
-                onRefresh()
-            } else {
-                hideMessage()
+                pagingItems.refresh()
             }
         }
     }
 
     if (pagingItems.loadState.refresh is LoadState.Error) {
         showMessage()
+    } else if (pagingItems.loadState.refresh is LoadState.Loading) {
+        hideMessage()
     }
 
     Box(

@@ -1,5 +1,6 @@
 package com.seosh817.moviehub.feature.movies
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -29,6 +29,9 @@ class MoviesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
+    private var _showRefreshError = mutableStateOf(false)
+    val showRefreshError: State<Boolean> = _showRefreshError
+
     val pagingMoviesStateFlow: Flow<PagingData<MovieOverview>> =
         moviesRepository
             .fetchPopularMovies()
@@ -36,9 +39,6 @@ class MoviesViewModel @Inject constructor(
                 _isRefreshing.emit(true)
             }
             .distinctUntilChanged()
-            .catch {
-                _isRefreshing.emit(false)
-            }
             .onEach {
                 _isRefreshing.emit(false)
             }
@@ -49,13 +49,11 @@ class MoviesViewModel @Inject constructor(
                 initialValue = PagingData.empty()
             )
 
-    var showRefreshError by mutableStateOf(false)
-
     fun showMessage() {
-        showRefreshError = true
+        _showRefreshError.value = true
     }
 
     fun hideMessage() {
-        showRefreshError = false
+        _showRefreshError.value = false
     }
 }

@@ -124,12 +124,12 @@ fun MainScreen(
                 )
             }
 
-            val onShowSnackBar: suspend (message: String, action: String?) -> Boolean =
-                { message, action ->
+            val onShowSnackBar: suspend (message: String, action: String?, snackbarDuration: SnackbarDuration) -> Boolean =
+                { message, action, snackbarDuration ->
                     snackbarHostState.showSnackbar(
                         message = message,
                         actionLabel = action,
-                        duration = SnackbarDuration.Short,
+                        duration = snackbarDuration,
                     ) == SnackbarResult.ActionPerformed
                 }
 

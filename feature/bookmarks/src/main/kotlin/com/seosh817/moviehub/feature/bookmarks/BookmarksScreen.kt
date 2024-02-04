@@ -24,7 +24,7 @@ internal fun BookmarksRoute(
     modifier: Modifier = Modifier,
     viewModel: BookmarksViewModel = hiltViewModel(),
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -52,7 +52,7 @@ internal fun BookmarksScreen(
     showRefreshError: Boolean = false,
     isRefreshing: Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onRefresh: () -> Unit,
     showMessage: () -> Unit,
     hideMessage: () -> Unit,

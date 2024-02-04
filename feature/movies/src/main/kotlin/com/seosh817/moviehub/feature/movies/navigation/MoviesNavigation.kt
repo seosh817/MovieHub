@@ -1,5 +1,6 @@
 package com.seosh817.moviehub.feature.movies.navigation
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -17,7 +18,7 @@ fun NavController.navigateToMovies(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.movieScreen(
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     composable(
         route = moviesNavigationRoute,

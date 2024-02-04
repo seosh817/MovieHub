@@ -63,6 +63,8 @@ fun MovieContents(
         is LoadState.Error -> {
             val error = (moviePagingItems.loadState.refresh as LoadState.Error).error.message ?: ""
             ContentsError(
+                modifier = Modifier
+                    .fillMaxSize(),
                 message = stringResource(id = R.string.refresh_error),
                 cause = error,
                 onRefresh = onRefresh,

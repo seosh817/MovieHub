@@ -2,6 +2,7 @@ package com.seosh817.moviehub.navigation
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,7 +21,7 @@ import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
 fun MovieHubNavHost(
     modifier: Modifier = Modifier,
     movieHubNavigator: MovieHubNavigator,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     openDialog: (OpenDialog) -> Unit,
     startDestination: String = moviesNavigationRoute
 ) {
