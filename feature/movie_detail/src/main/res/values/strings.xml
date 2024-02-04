@@ -8,4 +8,7 @@
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
     <string name="production_companies">Production Companies</string>
+    <string name="ok">OK</string>
+    <string name="bookmark_success">Bookmark added successfully</string>
+    <string name="bookmark_failed">Bookmark removed successfully</string>
 </resources>

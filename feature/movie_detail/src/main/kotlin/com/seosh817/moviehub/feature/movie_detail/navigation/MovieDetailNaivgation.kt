@@ -1,5 +1,6 @@
 package com.seosh817.moviehub.feature.movie_detail.navigation
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -24,6 +25,7 @@ fun NavController.navigateToMovieDetail(movieType: MovieType, movieId: Long) {
 fun NavGraphBuilder.movieDetailScreen(
     onBackClick: () -> Unit,
     onShareClick: (String) -> Unit,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     composable(
         route = movieDetailNavigationRoute,
@@ -37,7 +39,8 @@ fun NavGraphBuilder.movieDetailScreen(
     ) {
         MovieDetailRoute(
             onBackClick = onBackClick,
-            onShareClick = onShareClick
+            onShareClick = onShareClick,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }

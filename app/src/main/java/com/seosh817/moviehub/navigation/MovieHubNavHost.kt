@@ -39,7 +39,8 @@ fun MovieHubNavHost(
         )
         movieDetailScreen(
             onBackClick = navController::popBackStack,
-            onShareClick = activity::createShareIntent
+            onShareClick = activity::createShareIntent,
+            onShowSnackbar = onShowSnackbar
         )
         bookmarksScreen(
             onMovieClick = navController::navigateToMovieDetail,

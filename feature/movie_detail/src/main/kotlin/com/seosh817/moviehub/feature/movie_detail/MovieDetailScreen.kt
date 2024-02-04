@@ -20,8 +20,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,13 +66,13 @@ import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
+import com.seosh817.ui.ContentsLoading
+import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.company.CompanyItem
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
-import com.seosh817.ui.ContentsLoading
-import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.TransitionScroller
@@ -84,16 +86,22 @@ import com.skydoves.landscapist.components.rememberImageComponent
 internal fun MovieDetailRoute(
     modifier: Modifier = Modifier,
     movieDetailViewModel: MovieDetailViewModel = hiltViewModel(),
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val movieDetailUiState by movieDetailViewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
+    val postDetailUiState by movieDetailViewModel.postDetailUiState.collectAsStateWithLifecycle()
     val isBookmarked by movieDetailViewModel.isBookmarked.collectAsStateWithLifecycle()
+    val showBookmarkedSnackbar by movieDetailViewModel.showBookmarkSnackbar
 
     MovieDetailScreen(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
+        postDetailUiState = postDetailUiState,
+        showBookmarkedSnackbar = showBookmarkedSnackbar,
         isBookmarked = isBookmarked,
+        onShowSnackbar = onShowSnackbar,
         onFabClick = movieDetailViewModel::updateBookmark,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
@@ -104,15 +112,34 @@ internal fun MovieDetailRoute(
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
+    postDetailUiState: PostDetailUiState,
+    showBookmarkedSnackbar: Boolean,
     isBookmarked: Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
+
+    val bookmarkedSuccessMessage = stringResource(id = R.string.bookmark_success)
+    val bookmarkedFailedMessage = stringResource(id = R.string.bookmark_failed)
+    val okText = stringResource(id = R.string.ok)
+
+    LaunchedEffect(showBookmarkedSnackbar) {
+        if (showBookmarkedSnackbar) {
+            if (isBookmarked) {
+                onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Long)
+            } else {
+                onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Long)
+            }
+        }
+    }
+
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
     ) {
+
         when (movieDetailUiState) {
             is MovieDetailUiState.Loading -> Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
@@ -134,6 +161,15 @@ fun MovieDetailScreen(
                     onFabClick = onFabClick,
                     onShareClick = onShareClick,
                     onBackClick = onBackClick
+                )
+            }
+        }
+
+        if (postDetailUiState is PostDetailUiState.Loading) {
+            Box(Modifier.fillMaxSize()) {
+                ContentsLoading(
+                    modifier = Modifier
+                        .align(Alignment.Center)
                 )
             }
         }

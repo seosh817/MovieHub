@@ -7,6 +7,7 @@ import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.MoviesRepository
 import com.seosh817.moviehub.core.model.MovieType
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -18,7 +19,8 @@ class PostBookmarkUseCase @Inject constructor(
     @Dispatcher(MovieHubDispatchers.IO) private val dispatcher: CoroutineDispatcher
 ) {
 
-    operator fun invoke(movieType: MovieType, id: Long, bookmarked: Boolean) = flow<Unit> {
+    operator fun invoke(movieType: MovieType, id: Long, bookmarked: Boolean) = flow {
+        delay(1000L) // For testing
         val movie = moviesRepository.getMovieById(movieType, id)
         checkNotNull(movie) { "Movie not found" }
 
@@ -28,6 +30,7 @@ class PostBookmarkUseCase @Inject constructor(
             favoritesRepository.delete(movie.id)
         }
         appPreferencesRepository.setBookMarkedMovieIds(movie.id, bookmarked)
+        emit(bookmarked)
     }
         .flowOn(dispatcher)
 }
