@@ -1,11 +1,13 @@
 package com.seosh817.moviehub.feature.bookmarks
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.usecase.GetFavoritesUseCase
 import com.seosh817.moviehub.core.model.UserMovie
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarksViewModel @Inject constructor(
-    getFavoritesUseCase: GetFavoritesUseCase
+    private val appPreferencesRepository: AppPreferencesRepository,
+    getFavoritesUseCase: GetFavoritesUseCase,
 ) : ViewModel() {
 
     private val _isRefreshing = MutableStateFlow(false)
@@ -47,20 +50,4 @@ class BookmarksViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000L),
                 initialValue = PagingData.empty()
             )
-
-    var showRefreshError by mutableStateOf(false)
-
-    fun updateBookmarked(bookmark: Boolean) {
-//        viewModelScope.launch {
-//            appPreferencesSettingsRepository.setBookMarkedMovieIds(movieId, isChecked)
-//        }
-    }
-
-    fun showMessage() {
-        showRefreshError = true
-    }
-
-    fun hideMessage() {
-        showRefreshError = false
-    }
 }

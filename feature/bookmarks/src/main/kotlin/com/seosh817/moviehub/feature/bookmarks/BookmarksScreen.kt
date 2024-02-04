@@ -7,10 +7,13 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
@@ -24,7 +27,6 @@ internal fun BookmarksRoute(
     modifier: Modifier = Modifier,
     viewModel: BookmarksViewModel = hiltViewModel(),
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -32,15 +34,11 @@ internal fun BookmarksRoute(
     BookmarksScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
-        showRefreshError = viewModel.showRefreshError,
         isRefreshing = isRefreshing,
         onRefresh = {
             moviePagingItems.refresh()
         },
         onMovieClick = onMovieClick,
-        onShowSnackbar = onShowSnackbar,
-        showMessage = viewModel::showMessage,
-        hideMessage = viewModel::hideMessage,
     )
 }
 
@@ -49,13 +47,10 @@ internal fun BookmarksRoute(
 internal fun BookmarksScreen(
     modifier: Modifier = Modifier,
     pagingItems: LazyPagingItems<UserMovie>,
-    showRefreshError: Boolean = false,
+    isBookmarked: Boolean = false,
     isRefreshing: Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
-    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onRefresh: () -> Unit,
-    showMessage: () -> Unit,
-    hideMessage: () -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(
