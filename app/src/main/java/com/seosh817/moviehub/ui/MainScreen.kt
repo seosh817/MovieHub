@@ -28,19 +28,23 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import com.seosh817.moviehub.R
+import com.seosh817.moviehub.core.designsystem.component.MainTopAppBar
 import com.seosh817.moviehub.core.designsystem.component.MovieHubNavigationBar
 import com.seosh817.moviehub.core.designsystem.component.MovieHubNavigationBarItem
-import com.seosh817.moviehub.core.designsystem.component.MainTopAppBar
+import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.navigation.MovieHubNavHost
 import com.seosh817.moviehub.navigation.MovieHubNavigator
-import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.navigation.PrimaryDestination
 import com.seosh817.moviehub.navigation.isPrimaryDestinationInHierarchy
 import com.seosh817.moviehub.navigation.rememberMovieHubNavigator
@@ -59,7 +63,8 @@ fun MainScreen(
     openDialog: (OpenDialog) -> Unit
 ) {
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState, canScroll = { true })
+    val canScroll by rememberSaveable { mutableStateOf(true) }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState, canScroll = { canScroll })
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -73,7 +78,10 @@ fun MainScreen(
                     destinations = PrimaryDestination
                         .entries
                         .toPersistentList(),
-                    onTabSelected = { movieHubNavigator.navigate(it) },
+                    onTabSelected = {
+                        scrollBehavior.state.heightOffset = 0f
+                        movieHubNavigator.navigate(it)
+                    },
                 )
             }
         },
