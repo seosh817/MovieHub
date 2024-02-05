@@ -78,7 +78,6 @@ class MainActivity : ComponentActivity() {
 
             if (openDialog != OpenDialog.NONE) {
                 when (openDialog) {
-                    OpenDialog.NONE -> {}
                     OpenDialog.APP_THEME_SETTINGS -> {
                         if (uiState is MainUiState.Success) {
                             AppThemeSettingsDialog(
@@ -90,6 +89,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+
+                    else -> {}
                 }
             }
 
