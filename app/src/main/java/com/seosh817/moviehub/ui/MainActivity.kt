@@ -5,15 +5,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
@@ -21,17 +24,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.seosh817.moviehub.core.designsystem.theme.MovieHubTheme
 import com.seosh817.moviehub.core.model.DarkThemeMode
+import com.seosh817.moviehub.core.model.OpenDialog
+import com.seosh817.moviehub.feature.settings.AppLanguageSettingsDialog
+import com.seosh817.moviehub.feature.settings.AppThemeSettingsDialog
 import com.seosh817.moviehub.navigation.MovieHubNavigator
 import com.seosh817.moviehub.navigation.rememberMovieHubNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.saveable.rememberSaveable
-import com.seosh817.moviehub.feature.settings.AppThemeSettingsDialog
-import com.seosh817.moviehub.core.model.OpenDialog
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -83,6 +84,18 @@ class MainActivity : ComponentActivity() {
                             AppThemeSettingsDialog(
                                 appThemeMode = (uiState as MainUiState.Success).userSettings.darkThemeMode,
                                 onThemeClick = viewModel::updateDarkThemeMode,
+                                onDismiss = {
+                                    openDialog = OpenDialog.NONE
+                                },
+                            )
+                        }
+                    }
+                    
+                    OpenDialog.APP_LANGUAGE_SETTINGS -> {
+                        if (uiState is MainUiState.Success) {
+                            AppLanguageSettingsDialog(
+                                appLanguage = (uiState as MainUiState.Success).userSettings.appLanguage,
+                                onLanguageClick = viewModel::updateAppLanguage,
                                 onDismiss = {
                                     openDialog = OpenDialog.NONE
                                 },

@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seosh817.moviehub.core.designsystem.component.DefaultTopAppBar
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
+import com.seosh817.moviehub.core.model.AppLanguage
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.ui.ContentsLoading
@@ -40,7 +41,7 @@ fun SettingsRoute(
         settingsUiState = settingsUiState,
         onBackClick = onBackClick,
         openDialog = openDialog,
-        onUseDynamicColorClick = settingsViewModel::updateDynamicColorPreference
+        onUseDynamicColorClick = settingsViewModel::updateDynamicColorPreference,
     )
 }
 
@@ -50,26 +51,28 @@ fun SettingsScreen(
     settingsUiState: SettingsUiState,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
-    onUseDynamicColorClick: (Boolean) -> Unit
+    onUseDynamicColorClick: (Boolean) -> Unit,
 ) {
     Box(
         modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         when (settingsUiState) {
             is SettingsUiState.Loading -> Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
-                        modifier = Modifier
-                                .align(Alignment.Center)
+                    modifier = Modifier
+                        .align(Alignment.Center)
                 )
             }
+
             is SettingsUiState.Success -> {
                 SettingsContent(
                     darkThemeMode = settingsUiState.settings.darkThemeMode,
                     useDynamicColor = settingsUiState.settings.useDynamicColor,
+                    appLanguage = settingsUiState.settings.appLanguage,
                     onBackClick = onBackClick,
                     openDialog = openDialog,
-                    onUseDynamicColorClick = onUseDynamicColorClick
+                    onUseDynamicColorClick = onUseDynamicColorClick,
                 )
             }
         }
@@ -81,6 +84,7 @@ fun SettingsScreen(
 fun SettingsContent(
     modifier: Modifier = Modifier,
     darkThemeMode: DarkThemeMode,
+    appLanguage: AppLanguage,
     useDynamicColor: Boolean,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
@@ -91,8 +95,9 @@ fun SettingsContent(
             .statusBarsPadding(),
         topBar = {
             DefaultTopAppBar(
-                    title = stringResource(id = R.string.settings_title),
-                    onBackClick = onBackClick) {}
+                title = stringResource(id = R.string.settings_title),
+                onBackClick = onBackClick
+            ) {}
         }
     ) { padding ->
         Column(
@@ -102,12 +107,21 @@ fun SettingsContent(
                 .consumeWindowInsets(padding)
         ) {
             ContentsSection(
-                title = stringResource(id = R.string.preferences)) {
+                title = stringResource(id = R.string.preferences)
+            ) {
                 SettingsItem(
                     titleText = stringResource(id = R.string.app_theme),
                     valueText = darkThemeMode.name,
                     onClick = {
                         openDialog(OpenDialog.APP_THEME_SETTINGS)
+                    }
+                )
+
+                SettingsItem(
+                    titleText = stringResource(id = R.string.language),
+                    valueText = appLanguage.name,
+                    onClick = {
+                        openDialog(OpenDialog.APP_LANGUAGE_SETTINGS)
                     }
                 )
 
@@ -122,7 +136,8 @@ fun SettingsContent(
 
             ContentsSection(
                 modifier = Modifier.padding(top = AppDimens.PaddingLarge),
-                title = stringResource(id = R.string.about)) {
+                title = stringResource(id = R.string.about)
+            ) {
             }
         }
     }

@@ -14,12 +14,14 @@ import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
 import com.seosh817.moviehub.core.model.MovieType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -45,12 +47,13 @@ class MovieDetailViewModel @Inject constructor(
     private var _showBookmarkSnackbar = mutableStateOf(false)
     val showBookmarkSnackbar: State<Boolean> = _showBookmarkSnackbar
 
-    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> = movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MovieDetailUiState.Loading,
-        )
+    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> =
+        movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase, appPreferencesSettingsRepository)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MovieDetailUiState.Loading,
+            )
 
     val isBookmarked: StateFlow<Boolean> = appPreferencesSettingsRepository.userSettings
         .map { it.bookmarkedMovieIds.contains(movieId) }
@@ -82,20 +85,27 @@ class MovieDetailViewModel @Inject constructor(
         .launchIn(viewModelScope)
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 private fun movieDetailUiState(
     movieId: Long,
     getMovieDetailUseCase: GetMovieDetailUseCase,
-    getMovieCreditsUseCase: GetCreditsUseCase
+    getMovieCreditsUseCase: GetCreditsUseCase,
+    appPreferencesSettingsRepository: AppPreferencesRepository
 ): Flow<MovieDetailUiState> {
 
-    val movieDetails = getMovieDetailUseCase.invoke(movieId)
-    val movieCredits = getMovieCreditsUseCase.invoke(movieId)
+    val appLanguage = appPreferencesSettingsRepository
+        .userSettings
+        .map { it.appLanguage }
 
-    return combine(
-        movieDetails,
-        movieCredits,
-        ::Pair,
-    ).asResult()
+    return appLanguage
+        .flatMapLatest { language ->
+            combine(
+                getMovieDetailUseCase.invoke(movieId, language.value),
+                getMovieCreditsUseCase.invoke(movieId, language.value),
+                ::Pair,
+            )
+        }
+        .asResult()
         .map { movieDetailResult ->
             when (movieDetailResult) {
                 is ResultState.Success -> {

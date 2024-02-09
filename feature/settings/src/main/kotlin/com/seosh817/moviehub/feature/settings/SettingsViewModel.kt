@@ -3,6 +3,7 @@ package com.seosh817.moviehub.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.model.AppLanguage
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,7 @@ class SettingsViewModel @Inject constructor(
                     settings = UserEditableSettings(
                         useDynamicColor = settings.useDynamicColor,
                         darkThemeMode = settings.darkThemeMode,
+                        appLanguage = settings.appLanguage,
                     ),
                 )
             }
@@ -43,4 +45,5 @@ class SettingsViewModel @Inject constructor(
 data class UserEditableSettings(
     val useDynamicColor: Boolean,
     val darkThemeMode: DarkThemeMode,
+    val appLanguage: AppLanguage,
 )

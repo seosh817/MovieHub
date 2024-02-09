@@ -3,6 +3,7 @@ package com.seosh817.moviehub.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.model.AppLanguage
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,6 +31,12 @@ class MainViewModel @Inject constructor(
     fun updateDarkThemeMode(darkThemeMode: DarkThemeMode) {
         viewModelScope.launch {
             appPreferencesRepository.setDarkThemeMode(darkThemeMode)
+        }
+    }
+
+    fun updateAppLanguage(appLanguage: AppLanguage) {
+        viewModelScope.launch {
+            appPreferencesRepository.setAppLanguage(appLanguage)
         }
     }
 }
