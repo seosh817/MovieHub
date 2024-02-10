@@ -18,27 +18,38 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.UserMovie
+import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
+import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.movies.BookmarkContents
+import kotlinx.coroutines.cancel
 
 @Composable
 internal fun BookmarksRoute(
     modifier: Modifier = Modifier,
     viewModel: BookmarksViewModel = hiltViewModel(),
     onMovieClick: (MovieType, Long) -> Unit,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val postBookmarkUiState by viewModel.postBookmarkUiState.collectAsStateWithLifecycle()
+    val bookmarksUiEvent by viewModel.bookmarksUiEvent.collectAsStateWithLifecycle(initialValue = null)
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     BookmarksScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
+        postBookmarkUiState = postBookmarkUiState,
+        bookmarksUiEvent = bookmarksUiEvent,
         isRefreshing = isRefreshing,
+        onShowSnackbar = onShowSnackbar,
         onRefresh = {
             moviePagingItems.refresh()
         },
         onMovieClick = onMovieClick,
+        onBookmarkClick = viewModel::onBookmarkClick
     )
 }
 
@@ -47,16 +58,51 @@ internal fun BookmarksRoute(
 internal fun BookmarksScreen(
     modifier: Modifier = Modifier,
     pagingItems: LazyPagingItems<UserMovie>,
-    isBookmarked: Boolean = false,
+    postBookmarkUiState: PostBookmarkUiState,
+    bookmarksUiEvent: BookmarksUiEvent?,
     isRefreshing: Boolean,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
     onRefresh: () -> Unit,
+    onBookmarkClick: (Long, Boolean) -> Unit
 ) {
     val lazyGridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = onRefresh
     )
+
+    val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
+    val refreshText = stringResource(id = R.string.refresh)
+
+    val bookmarkedSuccessMessage = stringResource(id = R.string.bookmarked_success)
+    val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
+    val okText = stringResource(id = R.string.ok)
+
+    LaunchedEffect(bookmarksUiEvent) {
+        when (bookmarksUiEvent) {
+            is BookmarksUiEvent.ShowBookmarkedMessage -> {
+                if (bookmarksUiEvent.isBookmarked) {
+                    onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
+                } else {
+                    onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)
+                }
+            }
+
+            is BookmarksUiEvent.ShowRefreshErrorMessage -> {
+                val result = onShowSnackbar(moviesRefreshErrorMessage, refreshText, SnackbarDuration.Indefinite)
+                if (result) {
+                    pagingItems.refresh()
+                }
+            }
+
+            is BookmarksUiEvent.HideRefreshErrorMessage -> {
+                cancel()
+            }
+
+            else -> {}
+        }
+    }
 
     Box(
         modifier = modifier
@@ -73,6 +119,16 @@ internal fun BookmarksScreen(
             },
             pullRefreshState = pullRefreshState,
             onRefresh = onRefresh,
+            onLikeClick = onBookmarkClick
         )
+    }
+
+    if (postBookmarkUiState is PostBookmarkUiState.Loading) {
+        Box(Modifier.fillMaxSize()) {
+            ContentsLoading(
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
     }
 }

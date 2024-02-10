@@ -44,6 +44,7 @@ fun MovieHubNavHost(
         )
         bookmarksScreen(
             onMovieClick = navController::navigateToMovieDetail,
+            onShowSnackbar = onShowSnackbar
         )
         settingsScreen(
             onBackClick = navController::popBackStack,

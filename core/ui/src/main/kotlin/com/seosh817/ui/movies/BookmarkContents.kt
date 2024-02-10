@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.ExperimentalMaterialApi
@@ -28,8 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.ui.R
@@ -46,6 +43,7 @@ fun BookmarkContents(
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
     onRefresh: () -> Unit,
+    onLikeClick: (Long, Boolean) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -84,8 +82,6 @@ fun BookmarkContents(
                 ) {
                     items(
                         count = moviePagingItems.itemCount,
-                        key = moviePagingItems.itemKey(),
-                        contentType = moviePagingItems.itemContentType()
                     ) { index ->
                         val movie: UserMovie? = moviePagingItems[index]
                         if (movie != null) {
@@ -107,37 +103,7 @@ fun BookmarkContents(
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
                                     },
-                            )
-                        }
-
-                        if (loadState.refresh == LoadState.Loading) {
-                            ContentsLoading(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(
-                                        MaterialTheme.colorScheme.background
-                                    )
-                            )
-                        }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        if (loadState.append == LoadState.Loading) {
-                            ContentsLoading(
-                                text = stringResource(id = R.string.append_loading)
-                            )
-                        }
-                        if (loadState.append is LoadState.Error && moviePagingItems.itemCount > 1) {
-                            val error = (loadState.append as LoadState.Error).error
-
-                            ContentsError(
-                                cause = error.message ?: "",
-                                message = stringResource(id = R.string.append_error),
-                                onRefresh = onRefresh
+                                onLikeClick = onLikeClick
                             )
                         }
                     }

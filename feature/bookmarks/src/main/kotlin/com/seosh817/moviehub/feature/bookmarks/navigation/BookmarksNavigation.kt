@@ -18,6 +18,7 @@ fun NavController.navigateToBookmarks(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.bookmarksScreen(
     onMovieClick: (MovieType, Long) -> Unit,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     composable(
         route = bookmarksNavigationRoute,
@@ -27,6 +28,7 @@ fun NavGraphBuilder.bookmarksScreen(
     ) {
         BookmarksRoute(
             onMovieClick = onMovieClick,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }
