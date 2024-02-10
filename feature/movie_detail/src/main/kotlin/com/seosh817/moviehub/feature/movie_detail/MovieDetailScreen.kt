@@ -66,6 +66,7 @@ import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
+import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow
@@ -91,14 +92,14 @@ internal fun MovieDetailRoute(
     onBackClick: () -> Unit,
 ) {
     val movieDetailUiState by movieDetailViewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
-    val postDetailUiState by movieDetailViewModel.postDetailUiState.collectAsStateWithLifecycle()
+    val postBookmarkUiState by movieDetailViewModel.postBookmarkUiState.collectAsStateWithLifecycle()
     val isBookmarked by movieDetailViewModel.isBookmarked.collectAsStateWithLifecycle()
     val showBookmarkedSnackbar by movieDetailViewModel.showBookmarkSnackbar
 
     MovieDetailScreen(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
-        postDetailUiState = postDetailUiState,
+        postBookmarkUiState = postBookmarkUiState,
         showBookmarkedSnackbar = showBookmarkedSnackbar,
         isBookmarked = isBookmarked,
         onShowSnackbar = onShowSnackbar,
@@ -112,7 +113,7 @@ internal fun MovieDetailRoute(
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
-    postDetailUiState: PostDetailUiState,
+    postBookmarkUiState: PostBookmarkUiState,
     showBookmarkedSnackbar: Boolean,
     isBookmarked: Boolean,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
@@ -121,8 +122,8 @@ fun MovieDetailScreen(
     onBackClick: () -> Unit,
 ) {
 
-    val bookmarkedSuccessMessage = stringResource(id = R.string.bookmark_success)
-    val bookmarkedFailedMessage = stringResource(id = R.string.bookmark_failed)
+    val bookmarkedSuccessMessage = stringResource(id = R.string.bookmarked_success)
+    val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
     val okText = stringResource(id = R.string.ok)
 
     LaunchedEffect(showBookmarkedSnackbar) {
@@ -165,7 +166,7 @@ fun MovieDetailScreen(
             }
         }
 
-        if (postDetailUiState is PostDetailUiState.Loading) {
+        if (postBookmarkUiState is PostBookmarkUiState.Loading) {
             Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
                     modifier = Modifier

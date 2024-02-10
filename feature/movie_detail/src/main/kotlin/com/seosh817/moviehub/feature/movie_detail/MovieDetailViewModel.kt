@@ -13,6 +13,7 @@ import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
 import com.seosh817.moviehub.core.model.MovieDetailResult
 import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -41,8 +42,16 @@ class MovieDetailViewModel @Inject constructor(
     private val movieType: MovieType = MovieType.fromValue(checkNotNull(savedStateHandle["movieType"]))
     private val movieId: Long = checkNotNull(savedStateHandle["movieId"])
 
-    private val _postDetailUiState: MutableStateFlow<PostDetailUiState> = MutableStateFlow(PostDetailUiState.Success)
-    val postDetailUiState: StateFlow<PostDetailUiState> = _postDetailUiState.asStateFlow()
+    val isBookmarked: StateFlow<Boolean> = appPreferencesSettingsRepository.userSettings
+        .map { it.bookmarkedMovieIds.contains(movieId) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false,
+        )
+
+    private val _postBookmarkUiState: MutableStateFlow<PostBookmarkUiState> = MutableStateFlow(PostBookmarkUiState.Success)
+    val postBookmarkUiState: StateFlow<PostBookmarkUiState> = _postBookmarkUiState.asStateFlow()
 
     private var _showBookmarkSnackbar = mutableStateOf(false)
     val showBookmarkSnackbar: State<Boolean> = _showBookmarkSnackbar
@@ -55,30 +64,22 @@ class MovieDetailViewModel @Inject constructor(
                 initialValue = MovieDetailUiState.Loading,
             )
 
-    val isBookmarked: StateFlow<Boolean> = appPreferencesSettingsRepository.userSettings
-        .map { it.bookmarkedMovieIds.contains(movieId) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )
-
     fun updateBookmark(isBookmarked: Boolean) = bookmarkUseCase
         .invoke(movieType, movieId, isBookmarked)
         .asResult()
         .onStart {
-            _postDetailUiState.emit(PostDetailUiState.Loading)
+            _postBookmarkUiState.emit(PostBookmarkUiState.Loading)
             _showBookmarkSnackbar.value = false
         }
         .onEach {
             _showBookmarkSnackbar.value = true
             when (it) {
                 is ResultState.Success -> {
-                    _postDetailUiState.emit(PostDetailUiState.Success)
+                    _postBookmarkUiState.emit(PostBookmarkUiState.Success)
                 }
 
                 is ResultState.Failure<*> -> {
-                    _postDetailUiState.emit(PostDetailUiState.Error(it.e))
+                    _postBookmarkUiState.emit(PostBookmarkUiState.Error(it.e))
                 }
             }
         }
