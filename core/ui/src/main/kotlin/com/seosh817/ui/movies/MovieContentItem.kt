@@ -42,15 +42,17 @@ import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatPosterImageUrl
 
 @Composable
 fun MovieContentItem(
-    context: Context,
-    movie: MovieOverview,
     modifier: Modifier = Modifier,
+    context: Context,
+    movie: UserMovie,
+    onLikeClick: (Long, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -87,6 +89,16 @@ fun MovieContentItem(
                     voteAverage = movie.voteAverage,
                 )
             }
+
+            LikeToggleButton(
+                modifier = Modifier
+                    .padding(AppDimens.PaddingSmall)
+                    .align(Alignment.TopEnd),
+                checked = movie.isBookmarked,
+                onCheckedClick = {
+                    onLikeClick(movie.id, it)
+                }
+            )
         }
     }
 }

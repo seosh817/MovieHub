@@ -43,7 +43,8 @@ class MoviesRepositoryImpl @Inject constructor(
                 remoteSource = moviesDataSource,
                 type = MovieType.POPULAR,
             )
-        ).flow
+        )
+            .flow
             .map { pagingData ->
                 pagingData.map(MovieEntity::asExternalModel)
             }

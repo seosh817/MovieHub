@@ -19,9 +19,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.UserMovie
+import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
+import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.movies.MovieContents
+import kotlinx.coroutines.cancel
 
 @Composable
 internal fun MoviesRoute(
@@ -30,15 +33,18 @@ internal fun MoviesRoute(
     viewModel: MoviesViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
-    val moviePagingItems: LazyPagingItems<MovieOverview> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val moviePagingItems: LazyPagingItems<UserMovie> = viewModel.pagingMoviesStateFlow.collectAsLazyPagingItems()
+    val postBookmarkUiState by viewModel.postBookmarkUiState.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val showRefreshError by viewModel.showRefreshError
+    val moviesUiEvent by viewModel.moviesUiEvent.collectAsStateWithLifecycle(initialValue = null)
 
     MoviesScreen(
         modifier = modifier,
         pagingItems = moviePagingItems,
-        showRefreshError = showRefreshError,
+        postBookmarkUiState = postBookmarkUiState,
+        moviesUiEvent = moviesUiEvent,
         isRefreshing = isRefreshing,
+        onBookmarkClick = viewModel::onBookmarkClick,
         onMovieClick = onMovieClick,
         onShowSnackbar = onShowSnackbar,
         onRefresh = {
@@ -53,9 +59,11 @@ internal fun MoviesRoute(
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
-    pagingItems: LazyPagingItems<MovieOverview>,
-    showRefreshError: Boolean = false,
+    pagingItems: LazyPagingItems<UserMovie>,
+    postBookmarkUiState: PostBookmarkUiState,
+    moviesUiEvent: MoviesUiEvent?,
     isRefreshing: Boolean,
+    onBookmarkClick: (Long, Boolean) -> Unit,
     onMovieClick: (MovieType, Long) -> Unit,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onRefresh: () -> Unit,
@@ -67,15 +75,36 @@ fun MoviesScreen(
         refreshing = isRefreshing,
         onRefresh = onRefresh
     )
+
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
     val refreshText = stringResource(id = R.string.refresh)
 
-    LaunchedEffect(showRefreshError) {
-        if (showRefreshError) {
-            val result = onShowSnackbar(moviesRefreshErrorMessage, refreshText, SnackbarDuration.Indefinite)
-            if (result) {
-                pagingItems.refresh()
+    val bookmarkedSuccessMessage = stringResource(id = R.string.bookmarked_success)
+    val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
+    val okText = stringResource(id = R.string.ok)
+
+    LaunchedEffect(moviesUiEvent) {
+        when (moviesUiEvent) {
+            is MoviesUiEvent.ShowBookmarkedMessage -> {
+                if (moviesUiEvent.isBookmarked) {
+                    onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
+                } else {
+                    onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)
+                }
             }
+
+            is MoviesUiEvent.ShowRefreshErrorMessage -> {
+                val result = onShowSnackbar(moviesRefreshErrorMessage, refreshText, SnackbarDuration.Indefinite)
+                if (result) {
+                    pagingItems.refresh()
+                }
+            }
+
+            is MoviesUiEvent.HideRefreshErrorMessage -> {
+                cancel()
+            }
+
+            else -> {}
         }
     }
 
@@ -91,15 +120,25 @@ fun MoviesScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         MovieContents(
+            modifier = Modifier.align(Alignment.TopCenter),
             isRefreshing = isRefreshing,
             moviePagingItems = pagingItems,
             lazyGridState = lazyGridState,
-            modifier = Modifier.align(Alignment.TopCenter),
             onMovieClick = {
                 onMovieClick(MovieType.POPULAR, it)
             },
             pullRefreshState = pullRefreshState,
             onRefresh = onRefresh,
+            onBookmarkClick = onBookmarkClick
         )
+    }
+
+    if (postBookmarkUiState is PostBookmarkUiState.Loading) {
+        Box(Modifier.fillMaxSize()) {
+            ContentsLoading(
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
     }
 }

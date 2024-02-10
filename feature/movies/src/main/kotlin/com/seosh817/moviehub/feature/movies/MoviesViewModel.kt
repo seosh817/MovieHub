@@ -1,40 +1,40 @@
 package com.seosh817.moviehub.feature.movies
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.seosh817.moviehub.core.domain.repository.MoviesRepository
-import com.seosh817.moviehub.core.model.MovieOverview
+import com.seosh817.common.result.ResultState
+import com.seosh817.common.result.extension.asResult
+import com.seosh817.moviehub.core.domain.usecase.GetPopularMoviesUseCase
+import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
+import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.UserMovie
+import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    moviesRepository: MoviesRepository,
+    getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val postBookmarkUseCase: PostBookmarkUseCase
 ) : ViewModel() {
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing = _isRefreshing.asStateFlow()
-
-    private var _showRefreshError = mutableStateOf(false)
-    val showRefreshError: State<Boolean> = _showRefreshError
-
-    val pagingMoviesStateFlow: Flow<PagingData<MovieOverview>> =
-        moviesRepository
-            .fetchPopularMovies()
+    val pagingMoviesStateFlow: Flow<PagingData<UserMovie>> =
+        getPopularMoviesUseCase
+            .invoke(scope = viewModelScope)
             .onStart {
                 _isRefreshing.emit(true)
             }
@@ -42,18 +42,51 @@ class MoviesViewModel @Inject constructor(
             .onEach {
                 _isRefreshing.emit(false)
             }
-            .cachedIn(viewModelScope)
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000L),
                 initialValue = PagingData.empty()
             )
 
+    private val _postBookmarkUiState: MutableStateFlow<PostBookmarkUiState> = MutableStateFlow(PostBookmarkUiState.Success)
+    val postBookmarkUiState: StateFlow<PostBookmarkUiState> = _postBookmarkUiState.asStateFlow()
+
+    private val _moviesUiEvent = MutableSharedFlow<MoviesUiEvent>()
+    val moviesUiEvent: Flow<MoviesUiEvent> = _moviesUiEvent.asSharedFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
+    fun onBookmarkClick(movieId: Long, isBookmarked: Boolean) =
+        postBookmarkUseCase.invoke(MovieType.POPULAR, movieId, isBookmarked)
+            .asResult()
+            .onStart {
+                _postBookmarkUiState.emit(PostBookmarkUiState.Loading)
+            }
+            .onEach {
+                when (it) {
+                    is ResultState.Success -> {
+                        _moviesUiEvent.emit(MoviesUiEvent.ShowBookmarkedMessage(isBookmarked))
+                        _postBookmarkUiState.emit(PostBookmarkUiState.Success)
+                    }
+
+                    is ResultState.Failure<*> -> {
+                        _postBookmarkUiState.emit(PostBookmarkUiState.Error(it.e))
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+
+
     fun showMessage() {
-        _showRefreshError.value = true
+        viewModelScope.launch {
+            _moviesUiEvent.emit(MoviesUiEvent.ShowRefreshErrorMessage)
+        }
     }
 
     fun hideMessage() {
-        _showRefreshError.value = false
+        viewModelScope.launch {
+            _moviesUiEvent.emit(MoviesUiEvent.HideRefreshErrorMessage)
+        }
     }
 }

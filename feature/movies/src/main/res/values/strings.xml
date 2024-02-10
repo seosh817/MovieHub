@@ -3,4 +3,7 @@
     <string name="no_image">No Image</string>
     <string name="movies_refresh_error">Failed to load movie list.</string>
     <string name="refresh">Refresh</string>
+    <string name="ok">OK</string>
+    <string name="bookmarked_success">Bookmark added successfully</string>
+    <string name="bookmarked_failed">Bookmark removed successfully</string>
 </resources>
