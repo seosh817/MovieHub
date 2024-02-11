@@ -1,12 +1,14 @@
 package com.seosh817.moviehub.core.data.di
 
 import com.seosh817.moviehub.core.data.repository.AppPreferencesRepositoryImpl
+import com.seosh817.moviehub.core.data.repository.AppVersionsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.CompositeFavoritesRepository
 import com.seosh817.moviehub.core.data.repository.CompositePopularMoviesRepository
 import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.FavoritesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MoviesRepositoryImpl
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
+import com.seosh817.moviehub.core.domain.repository.AppVersionsRepository
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.MoviesRepository
@@ -45,4 +47,8 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindCompositePopularMoviesRepository(compositePopularMoviesRepository: CompositePopularMoviesRepository): UserMoviesRepository
+
+    @Singleton
+    @Binds
+    fun bindAppVersionsRepository(appVersionsRepository: AppVersionsRepositoryImpl): AppVersionsRepository
 }

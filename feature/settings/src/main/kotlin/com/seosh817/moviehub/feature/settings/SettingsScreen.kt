@@ -20,12 +20,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seosh817.moviehub.core.designsystem.component.DefaultTopAppBar
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.model.AppLanguage
+import com.seosh817.moviehub.core.model.AppVersions
 import com.seosh817.moviehub.core.model.DarkThemeMode
 import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.settings.SettingsItem
 import com.seosh817.ui.settings.SettingsSwitchItem
+
 
 @Composable
 fun SettingsRoute(
@@ -35,10 +37,12 @@ fun SettingsRoute(
     openDialog: (OpenDialog) -> Unit
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
+    val appVersions by settingsViewModel.appVersionsStateFlow.collectAsStateWithLifecycle()
 
     SettingsScreen(
         modifier = modifier,
         settingsUiState = settingsUiState,
+        appVersions = appVersions,
         onBackClick = onBackClick,
         openDialog = openDialog,
         onUseDynamicColorClick = settingsViewModel::updateDynamicColorPreference,
@@ -49,6 +53,7 @@ fun SettingsRoute(
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsUiState: SettingsUiState,
+    appVersions: AppVersions,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
     onUseDynamicColorClick: (Boolean) -> Unit,
@@ -70,6 +75,7 @@ fun SettingsScreen(
                     darkThemeMode = settingsUiState.settings.darkThemeMode,
                     useDynamicColor = settingsUiState.settings.useDynamicColor,
                     appLanguage = settingsUiState.settings.appLanguage,
+                    appVersions = appVersions,
                     onBackClick = onBackClick,
                     openDialog = openDialog,
                     onUseDynamicColorClick = onUseDynamicColorClick,
@@ -85,6 +91,7 @@ fun SettingsContent(
     modifier: Modifier = Modifier,
     darkThemeMode: DarkThemeMode,
     appLanguage: AppLanguage,
+    appVersions: AppVersions,
     useDynamicColor: Boolean,
     onBackClick: () -> Unit,
     openDialog: (OpenDialog) -> Unit,
@@ -138,6 +145,12 @@ fun SettingsContent(
                 modifier = Modifier.padding(top = AppDimens.PaddingLarge),
                 title = stringResource(id = R.string.about)
             ) {
+
+                SettingsItem(
+                    titleText = stringResource(id = R.string.app_version),
+                    valueText = appVersions.versionName,
+                    onClick = { }
+                )
             }
         }
     }
