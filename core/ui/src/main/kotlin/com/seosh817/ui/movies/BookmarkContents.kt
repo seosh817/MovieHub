@@ -47,8 +47,6 @@ fun BookmarkContents(
 ) {
     val context = LocalContext.current
 
-    val loadState = moviePagingItems.loadState
-
     when (moviePagingItems.loadState.mediator?.refresh) {
         is LoadState.Loading -> {
             ContentsLoading(
@@ -95,10 +93,10 @@ fun BookmarkContents(
                                     .clip(MaterialTheme.shapes.small)
                                     .background(MaterialTheme.colorScheme.background)
                                     .animateItemPlacement(
-                                        animationSpec = tween(
-                                            durationMillis = 500,
-                                            easing = FastOutSlowInEasing
-                                        )
+//                                        animationSpec = tween(
+//                                            durationMillis = 500,
+//                                            easing = FastOutSlowInEasing
+//                                        )
                                     )
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
