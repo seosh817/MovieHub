@@ -67,6 +67,7 @@ import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
+import com.seosh817.ui.ContentsError
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow
@@ -86,15 +87,15 @@ import com.skydoves.landscapist.components.rememberImageComponent
 @Composable
 internal fun MovieDetailRoute(
     modifier: Modifier = Modifier,
-    movieDetailViewModel: MovieDetailViewModel = hiltViewModel(),
+    viewModel: MovieDetailViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val movieDetailUiState by movieDetailViewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
-    val postBookmarkUiState by movieDetailViewModel.postBookmarkUiState.collectAsStateWithLifecycle()
-    val isBookmarked by movieDetailViewModel.isBookmarked.collectAsStateWithLifecycle()
-    val showBookmarkedSnackbar by movieDetailViewModel.showBookmarkSnackbar
+    val movieDetailUiState by viewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
+    val postBookmarkUiState by viewModel.postBookmarkUiState.collectAsStateWithLifecycle()
+    val isBookmarked by viewModel.isBookmarked.collectAsStateWithLifecycle()
+    val showBookmarkedSnackbar by viewModel.showBookmarkSnackbar
 
     MovieDetailScreen(
         modifier = modifier,
@@ -103,9 +104,10 @@ internal fun MovieDetailRoute(
         showBookmarkedSnackbar = showBookmarkedSnackbar,
         isBookmarked = isBookmarked,
         onShowSnackbar = onShowSnackbar,
-        onFabClick = movieDetailViewModel::updateBookmark,
+        onFabClick = viewModel::updateBookmark,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
+        onRefresh = viewModel::replay
     )
 }
 
@@ -120,6 +122,7 @@ fun MovieDetailScreen(
     onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
+    onRefresh: () -> Unit
 ) {
 
     val bookmarkedSuccessMessage = stringResource(id = R.string.bookmarked_success)
@@ -149,8 +152,15 @@ fun MovieDetailScreen(
                 )
             }
 
-            is MovieDetailUiState.Error -> Box(Modifier.fillMaxSize()) {
-                Text("MovieDetail error: ${movieDetailUiState.e}", modifier = Modifier.align(Alignment.Center))
+            is MovieDetailUiState.Error -> {
+                ContentsError(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = AppDimens.PaddingNormal),
+                    message = stringResource(id = com.seosh817.moviehub.core.ui.R.string.refresh_error),
+                    cause = movieDetailUiState.e.message.orEmpty(),
+                    onRefresh = onRefresh,
+                )
             }
 
             is MovieDetailUiState.Success -> {
@@ -281,7 +291,6 @@ fun MovieDetailContents(
         ConstraintLayout {
             val (image, fab, info) = createRefs()
 
-            var fabChecked by remember { mutableStateOf(false) }
             MovieImage(
                 imageUrl = movieDetail.backdropPath?.formatBackdropImageUrl,
                 imageHeight = imageHeight,
@@ -338,7 +347,7 @@ private fun MovieImage(
     modifier: Modifier = Modifier,
     placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(0.2f)
 ) {
-    var isLoading by remember { mutableStateOf(true) }
+    val isLoading by remember { mutableStateOf(true) }
     Box(
         modifier
             .fillMaxWidth()
@@ -492,17 +501,19 @@ private fun MovieInfo(
             )
         }
 
-        ContentsSection(
-            title = stringResource(id = R.string.overview),
-            modifier = Modifier
-                .padding(
-                    top = AppDimens.PaddingLarge,
+        if (overview.isNotEmpty()) {
+            ContentsSection(
+                title = stringResource(id = R.string.overview),
+                modifier = Modifier
+                    .padding(
+                        top = AppDimens.PaddingLarge,
+                    )
+            ) {
+                Text(
+                    text = overview,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
-        ) {
-            Text(
-                text = overview,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            }
         }
 
         ContentsSection(

@@ -17,6 +17,7 @@ import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +43,21 @@ class MovieDetailViewModel @Inject constructor(
     private val movieType: MovieType = MovieType.fromValue(checkNotNull(savedStateHandle["movieType"]))
     private val movieId: Long = checkNotNull(savedStateHandle["movieId"])
 
+    private val replaySharedFlow = MutableSharedFlow<Unit>(replay = 1).apply {
+        tryEmit(Unit)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> = replaySharedFlow
+        .flatMapLatest {
+            movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase, appPreferencesSettingsRepository)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = MovieDetailUiState.Loading,
+        )
+
     val isBookmarked: StateFlow<Boolean> = appPreferencesSettingsRepository.userSettings
         .map { it.bookmarkedMovieIds.contains(movieId) }
         .stateIn(
@@ -55,14 +71,6 @@ class MovieDetailViewModel @Inject constructor(
 
     private var _showBookmarkSnackbar = mutableStateOf(false)
     val showBookmarkSnackbar: State<Boolean> = _showBookmarkSnackbar
-
-    val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> =
-        movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase, appPreferencesSettingsRepository)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = MovieDetailUiState.Loading,
-            )
 
     fun updateBookmark(isBookmarked: Boolean) = bookmarkUseCase
         .invoke(movieType, movieId, isBookmarked)
@@ -84,6 +92,10 @@ class MovieDetailViewModel @Inject constructor(
             }
         }
         .launchIn(viewModelScope)
+
+    fun replay() {
+        replaySharedFlow.tryEmit(Unit)
+    }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
