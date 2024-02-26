@@ -21,7 +21,9 @@
   </a>
 </p><br>
 
-<p align="center">🎬 An android app for exploring movies using the movie database API Implemented by Clean Architecture, MVVM, Compose, Coroutines, Flow, Hilt, Jetpack(Room, Datastore)</p>
+<p align="center">🎬 An android app for exploring movies using the movie database API Implemented by Clean Architecture, MVVM, Compose, Coroutines, Flow, Hilt, Jetpack(Room, Datastore)</p><br/><br/>
+
+<img src="/previews/preview.gif" align="right" width="320" alt="preview"/>
 
 # Tech-stack
 
