@@ -1,6 +1,5 @@
 package com.seosh817.moviehub.core.data.model
 
-import com.seosh817.moviehub.core.database.model.FavoriteEntity
 import com.seosh817.moviehub.core.database.model.MovieEntity
 import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.network.model.movie_list.NetworkMovieOverview
@@ -22,7 +21,7 @@ fun MovieEntity.asExternalModel() = MovieOverview(
     voteCount = voteCount,
 )
 
-fun MovieOverview.asEntity() = MovieEntity(
+fun NetworkMovieOverview.asEntity() = MovieEntity(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
@@ -39,11 +38,11 @@ fun MovieOverview.asEntity() = MovieEntity(
     voteCount = voteCount,
 )
 
-fun NetworkMovieOverview.asEntity() = MovieEntity(
+fun NetworkMovieOverview.asExternalModel() = MovieOverview(
     adult = adult,
     backdropPath = backdropPath,
     genreIds = genreIds,
-    movieId = id,
+    id = id,
     originalLanguage = originalLanguage,
     originalTitle = originalTitle,
     overview = overview,

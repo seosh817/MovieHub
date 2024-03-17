@@ -2,8 +2,10 @@ package com.seosh817.moviehub.core.network.di
 
 import com.seosh817.moviehub.core.network.impl.CreditsDataSourceImpl
 import com.seosh817.moviehub.core.network.impl.MoviesDataSourceImpl
+import com.seosh817.moviehub.core.network.impl.SearchDataSourceImpl
 import com.seosh817.moviehub.core.network.source.CreditsRemoteDataSource
 import com.seosh817.moviehub.core.network.source.MoviesRemoteDataSource
+import com.seosh817.moviehub.core.network.source.SearchRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,8 @@ interface NetworkModule {
     @Singleton
     @Binds
     fun bindCreditsDataSource(creditsDataSourceImpl: CreditsDataSourceImpl): CreditsRemoteDataSource
+
+    @Singleton
+    @Binds
+    fun bindSearchDataSource(searchDataSourceImpl: SearchDataSourceImpl): SearchRemoteDataSource
 }
