@@ -1,5 +1,5 @@
 [versions]
-agp = "8.1.2"
+agp = "8.3.1"
 appcompat = "1.6.1"
 androidDesugarJdkLibs = "2.0.3"
 androidGradlePlugin = "8.2.1"
