@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="preferences">Preferences</string>
+    <string name="app_theme">App Theme</string>
+    <string name="dynamic_color">Dynamic Color</string>
+    <string name="app_version">App Version</string>
+    <string name="about">About</string>
+    <string name="language">Language</string>
+</resources>

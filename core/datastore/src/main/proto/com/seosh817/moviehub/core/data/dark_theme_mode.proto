@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.seosh817.moviehub.core.datastore";
+option java_multiple_files = true;
+
+enum DarkThemeModeProto {
+  DARK_THEME_MODE_UNSPECIFIED = 0;
+  DARK_THEME_MODE_FOLLOW_SYSTEM = 1;
+  DARK_THEME_MODE_LIGHT = 2;
+  DARK_THEME_MODE_DARK = 3;
+}
