@@ -26,7 +26,7 @@ interface RemoteKeyDao {
      * Deletes all remote keys of a given [type]
      */
     @Query("DELETE FROM remote_keys WHERE type = :type")
-    suspend fun clearAll(type: MovieType)
+    suspend fun clearAll(type: String)
 
     /**
      * Returns the creation time of the last inserted remote key

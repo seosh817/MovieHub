@@ -52,5 +52,5 @@ interface MovieDao {
      * Deletes all movies of a given [type]
      */
     @Query("DELETE FROM movies WHERE type NOT IN (:type)")
-    suspend fun clearAll(type: MovieType)
+    suspend fun clearAll(type: String)
 }
