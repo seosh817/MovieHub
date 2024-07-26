@@ -1,21 +1,21 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+import com.seosh817.moviehub.configurations.MovieHubBuildType
+
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.moviehub.android.applicatoin)
+    alias(libs.plugins.moviehub.android.applicaiton.compose)
     alias(libs.plugins.moviehub.android.application.flavors)
     alias(libs.plugins.moviehub.android.detekt)
+    alias(libs.plugins.moviehub.android.hilt)
 }
 
 android {
     namespace = "com.seosh817.moviehub"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.seosh817.moviehub"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,23 +24,18 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = MovieHubBuildType.DEBUG.applicationIdSuffix
+        }
         release {
             isMinifyEnabled = false
+            applicationIdSuffix = MovieHubBuildType.RELEASE.applicationIdSuffix
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
     }
     packaging {
         resources {
@@ -50,13 +45,27 @@ android {
 }
 
 dependencies {
+    implementation(projects.feature.movies)
+    implementation(projects.feature.movieDetail)
+    implementation(projects.feature.settings)
+    implementation(projects.feature.bookmarks)
+    implementation(projects.feature.search)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
+    implementation(projects.core.common)
+    implementation(projects.core.network)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.model)
+    implementation(projects.core.datastore)
+
     // Compose
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -68,11 +77,12 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.ui.tooling.preview.android)
-    // implementation(libs.androidx.ui)
+    implementation(libs.kotlinx.immutable)
+
     // Test
-    testImplementation(libs.junit)
+    testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }

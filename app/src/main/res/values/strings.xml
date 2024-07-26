@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MovieHub</string>
+    <string name="movies">Movies</string>
+    <string name="top_app_bar_navigation_icon_description">Search</string>
+    <string name="top_app_bar_dark_mode_icon_description">Dark Mode</string>
+    <string name="top_app_bar_settings_icon_description">Settings</string>
+    <string name="error_message_unknown">알 수 없는 에러입니다.</string>
+    <string name="error_message_network">인터넷 연결을 확인해주세요.</string>
+    <string name="share_text_movie">Check out the %s movie in the Android MovieHub app</string>
+    <string name="bookmarks">Likes</string>
 </resources>
