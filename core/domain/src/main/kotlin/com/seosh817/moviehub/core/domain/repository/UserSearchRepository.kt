@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserSearchRepository {
 
-    suspend fun searchMovies(query: String, page: Int, scope: CoroutineScope, language: String?): Flow<PagingData<UserMovie>>
+    fun searchMovies(query: String, language: String?, scope: CoroutineScope): Flow<PagingData<UserMovie>>
 }

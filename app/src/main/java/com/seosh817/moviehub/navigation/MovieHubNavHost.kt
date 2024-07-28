@@ -52,7 +52,9 @@ fun MovieHubNavHost(
             openDialog = openDialog
         )
         searchScreen(
-            onBackClick = navController::popBackStack
+            onMovieClick = navController::navigateToMovieDetail,
+            onBackClick = navController::popBackStack,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }

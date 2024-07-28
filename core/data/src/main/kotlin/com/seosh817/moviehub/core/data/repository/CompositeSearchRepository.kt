@@ -17,8 +17,8 @@ class CompositeSearchRepository @Inject constructor(
     private val appPreferencesRepository: AppPreferencesRepository
 ) : UserSearchRepository {
 
-    override suspend fun searchMovies(query: String, page: Int, scope: CoroutineScope, language: String?): Flow<PagingData<UserMovie>> {
-        val pagingFlow = searchRepository.searchMovies(query, page, language).cachedIn(scope)
+    override fun searchMovies(query: String, language: String?, scope: CoroutineScope): Flow<PagingData<UserMovie>> {
+        val pagingFlow = searchRepository.searchMovies(query, language).cachedIn(scope)
         return pagingFlow
             .combine(appPreferencesRepository.userSettings) { pagingData, userSettings ->
                 pagingData.map { movieOverview ->

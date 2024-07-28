@@ -67,7 +67,7 @@ import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
-import com.seosh817.ui.ContentsError
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow

@@ -8,7 +8,9 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seosh817.moviehub.core.designsystem.theme.ThemePreviews
 
 @Composable
 fun LikeToggleButton(
@@ -31,4 +33,10 @@ fun LikeToggleButton(
             tint = if (checked) Color.Red else Color.White
         )
     }
+}
+
+@Preview
+@Composable
+fun LikeToggleButtonPreview() {
+    LikeToggleButton(checked = true)
 }

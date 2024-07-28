@@ -1,4 +1,4 @@
-package com.seosh817.ui
+package com.seosh817.ui.error
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

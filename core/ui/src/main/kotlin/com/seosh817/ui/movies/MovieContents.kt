@@ -29,7 +29,7 @@ import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.ui.R
-import com.seosh817.ui.ContentsError
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 
 @OptIn(ExperimentalMaterialApi::class)

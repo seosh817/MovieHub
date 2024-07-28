@@ -7,8 +7,10 @@ import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.MoviesRepository
 import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
+import com.seosh817.moviehub.core.domain.repository.UserSearchRepository
 import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetSearchMoviesUseCase
 import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
 import dagger.Module
 import dagger.Provides
@@ -53,5 +55,14 @@ object DomainModule {
             favoritesRepository,
             dispatcher
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetSearchMoviesUseCase(
+        userSearchRepository: UserSearchRepository,
+        @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
+    ): GetSearchMoviesUseCase {
+        return GetSearchMoviesUseCase(userSearchRepository, dispatcher)
     }
 }

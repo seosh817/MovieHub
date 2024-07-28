@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_keyword">Enter keyword</string>
+    <string name="search_empty">No search results!</string>
+    <string name="no_search_result">No search results!</string>
+    <string name="refresh_error">An error has occurred.</string>
+</resources>
