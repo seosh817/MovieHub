@@ -14,6 +14,7 @@ import com.seosh817.moviehub.feature.bookmarks.navigation.navigateToBookmarks
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 import com.seosh817.moviehub.feature.movies.navigation.navigateToMovies
 import com.seosh817.moviehub.feature.settings.navigation.navigateToSettings
+import com.seosh817.moviehub.feature.search.navigation.navigateToSearch
 import com.seosh817.moviehub.navigation.PrimaryDestination.BOOKMARKS
 import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 
@@ -51,6 +52,10 @@ class MovieHubNavigator(
 
     fun navigateToSettings() {
         navController.navigateToSettings()
+    }
+
+    fun navigateToSearch() {
+        navController.navigateToSearch()
     }
 }
 

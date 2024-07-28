@@ -13,6 +13,7 @@ dependencies {
 
     implementation(projects.core.model)
     implementation(projects.core.common)
+    implementation(projects.core.database)
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging)

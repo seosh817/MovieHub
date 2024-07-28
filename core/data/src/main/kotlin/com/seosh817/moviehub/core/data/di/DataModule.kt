@@ -8,11 +8,13 @@ import com.seosh817.moviehub.core.data.repository.CompositeSearchRepository
 import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.FavoritesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MoviesRepositoryImpl
+import com.seosh817.moviehub.core.data.repository.SearchRepositoryImpl
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.repository.AppVersionsRepository
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
 import com.seosh817.moviehub.core.domain.repository.FavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.MoviesRepository
+import com.seosh817.moviehub.core.domain.repository.SearchRepository
 import com.seosh817.moviehub.core.domain.repository.UserFavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import com.seosh817.moviehub.core.domain.repository.UserSearchRepository
@@ -29,6 +31,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindMoviesRepository(moviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
+
+    @Singleton
+    @Binds
+    fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
 
     @Singleton
     @Binds
