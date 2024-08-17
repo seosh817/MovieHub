@@ -64,7 +64,7 @@ internal fun BookmarksScreen(
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
     onRefresh: () -> Unit,
-    onBookmarkClick: (Long, Boolean) -> Unit
+    onBookmarkClick: (UserMovie) -> Unit
 ) {
     val lazyGridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(
@@ -119,7 +119,9 @@ internal fun BookmarksScreen(
             },
             pullRefreshState = pullRefreshState,
             onRefresh = onRefresh,
-            onLikeClick = onBookmarkClick
+            onLikeClick = { userMovie ->
+                onBookmarkClick.invoke(userMovie)
+            }
         )
     }
 

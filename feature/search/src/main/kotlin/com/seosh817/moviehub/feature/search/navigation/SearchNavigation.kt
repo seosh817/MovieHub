@@ -18,10 +18,8 @@ fun NavController.navigateToSearch(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.searchScreen(
     onMovieClick: (MovieType, Long) -> Unit,
-    onBackClick: () -> Unit,
-    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
-
-    ) {
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean
+) {
     composable(
         route = searchNavigationRoute,
         deepLinks = listOf(
@@ -30,7 +28,6 @@ fun NavGraphBuilder.searchScreen(
     ) {
         SearchRoute(
             onMovieClick = onMovieClick,
-            onBackClick = onBackClick,
             onShowSnackbar = onShowSnackbar
         )
     }

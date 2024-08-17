@@ -8,7 +8,7 @@ sealed interface SearchUiEvent {
 
     data object ClearSearchQuery : SearchUiEvent
 
-    data class OnBookmarkClick(val userMovieId: Long, val isBookmark: Boolean) : SearchUiEvent
+    data class OnBookmarkClick(val userMovie: UserMovie, val isBookmark: Boolean) : SearchUiEvent
 
     data class ShowBookmarkedMessage(val isBookmarked: Boolean) : SearchUiEvent
 }

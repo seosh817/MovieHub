@@ -41,7 +41,7 @@ fun BookmarkContents(
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
     onRefresh: () -> Unit,
-    onLikeClick: (Long, Boolean) -> Unit
+    onLikeClick: (UserMovie) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -99,7 +99,9 @@ fun BookmarkContents(
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
                                     },
-                                onLikeClick = onLikeClick
+                                onLikeClick = { id, isBookmarked ->
+                                    onLikeClick.invoke(movie)
+                                }
                             )
                         }
                     }

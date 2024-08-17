@@ -4,4 +4,8 @@
     <string name="search_empty">No search results!</string>
     <string name="no_search_result">No search results!</string>
     <string name="refresh_error">An error has occurred.</string>
+    <string name="bookmarked_success">Bookmark added successfully</string>
+    <string name="bookmarked_failed">Bookmark removed successfully</string>
+    <string name="ok">OK</string>
+    <string name="back">back</string>
 </resources>

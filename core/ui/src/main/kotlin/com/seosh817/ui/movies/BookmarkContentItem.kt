@@ -24,7 +24,7 @@ fun BookmarkContentItem(
     context: Context,
     movie: UserMovie,
     modifier: Modifier = Modifier,
-    onLikeClick: (Long, Boolean) -> Unit
+    onLikeClick: (UserMovie, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -52,7 +52,7 @@ fun BookmarkContentItem(
                     .align(Alignment.TopEnd),
                 checked = movie.isBookmarked,
                 onCheckedClick = {
-                    onLikeClick(movie.id, it)
+                    onLikeClick(movie, it)
                 }
             )
         }

@@ -45,13 +45,11 @@ object DomainModule {
     @Provides
     fun providePostBookmarkUseCase(
         appPreferencesRepository: AppPreferencesRepository,
-        moviesRepository: MoviesRepository,
         favoritesRepository: FavoritesRepository,
         @Dispatcher(MovieHubDispatchers.IO) dispatcher: CoroutineDispatcher
     ): PostBookmarkUseCase {
         return PostBookmarkUseCase(
             appPreferencesRepository,
-            moviesRepository,
             favoritesRepository,
             dispatcher
         )

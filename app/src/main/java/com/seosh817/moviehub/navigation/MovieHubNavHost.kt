@@ -53,7 +53,6 @@ fun MovieHubNavHost(
         )
         searchScreen(
             onMovieClick = navController::navigateToMovieDetail,
-            onBackClick = navController::popBackStack,
             onShowSnackbar = onShowSnackbar
         )
     }

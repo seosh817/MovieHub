@@ -1,5 +1,6 @@
 package com.seosh817.moviehub.feature.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -15,10 +16,8 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -45,7 +44,7 @@ class SearchViewModel @Inject constructor(
     private val _searchUiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState.Success)
     val searchUiState: StateFlow<SearchUiState> = _searchUiState.asStateFlow()
 
-    private val _searchUiEvent: MutableSharedFlow<SearchUiEvent> = MutableSharedFlow()
+    val searchUiEvent: MutableSharedFlow<SearchUiEvent> = MutableSharedFlow()
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val searchImagePagingItems: Flow<PagingData<UserMovie>> = _queryStateFlow
@@ -72,11 +71,11 @@ class SearchViewModel @Inject constructor(
 
     private fun handleSearchUiEvent() {
         viewModelScope.launch {
-            _searchUiEvent
+            searchUiEvent
                 .collectLatest { searchUiEvent ->
                     when (searchUiEvent) {
                         is SearchUiEvent.OnQueryChanged -> onQueryChanged(searchUiEvent.query)
-                        is SearchUiEvent.OnBookmarkClick -> onClickBookmark(searchUiEvent.userMovieId, searchUiEvent.isBookmark)
+                        is SearchUiEvent.OnBookmarkClick -> onClickBookmark(searchUiEvent.userMovie)
                         is SearchUiEvent.ClearSearchQuery -> onQueryChanged("")
                         else -> {}
                     }
@@ -90,11 +89,12 @@ class SearchViewModel @Inject constructor(
 
     fun sendEvent(event: SearchUiEvent) {
         viewModelScope.launch {
-            _searchUiEvent.emit(event)
+            searchUiEvent.emit(event)
         }
     }
 
-    private fun onClickBookmark(movieId: Long, isBookmarked: Boolean) = postBookmarkUseCase.invoke(MovieType.POPULAR, movieId, isBookmarked)
+    private fun onClickBookmark(userMovie: UserMovie) = postBookmarkUseCase
+        .invoke(MovieType.POPULAR, userMovie)
         .asResult()
         .onStart {
             _searchUiState.emit(SearchUiState.Loading)
@@ -102,11 +102,12 @@ class SearchViewModel @Inject constructor(
         .onEach {
             when (it) {
                 is ResultState.Success -> {
-                    _searchUiEvent.emit(SearchUiEvent.ShowBookmarkedMessage(isBookmarked))
+                    searchUiEvent.emit(SearchUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked))
                     _searchUiState.emit(SearchUiState.Success)
                 }
 
                 is ResultState.Failure<*> -> {
+                    Log.d("!!!", "error: ${it.e}")
                     _searchUiState.emit(SearchUiState.Error(it.e))
                 }
             }
