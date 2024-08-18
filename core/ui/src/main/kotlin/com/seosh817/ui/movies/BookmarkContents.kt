@@ -1,7 +1,5 @@
 package com.seosh817.ui.movies
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,7 +28,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.ui.R
-import com.seosh817.ui.ContentsError
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
@@ -43,7 +41,7 @@ fun BookmarkContents(
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
     onRefresh: () -> Unit,
-    onLikeClick: (Long, Boolean) -> Unit
+    onLikeClick: (UserMovie) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -101,7 +99,9 @@ fun BookmarkContents(
                                     .clickable {
                                         onMovieClick.invoke(movie.id)
                                     },
-                                onLikeClick = onLikeClick
+                                onLikeClick = { id, isBookmarked ->
+                                    onLikeClick.invoke(movie)
+                                }
                             )
                         }
                     }

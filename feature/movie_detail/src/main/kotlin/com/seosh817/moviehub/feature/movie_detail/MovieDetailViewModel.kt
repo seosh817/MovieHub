@@ -11,8 +11,10 @@ import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
 import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
+import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.MovieDetailResult
 import com.seosh817.moviehub.core.model.MovieType
+import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,8 +36,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val bookmarkUseCase: PostBookmarkUseCase,
-    savedStateHandle: SavedStateHandle,
     appPreferencesSettingsRepository: AppPreferencesRepository,
+    savedStateHandle: SavedStateHandle,
     getMovieDetailUseCase: GetMovieDetailUseCase,
     getCreditsUseCase: GetCreditsUseCase,
 ) : ViewModel() {
@@ -72,8 +74,8 @@ class MovieDetailViewModel @Inject constructor(
     private var _showBookmarkSnackbar = mutableStateOf(false)
     val showBookmarkSnackbar: State<Boolean> = _showBookmarkSnackbar
 
-    fun updateBookmark(isBookmarked: Boolean) = bookmarkUseCase
-        .invoke(movieType, movieId, isBookmarked)
+    fun updateBookmark(movieDetail: MovieDetail, isBookmarked: Boolean) = bookmarkUseCase
+        .invoke(movieType, UserMovie(movieDetail, isBookmarked))
         .asResult()
         .onStart {
             _postBookmarkUiState.emit(PostBookmarkUiState.Loading)

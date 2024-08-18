@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
@@ -38,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import com.seosh817.moviehub.R
 import com.seosh817.moviehub.core.designsystem.component.MainTopAppBar
@@ -122,7 +124,7 @@ fun MainScreen(
                     navigationIconContentDescription = stringResource(
                         id = R.string.top_app_bar_navigation_icon_description,
                     ),
-                    onNavigationClick = { },
+                    onNavigationClick = movieHubNavigator::navigateToSearch,
                     scrollBehavior = scrollBehavior,
                     actions = {
                         IconButton(
