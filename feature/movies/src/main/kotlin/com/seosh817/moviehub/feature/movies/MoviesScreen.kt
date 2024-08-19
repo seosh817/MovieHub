@@ -63,7 +63,7 @@ fun MoviesScreen(
     postBookmarkUiState: PostBookmarkUiState,
     moviesUiEvent: MoviesUiEvent?,
     isRefreshing: Boolean,
-    onBookmarkClick: (Long, Boolean) -> Unit,
+    onBookmarkClick: (UserMovie) -> Unit,
     onMovieClick: (MovieType, Long) -> Unit,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onRefresh: () -> Unit,

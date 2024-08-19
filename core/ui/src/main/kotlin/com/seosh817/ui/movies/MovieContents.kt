@@ -29,7 +29,7 @@ import androidx.paging.compose.itemKey
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.ui.R
-import com.seosh817.ui.ContentsError
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -42,7 +42,7 @@ fun MovieContents(
     pullRefreshState: PullRefreshState,
     onMovieClick: (Long) -> Unit,
     onRefresh: () -> Unit,
-    onBookmarkClick: (Long, Boolean) -> Unit
+    onBookmarkClick: (UserMovie) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -98,7 +98,9 @@ fun MovieContents(
                                     },
                                 context = context,
                                 movie = movie,
-                                onLikeClick = onBookmarkClick
+                                onLikeClick = { id, isBookmarked ->
+                                    onBookmarkClick.invoke(movie)
+                                }
                             )
                         }
                     }

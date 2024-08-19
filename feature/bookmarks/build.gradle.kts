@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.androidx.paging)
     implementation(libs.androidx.paging.compose)
+    implementation(projects.core.database)
+    implementation(projects.core.data)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)

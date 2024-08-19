@@ -57,25 +57,25 @@ class MoviesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    fun onBookmarkClick(movieId: Long, isBookmarked: Boolean) =
-        postBookmarkUseCase.invoke(MovieType.POPULAR, movieId, isBookmarked)
-            .asResult()
-            .onStart {
-                _postBookmarkUiState.emit(PostBookmarkUiState.Loading)
-            }
-            .onEach {
-                when (it) {
-                    is ResultState.Success -> {
-                        _moviesUiEvent.emit(MoviesUiEvent.ShowBookmarkedMessage(isBookmarked))
-                        _postBookmarkUiState.emit(PostBookmarkUiState.Success)
-                    }
+    fun onBookmarkClick(userMovie: UserMovie) = postBookmarkUseCase
+        .invoke(MovieType.POPULAR, userMovie)
+        .asResult()
+        .onStart {
+            _postBookmarkUiState.emit(PostBookmarkUiState.Loading)
+        }
+        .onEach {
+            when (it) {
+                is ResultState.Success -> {
+                    _moviesUiEvent.emit(MoviesUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked))
+                    _postBookmarkUiState.emit(PostBookmarkUiState.Success)
+                }
 
-                    is ResultState.Failure<*> -> {
-                        _postBookmarkUiState.emit(PostBookmarkUiState.Error(it.e))
-                    }
+                is ResultState.Failure<*> -> {
+                    _postBookmarkUiState.emit(PostBookmarkUiState.Error(it.e))
                 }
             }
-            .launchIn(viewModelScope)
+        }
+        .launchIn(viewModelScope)
 
 
     fun showMessage() {

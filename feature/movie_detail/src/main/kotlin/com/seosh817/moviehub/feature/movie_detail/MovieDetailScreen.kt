@@ -65,9 +65,10 @@ import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
+import com.seosh817.moviehub.core.model.MovieDetailResult
 import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
-import com.seosh817.ui.ContentsError
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow
@@ -119,7 +120,7 @@ fun MovieDetailScreen(
     showBookmarkedSnackbar: Boolean,
     isBookmarked: Boolean,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
-    onFabClick: (Boolean) -> Unit,
+    onFabClick: (MovieDetail, Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
     onRefresh: () -> Unit
@@ -143,7 +144,6 @@ fun MovieDetailScreen(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
     ) {
-
         when (movieDetailUiState) {
             is MovieDetailUiState.Loading -> Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
@@ -169,7 +169,9 @@ fun MovieDetailScreen(
                     movieDetailUiState.movieDetailResult.movieDetail,
                     movieDetailUiState.movieDetailResult.movieCredits,
                     isBookmarked = isBookmarked,
-                    onFabClick = onFabClick,
+                    onFabClick = {
+                        onFabClick(movieDetailUiState.movieDetailResult.movieDetail, !it)
+                    },
                     onShareClick = onShareClick,
                     onBackClick = onBackClick
                 )

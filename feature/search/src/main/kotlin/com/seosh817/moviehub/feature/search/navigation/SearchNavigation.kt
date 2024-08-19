@@ -1,10 +1,12 @@
 package com.seosh817.moviehub.feature.search.navigation
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.feature.search.SearchRoute
 
 const val searchNavigationRoute = "search_route"
@@ -15,7 +17,8 @@ fun NavController.navigateToSearch(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.searchScreen(
-    onBackClick: () -> Unit,
+    onMovieClick: (MovieType, Long) -> Unit,
+    onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean
 ) {
     composable(
         route = searchNavigationRoute,
@@ -24,7 +27,8 @@ fun NavGraphBuilder.searchScreen(
         ),
     ) {
         SearchRoute(
-            onBackClick = onBackClick,
+            onMovieClick = onMovieClick,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }
