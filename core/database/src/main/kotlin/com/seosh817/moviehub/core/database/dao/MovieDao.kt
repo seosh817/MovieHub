@@ -49,8 +49,8 @@ interface MovieDao {
     suspend fun insertAll(entities: List<MovieEntity>): List<Long>
 
     /**
-     * Deletes all movies of a given [type]
+     * Deletes all movies
      */
-    @Query("DELETE FROM movies WHERE type NOT IN (:type)")
-    suspend fun clearAll(type: String)
+    @Query("DELETE FROM movies")
+    suspend fun clearAll()
 }

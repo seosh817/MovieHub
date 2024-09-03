@@ -121,8 +121,8 @@ class MoviesRemoteMediator(
 
                     moviesDatabase.withTransaction {
                         if (loadType == LoadType.REFRESH) {
-                            moviesDatabase.remoteKeyDao().clearAll(type.name)
-                            moviesDatabase.movieDao().clearAll(type.name)
+                            moviesDatabase.remoteKeyDao().clearAll()
+                            moviesDatabase.movieDao().clearAll()
                         }
                         val prevKey = if (page > 1) page - 1 else null
                         val nextKey = if (endOfPaginationReached) null else page.plus(1)

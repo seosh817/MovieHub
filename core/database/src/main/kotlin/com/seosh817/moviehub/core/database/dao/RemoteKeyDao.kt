@@ -23,10 +23,10 @@ interface RemoteKeyDao {
     suspend fun getRemoteKeyByMovieID(id: Long): RemoteKeyEntity?
 
     /**
-     * Deletes all remote keys of a given [type]
+     * Deletes all remote keys
      */
-    @Query("DELETE FROM remote_keys WHERE type = :type")
-    suspend fun clearAll(type: String)
+    @Query("DELETE FROM remote_keys")
+    suspend fun clearAll()
 
     /**
      * Returns the creation time of the last inserted remote key
