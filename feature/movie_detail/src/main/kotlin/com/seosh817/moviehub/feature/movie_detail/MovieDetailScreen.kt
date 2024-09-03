@@ -132,7 +132,7 @@ fun MovieDetailScreen(
 
     LaunchedEffect(showBookmarkedSnackbar) {
         if (showBookmarkedSnackbar) {
-            if (isBookmarked) {
+            if (!isBookmarked) {
                 onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Long)
             } else {
                 onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Long)

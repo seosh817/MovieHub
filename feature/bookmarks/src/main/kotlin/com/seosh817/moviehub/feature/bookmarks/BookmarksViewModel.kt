@@ -70,7 +70,7 @@ class BookmarksViewModel @Inject constructor(
             .onEach {
                 when (it) {
                     is ResultState.Success -> {
-                        _bookmarksUiEvent.emit(BookmarksUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked))
+                        _bookmarksUiEvent.emit(BookmarksUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked, userMovie.id))
                         _postBookmarkUiState.emit(PostBookmarkUiState.Success)
                     }
 

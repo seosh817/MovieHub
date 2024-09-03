@@ -4,5 +4,6 @@
     "config:base",
     ":timezone(Asia/Seoul)",
     "schedule:daily"
-  ]
+  ],
+  "baseBranches": ["develop"]
 }
