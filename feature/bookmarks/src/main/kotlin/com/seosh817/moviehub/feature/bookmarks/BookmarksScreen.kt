@@ -82,7 +82,7 @@ internal fun BookmarksScreen(
     LaunchedEffect(bookmarksUiEvent) {
         when (bookmarksUiEvent) {
             is BookmarksUiEvent.ShowBookmarkedMessage -> {
-                if (bookmarksUiEvent.isBookmarked) {
+                if (!bookmarksUiEvent.isBookmarked) {
                     onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
                 } else {
                     onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)
