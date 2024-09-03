@@ -10,5 +10,5 @@ sealed interface SearchUiEvent {
 
     data class OnBookmarkClick(val userMovie: UserMovie, val isBookmark: Boolean) : SearchUiEvent
 
-    data class ShowBookmarkedMessage(val isBookmarked: Boolean) : SearchUiEvent
+    data class ShowBookmarkedMessage(val isBookmarked: Boolean, val id: Long) : SearchUiEvent
 }
