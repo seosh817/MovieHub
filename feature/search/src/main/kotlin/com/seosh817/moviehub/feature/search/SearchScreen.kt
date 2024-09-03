@@ -94,7 +94,7 @@ fun SearchScreen(
     LaunchedEffect(key1 = searchUiEvent) {
         when (searchUiEvent) {
             is SearchUiEvent.ShowBookmarkedMessage -> {
-                if (searchUiEvent.isBookmarked) {
+                if (!searchUiEvent.isBookmarked) {
                     onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
                 } else {
                     onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)

@@ -86,7 +86,7 @@ fun MoviesScreen(
     LaunchedEffect(moviesUiEvent) {
         when (moviesUiEvent) {
             is MoviesUiEvent.ShowBookmarkedMessage -> {
-                if (moviesUiEvent.isBookmarked) {
+                if (!moviesUiEvent.isBookmarked) {
                     onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
                 } else {
                     onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)

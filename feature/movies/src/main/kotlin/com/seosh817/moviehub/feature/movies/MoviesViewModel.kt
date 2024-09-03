@@ -66,7 +66,7 @@ class MoviesViewModel @Inject constructor(
         .onEach {
             when (it) {
                 is ResultState.Success -> {
-                    _moviesUiEvent.emit(MoviesUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked))
+                    _moviesUiEvent.emit(MoviesUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked, userMovie.id))
                     _postBookmarkUiState.emit(PostBookmarkUiState.Success)
                 }
 

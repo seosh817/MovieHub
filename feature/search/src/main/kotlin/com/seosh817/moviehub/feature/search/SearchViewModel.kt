@@ -102,7 +102,7 @@ class SearchViewModel @Inject constructor(
         .onEach {
             when (it) {
                 is ResultState.Success -> {
-                    searchUiEvent.emit(SearchUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked))
+                    searchUiEvent.emit(SearchUiEvent.ShowBookmarkedMessage(userMovie.isBookmarked, userMovie.id))
                     _searchUiState.emit(SearchUiState.Success)
                 }
 
