@@ -24,6 +24,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,14 +66,13 @@ import com.seosh817.moviehub.core.model.Credits
 import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
-import com.seosh817.moviehub.core.model.MovieDetailResult
 import com.seosh817.moviehub.core.model.ProductionCompany
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
-import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.MovieHubLazyRow
 import com.seosh817.ui.company.CompanyItem
+import com.seosh817.ui.error.ContentsError
 import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatLogoImageUrl
 import com.seosh817.ui.ktx.formatProfileImageUrl
@@ -95,14 +95,14 @@ internal fun MovieDetailRoute(
 ) {
     val movieDetailUiState by viewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
     val postBookmarkUiState by viewModel.postBookmarkUiState.collectAsStateWithLifecycle()
+    val movieDetailUiEvent by viewModel.movieDetailUiEvent.collectAsState(initial = null)
     val isBookmarked by viewModel.isBookmarked.collectAsStateWithLifecycle()
-    val showBookmarkedSnackbar by viewModel.showBookmarkSnackbar
 
     MovieDetailScreen(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
+        movieDetailUiEvent = movieDetailUiEvent,
         postBookmarkUiState = postBookmarkUiState,
-        showBookmarkedSnackbar = showBookmarkedSnackbar,
         isBookmarked = isBookmarked,
         onShowSnackbar = onShowSnackbar,
         onFabClick = viewModel::updateBookmark,
@@ -116,8 +116,8 @@ internal fun MovieDetailRoute(
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
+    movieDetailUiEvent: MovieDetailUiEvent?,
     postBookmarkUiState: PostBookmarkUiState,
-    showBookmarkedSnackbar: Boolean,
     isBookmarked: Boolean,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onFabClick: (MovieDetail, Boolean) -> Unit,
@@ -130,13 +130,17 @@ fun MovieDetailScreen(
     val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
     val okText = stringResource(id = R.string.ok)
 
-    LaunchedEffect(showBookmarkedSnackbar) {
-        if (showBookmarkedSnackbar) {
-            if (!isBookmarked) {
-                onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Long)
-            } else {
-                onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Long)
+    LaunchedEffect(key1 = movieDetailUiEvent) {
+        when (movieDetailUiEvent) {
+            is MovieDetailUiEvent.ShowBookmarkedMessage -> {
+                if (!movieDetailUiEvent.isBookmarked) {
+                    onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
+                } else {
+                    onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)
+                }
             }
+
+            else -> {}
         }
     }
 
