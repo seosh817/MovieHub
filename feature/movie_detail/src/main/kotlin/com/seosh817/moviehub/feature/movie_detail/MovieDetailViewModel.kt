@@ -1,7 +1,5 @@
 package com.seosh817.moviehub.feature.movie_detail
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -71,21 +69,19 @@ class MovieDetailViewModel @Inject constructor(
     private val _postBookmarkUiState: MutableStateFlow<PostBookmarkUiState> = MutableStateFlow(PostBookmarkUiState.Success)
     val postBookmarkUiState: StateFlow<PostBookmarkUiState> = _postBookmarkUiState.asStateFlow()
 
-    private var _showBookmarkSnackbar = mutableStateOf(false)
-    val showBookmarkSnackbar: State<Boolean> = _showBookmarkSnackbar
+    val movieDetailUiEvent: MutableSharedFlow<MovieDetailUiEvent> = MutableSharedFlow()
 
     fun updateBookmark(movieDetail: MovieDetail, isBookmarked: Boolean) = bookmarkUseCase
         .invoke(movieType, UserMovie(movieDetail, isBookmarked))
         .asResult()
         .onStart {
             _postBookmarkUiState.emit(PostBookmarkUiState.Loading)
-            _showBookmarkSnackbar.value = false
         }
         .onEach {
-            _showBookmarkSnackbar.value = true
             when (it) {
                 is ResultState.Success -> {
                     _postBookmarkUiState.emit(PostBookmarkUiState.Success)
+                    movieDetailUiEvent.emit(MovieDetailUiEvent.ShowBookmarkedMessage(isBookmarked, movieDetail.id))
                 }
 
                 is ResultState.Failure<*> -> {
