@@ -23,9 +23,9 @@
 
 <p align="center">🎬 An android app for exploring movies using the movie database API Implemented by Clean Architecture, MVVM, Compose, Coroutines, Flow, Hilt, Jetpack(Room, Datastore)</p><br/><br/>
 
-<img src="/previews/preview.gif" align="right" width="320" alt="preview"/>
-
 # Tech-stack
+
+<img src="/previews/preview.gif" align="right" width="320" alt="preview"/>
 
 - [Kotlin](https://kotlinlang.org/) - is a modern and pragmatic programming language developed by JetBrains. It is fully interoperable with Java and widely adopted for Android app development.
 - **Asynchronous**:
