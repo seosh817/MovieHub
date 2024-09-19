@@ -28,8 +28,8 @@ import com.seosh817.moviehub.core.model.OpenDialog
 import com.seosh817.moviehub.feature.bookmarks.navigation.bookmarksScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.movieDetailScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.navigateToMovieDetail
+import com.seosh817.moviehub.feature.movies.navigation.MOVIES_NAVIGATION_ROUTE
 import com.seosh817.moviehub.feature.movies.navigation.movieScreen
-import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
 import com.seosh817.moviehub.feature.search.navigation.searchScreen
 import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
 
@@ -39,7 +39,7 @@ fun MovieHubNavHost(
     movieHubNavigator: MovieHubNavigator,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     openDialog: (OpenDialog) -> Unit,
-    startDestination: String = moviesNavigationRoute,
+    startDestination: String = MOVIES_NAVIGATION_ROUTE,
 ) {
     val navController = movieHubNavigator.navController
     val activity = (LocalContext.current as Activity)
