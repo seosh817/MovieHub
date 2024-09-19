@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.core.designsystem.theme
 
 import androidx.compose.runtime.Composable
@@ -46,7 +61,7 @@ data class Dimensions(
     val dp_58: Dp = 58.dp,
     val dp_60: Dp = 60.dp,
     val dp_80: Dp = 80.dp,
-    val dp_240: Dp = 240.dp
+    val dp_240: Dp = 240.dp,
 )
 
 val mDpiDimensions = Dimensions()
@@ -88,7 +103,7 @@ val hDpiDimensions = Dimensions(
     dp_58 = 38.66.dp,
     dp_60 = 40.dp,
     dp_80 = 53.33.dp,
-    dp_240 = 160.dp
+    dp_240 = 160.dp,
 )
 
 val xhDpiDimensions = Dimensions(
@@ -128,7 +143,7 @@ val xhDpiDimensions = Dimensions(
     dp_58 = 29.dp,
     dp_60 = 30.dp,
     dp_80 = 40.dp,
-    dp_240 = 120.dp
+    dp_240 = 120.dp,
 )
 
 val Dimens: Dimensions

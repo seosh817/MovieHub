@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.core.database.migration
 
 import androidx.room.migration.Migration
@@ -25,13 +40,15 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
                 "vote_count INTEGER, " +
                 "type TEXT NOT NULL, " +
                 "page INTEGER NOT NULL" +
-                ")"
+                ")",
         )
 
-        db.execSQL("INSERT INTO movies_new (" +
-            "movie_id, adult, back_drop_path, genre_ids, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count, type, page) " +
-            "SELECT movie_id, adult, back_drop_path, genre_ids, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count, type, page " +
-            "FROM movies")
+        db.execSQL(
+            "INSERT INTO movies_new (" +
+                "movie_id, adult, back_drop_path, genre_ids, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count, type, page) " +
+                "SELECT movie_id, adult, back_drop_path, genre_ids, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count, type, page " +
+                "FROM movies",
+        )
 
         db.execSQL("DROP TABLE movies")
 
@@ -45,15 +62,16 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
                 "prev_key INTEGER, " +
                 "next_key INTEGER, " +
                 "created_at INTEGER NOT NULL" +
-                ")"
+                ")",
         )
 
-        db.execSQL("INSERT INTO remote_keys_new (type, movie_id, prev_key, next_key, created_at) " +
-            "SELECT type, movie_id, prev_key, next_key, created_at FROM remote_keys")
+        db.execSQL(
+            "INSERT INTO remote_keys_new (type, movie_id, prev_key, next_key, created_at) " +
+                "SELECT type, movie_id, prev_key, next_key, created_at FROM remote_keys",
+        )
 
         db.execSQL("DROP TABLE remote_keys")
 
         db.execSQL("ALTER TABLE remote_keys_new RENAME TO remote_keys")
-
     }
 }

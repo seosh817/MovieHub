@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.ui.movies
 
 import android.content.Context
@@ -15,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.seosh817.moviehub.core.designsystem.component.DynamicAsyncImage
 import com.seosh817.moviehub.core.designsystem.component.LikeToggleButton
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
-import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.ui.ktx.formatPosterImageUrl
 
@@ -24,7 +38,7 @@ fun BookmarkContentItem(
     context: Context,
     movie: UserMovie,
     modifier: Modifier = Modifier,
-    onLikeClick: (UserMovie, Boolean) -> Unit
+    onLikeClick: (UserMovie, Boolean) -> Unit,
 ) {
     Card(
         modifier = modifier
@@ -34,7 +48,7 @@ fun BookmarkContentItem(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             DynamicAsyncImage(
                 context = context,
@@ -43,7 +57,7 @@ fun BookmarkContentItem(
                 imageUrl = movie.posterPath?.formatPosterImageUrl,
                 contentDescription = movie.title ?: "",
                 contentScale = ContentScale.Crop,
-                alpha = 1f
+                alpha = 1f,
             )
 
             LikeToggleButton(
@@ -53,7 +67,7 @@ fun BookmarkContentItem(
                 checked = movie.isBookmarked,
                 onCheckedClick = {
                     onLikeClick(movie, it)
-                }
+                },
             )
         }
     }

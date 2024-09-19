@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.core.database.dao
 
 import android.content.Context
@@ -6,8 +21,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.seosh817.moviehub.core.database.MovieHubDatabase
 import com.seosh817.moviehub.core.database.model.FavoriteEntity
-import com.seosh817.moviehub.core.database.model.MovieEntity
-import com.seosh817.moviehub.core.model.MovieType
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -45,7 +58,7 @@ class FavoritesDaoTest {
             originalTitle = "originalTitle",
             popularity = 1.0,
             video = false,
-            createdAt = 0L
+            createdAt = 0L,
         )
 
         val favorite2 = FavoriteEntity(
@@ -63,7 +76,7 @@ class FavoritesDaoTest {
             originalTitle = "originalTitle",
             popularity = 1.0,
             video = false,
-            createdAt = 0L
+            createdAt = 0L,
         )
 
         val favoriteEntities = listOf(favorite1, favorite2)
@@ -77,8 +90,8 @@ class FavoritesDaoTest {
             PagingSource.LoadParams.Refresh(
                 key = null,
                 loadSize = 2,
-                placeholdersEnabled = false
-            )
+                placeholdersEnabled = false,
+            ),
         )
 
         assertEquals(favoriteEntities, (favoritesLoadResult as? PagingSource.LoadResult.Page)?.data.orEmpty())
@@ -101,7 +114,7 @@ class FavoritesDaoTest {
             originalTitle = "originalTitle",
             popularity = 1.0,
             video = false,
-            createdAt = 0L
+            createdAt = 0L,
         )
 
         val favorite2 = FavoriteEntity(
@@ -119,7 +132,7 @@ class FavoritesDaoTest {
             originalTitle = "originalTitle",
             popularity = 1.0,
             video = false,
-            createdAt = 0L
+            createdAt = 0L,
         )
 
         val favoriteEntities = listOf(favorite1, favorite2)
@@ -135,8 +148,8 @@ class FavoritesDaoTest {
             PagingSource.LoadParams.Refresh(
                 key = null,
                 loadSize = 2,
-                placeholdersEnabled = false
-            )
+                placeholdersEnabled = false,
+            ),
         )
 
         assertEquals(listOf(favorite2), (favoritesLoadResult as? PagingSource.LoadResult.Page)?.data.orEmpty())

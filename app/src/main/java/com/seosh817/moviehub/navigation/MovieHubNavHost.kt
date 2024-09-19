@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.navigation
 
 import android.app.Activity
@@ -9,12 +24,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ShareCompat
 import androidx.navigation.compose.NavHost
 import com.seosh817.moviehub.R
+import com.seosh817.moviehub.core.model.OpenDialog
+import com.seosh817.moviehub.feature.bookmarks.navigation.bookmarksScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.movieDetailScreen
 import com.seosh817.moviehub.feature.movie_detail.navigation.navigateToMovieDetail
 import com.seosh817.moviehub.feature.movies.navigation.movieScreen
 import com.seosh817.moviehub.feature.movies.navigation.moviesNavigationRoute
-import com.seosh817.moviehub.core.model.OpenDialog
-import com.seosh817.moviehub.feature.bookmarks.navigation.bookmarksScreen
 import com.seosh817.moviehub.feature.search.navigation.searchScreen
 import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
 
@@ -24,7 +39,7 @@ fun MovieHubNavHost(
     movieHubNavigator: MovieHubNavigator,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     openDialog: (OpenDialog) -> Unit,
-    startDestination: String = moviesNavigationRoute
+    startDestination: String = moviesNavigationRoute,
 ) {
     val navController = movieHubNavigator.navController
     val activity = (LocalContext.current as Activity)
@@ -36,24 +51,24 @@ fun MovieHubNavHost(
     ) {
         movieScreen(
             onMovieClick = navController::navigateToMovieDetail,
-            onShowSnackbar = onShowSnackbar
+            onShowSnackbar = onShowSnackbar,
         )
         movieDetailScreen(
             onBackClick = navController::popBackStack,
             onShareClick = activity::createShareIntent,
-            onShowSnackbar = onShowSnackbar
+            onShowSnackbar = onShowSnackbar,
         )
         bookmarksScreen(
             onMovieClick = navController::navigateToMovieDetail,
-            onShowSnackbar = onShowSnackbar
+            onShowSnackbar = onShowSnackbar,
         )
         settingsScreen(
             onBackClick = navController::popBackStack,
-            openDialog = openDialog
+            openDialog = openDialog,
         )
         searchScreen(
             onMovieClick = navController::navigateToMovieDetail,
-            onShowSnackbar = onShowSnackbar
+            onShowSnackbar = onShowSnackbar,
         )
     }
 }

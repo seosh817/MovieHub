@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.ui
 
 import androidx.compose.foundation.layout.Column
@@ -10,7 +25,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
@@ -39,7 +53,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import com.seosh817.moviehub.R
 import com.seosh817.moviehub.core.designsystem.component.MainTopAppBar
@@ -56,16 +69,15 @@ import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(
     ExperimentalLayoutApi::class,
-    ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class,
 )
 @Composable
 fun MainScreen(
     movieHubNavigator: MovieHubNavigator = rememberMovieHubNavigator(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
-    openDialog: (OpenDialog) -> Unit
+    openDialog: (OpenDialog) -> Unit,
 ) {
-
     val canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState, canScroll = { canScroll })
 
@@ -103,7 +115,7 @@ fun MainScreen(
                 )
             }
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { padding ->
         Column(
             modifier = Modifier
@@ -130,20 +142,20 @@ fun MainScreen(
                         IconButton(
                             onClick = {
                                 openDialog(OpenDialog.APP_THEME_SETTINGS)
-                            }
+                            },
                         ) {
                             Icon(
                                 imageVector = Icons.Default.DarkMode,
-                                contentDescription = stringResource(id = R.string.top_app_bar_dark_mode_icon_description)
+                                contentDescription = stringResource(id = R.string.top_app_bar_dark_mode_icon_description),
                             )
                         }
 
                         IconButton(
-                            onClick = movieHubNavigator::navigateToSettings
+                            onClick = movieHubNavigator::navigateToSettings,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Settings,
-                                contentDescription = stringResource(id = R.string.top_app_bar_settings_icon_description)
+                                contentDescription = stringResource(id = R.string.top_app_bar_settings_icon_description),
                             )
                         }
                     },
@@ -173,10 +185,10 @@ private fun MovieHubBottomBar(
     currentDestination: NavDestination?,
     destinations: PersistentList<PrimaryDestination>,
     onTabSelected: (PrimaryDestination) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     MovieHubNavigationBar(
-        modifier = modifier
+        modifier = modifier,
     ) {
         destinations.forEach { primaryDestination ->
             val selected = currentDestination.isPrimaryDestinationInHierarchy(primaryDestination)
