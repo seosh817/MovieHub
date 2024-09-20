@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.network.fake
 
 import JvmUnitTestFakeAssetManager
@@ -51,7 +66,7 @@ class FakeCreditsDataSourceTest {
                 castId = 4,
                 character = "The Narrator",
                 creditId = "52fe4250c3a36847f80149f3",
-                order = 0
+                order = 0,
             ),
             NetworkCast(
                 adult = false,
@@ -65,7 +80,7 @@ class FakeCreditsDataSourceTest {
                 castId = 5,
                 character = "Tyler Durden",
                 creditId = "52fe4250c3a36847f80149f7",
-                order = 1
+                order = 1,
             ),
             NetworkCast(
                 adult = false,
@@ -79,7 +94,7 @@ class FakeCreditsDataSourceTest {
                 castId = 285,
                 character = "Marla Singer",
                 creditId = "631f0de8bd32090082733691",
-                order = 2
+                order = 2,
             ),
         )
 
@@ -100,7 +115,7 @@ class FakeCreditsDataSourceTest {
                 profilePath = "/b2hBExX4NnczNAnLuTBF4kmNhZm.jpg",
                 creditId = "55731b8192514111610027d7",
                 department = "Production",
-                job = "Executive Producer"
+                job = "Executive Producer",
             ),
             NetworkCrew(
                 adult = false,
@@ -113,7 +128,7 @@ class FakeCreditsDataSourceTest {
                 profilePath = "/bNarnI5K4XYIKaHsX6HAitllyQr.jpg",
                 creditId = "5894c4eac3a3685ec6000218",
                 department = "Costume & Make-Up",
-                job = "Costume Design"
+                job = "Costume Design",
             ),
             NetworkCrew(
                 adult = false,
@@ -126,10 +141,10 @@ class FakeCreditsDataSourceTest {
                 profilePath = "/gZbaXFTQCSWCq6vzE817NXIA4zC.jpg",
                 creditId = "52fe4250c3a36847f8014a11",
                 department = "Production",
-                job = "Producer"
+                job = "Producer",
             ),
         )
-        
+
         assertEquals(crews, (fakeCreditsDataSource.fetchCredits(1, null) as ResultState.Success).data.networkCrew.take(3))
     }
 }
