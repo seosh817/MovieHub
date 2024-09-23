@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.feature.movie_detail
 
 import androidx.compose.animation.AnimatedVisibility
@@ -108,7 +123,7 @@ internal fun MovieDetailRoute(
         onFabClick = viewModel::updateBookmark,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
-        onRefresh = viewModel::replay
+        onRefresh = viewModel::replay,
     )
 }
 
@@ -123,9 +138,8 @@ fun MovieDetailScreen(
     onFabClick: (MovieDetail, Boolean) -> Unit,
     onShareClick: (String) -> Unit,
     onBackClick: () -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
 ) {
-
     val bookmarkedSuccessMessage = stringResource(id = R.string.bookmarked_success)
     val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
     val okText = stringResource(id = R.string.ok)
@@ -146,13 +160,13 @@ fun MovieDetailScreen(
 
     Box(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         when (movieDetailUiState) {
             is MovieDetailUiState.Loading -> Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
                     modifier = Modifier
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
 
@@ -177,7 +191,7 @@ fun MovieDetailScreen(
                         onFabClick(movieDetailUiState.movieDetailResult.movieDetail, !it)
                     },
                     onShareClick = onShareClick,
-                    onBackClick = onBackClick
+                    onBackClick = onBackClick,
                 )
             }
         }
@@ -186,7 +200,7 @@ fun MovieDetailScreen(
             Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
                     modifier = Modifier
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
         }
@@ -201,7 +215,7 @@ fun MovieDetails(
     isBookmarked: Boolean,
     onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     var movieDetailScroller by remember {
@@ -214,13 +228,15 @@ fun MovieDetails(
     // Transition that fades in/out the header with the image and the Toolbar
     val transition = updateTransition(transitionState, label = "")
     val toolbarAlpha = transition.animateFloat(
-        transitionSpec = { spring(stiffness = Spring.StiffnessLow) }, label = ""
+        transitionSpec = { spring(stiffness = Spring.StiffnessLow) },
+        label = "",
     ) { toolbarTransitionState ->
         if (toolbarTransitionState == ToolbarState.HIDDEN) 0f else 1f
     }
 
     val contentAlpha = transition.animateFloat(
-        transitionSpec = { spring(stiffness = Spring.StiffnessLow) }, label = ""
+        transitionSpec = { spring(stiffness = Spring.StiffnessLow) },
+        label = "",
     ) { toolbarTransitionState ->
         if (toolbarTransitionState == ToolbarState.HIDDEN) 1f else 0f
     }
@@ -235,7 +251,7 @@ fun MovieDetails(
         object : NestedScrollConnection {
             override fun onPreScroll(
                 available: Offset,
-                source: NestedScrollSource
+                source: NestedScrollSource,
             ): Offset {
                 val delta = available.y
                 val newOffset = toolbarOffsetHeightPx.floatValue + delta
@@ -248,7 +264,7 @@ fun MovieDetails(
 
     Box(
         modifier = modifier
-            .nestedScroll(nestedScrollConnection)
+            .nestedScroll(nestedScrollConnection),
     ) {
         MovieDetailContents(
             scrollState = scrollState,
@@ -266,7 +282,7 @@ fun MovieDetails(
             },
             contentAlpha = { contentAlpha.value },
             isBookmarked = isBookmarked,
-            onFabClick = onFabClick
+            onFabClick = onFabClick,
         )
         MovieToolbar(
             toolbarState = toolbarState,
@@ -276,7 +292,7 @@ fun MovieDetails(
                 onShareClick(movieDetail.title.orEmpty())
             },
             toolbarAlpha = { toolbarAlpha.value },
-            contentAlpha = { contentAlpha.value }
+            contentAlpha = { contentAlpha.value },
         )
     }
 }
@@ -291,7 +307,7 @@ fun MovieDetailContents(
     onNamePosition: (Float) -> Unit,
     contentAlpha: () -> Float,
     isBookmarked: Boolean,
-    onFabClick: (Boolean) -> Unit
+    onFabClick: (Boolean) -> Unit,
 ) {
     Column(Modifier.verticalScroll(scrollState)) {
         ConstraintLayout {
@@ -306,8 +322,8 @@ fun MovieDetailContents(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(Color.Black, Color.White),
-                        )
-                    )
+                        ),
+                    ),
             )
 
             val fabEndMargin = 32.dp
@@ -321,10 +337,10 @@ fun MovieDetailContents(
                         centerAround(image.bottom)
                         absoluteRight.linkTo(
                             parent.absoluteRight,
-                            margin = fabEndMargin
+                            margin = fabEndMargin,
                         )
                     }
-                    .alpha(contentAlpha())
+                    .alpha(contentAlpha()),
             )
 
             MovieInfo(
@@ -340,7 +356,7 @@ fun MovieDetailContents(
                 toolbarState = toolbarState,
                 modifier = Modifier.constrainAs(info) {
                     top.linkTo(image.bottom)
-                }
+                },
             )
         }
     }
@@ -351,19 +367,19 @@ private fun MovieImage(
     imageUrl: String?,
     imageHeight: Dp,
     modifier: Modifier = Modifier,
-    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(0.2f)
+    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(0.2f),
 ) {
     val isLoading by remember { mutableStateOf(true) }
     Box(
         modifier
             .fillMaxWidth()
-            .height(imageHeight)
+            .height(imageHeight),
     ) {
         if (isLoading) {
             Box(
                 Modifier
                     .fillMaxSize()
-                    .background(placeholderColor)
+                    .background(placeholderColor),
             )
         }
         MovieDetailHeaderImage(
@@ -402,9 +418,9 @@ fun MovieDetailHeaderImage(
         modifier = modifier,
         component = rememberImageComponent {
             +CircularRevealPlugin(
-                duration = 800
+                duration = 800,
             )
-        }
+        },
     )
 }
 
@@ -415,20 +431,20 @@ private fun MovieToolbar(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     toolbarAlpha: () -> Float,
-    contentAlpha: () -> Float
+    contentAlpha: () -> Float,
 ) {
     if (toolbarState.isShown) {
         DetailTopAppBar(
             title = movieName,
             onBackClick = onBackClick,
             onShareClick = onShareClick,
-            modifier = Modifier.alpha(toolbarAlpha())
+            modifier = Modifier.alpha(toolbarAlpha()),
         )
     } else {
         DetailHeaderActions(
             onBackClick = onBackClick,
             onShareClick = onShareClick,
-            modifier = Modifier.alpha(contentAlpha())
+            modifier = Modifier.alpha(contentAlpha()),
         )
     }
 }
@@ -445,11 +461,11 @@ private fun MovieInfo(
     crews: List<Crew>?,
     onNamePosition: (Float) -> Unit,
     toolbarState: ToolbarState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         AnimatedVisibility(visible = toolbarState == ToolbarState.HIDDEN) {
             Text(
@@ -458,7 +474,7 @@ private fun MovieInfo(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(
-                        top = AppDimens.PaddingExtraLarge
+                        top = AppDimens.PaddingExtraLarge,
                     )
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
@@ -470,14 +486,14 @@ private fun MovieInfo(
             Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(
-                    top = AppDimens.PaddingNormal
-                )
+                    top = AppDimens.PaddingNormal,
+                ),
         ) {
             Text(
                 text = stringResource(id = R.string.release_date, releaseDate),
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
 
@@ -485,13 +501,13 @@ private fun MovieInfo(
             Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(
-                    top = AppDimens.PaddingSmall
-                )
+                    top = AppDimens.PaddingSmall,
+                ),
         ) {
             RatingBar(
                 modifier = Modifier
                     .align(Alignment.Center),
-                voteAverage = average
+                voteAverage = average,
             )
         }
 
@@ -499,11 +515,11 @@ private fun MovieInfo(
             Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(
-                    top = AppDimens.PaddingSmall
-                )
+                    top = AppDimens.PaddingSmall,
+                ),
         ) {
             GenreChips(
-                genres = genres
+                genres = genres,
             )
         }
 
@@ -513,7 +529,7 @@ private fun MovieInfo(
                 modifier = Modifier
                     .padding(
                         top = AppDimens.PaddingLarge,
-                    )
+                    ),
             ) {
                 Text(
                     text = overview,
@@ -527,19 +543,20 @@ private fun MovieInfo(
             modifier = Modifier
                 .padding(
                     top = AppDimens.PaddingLarge,
-                )
+                ),
         ) {
             MovieHubLazyRow(
                 items = casts.orEmpty(),
                 itemKey = {
                     it.id
-                }) { cast, _ ->
+                },
+            ) { cast, _ ->
                 PersonItem(
                     context = context,
                     imageUrl = cast.profilePath?.formatProfileImageUrl,
                     name = cast.name,
                     character = cast.character,
-                    contentDescription = cast.name.orEmpty()
+                    contentDescription = cast.name.orEmpty(),
                 )
             }
         }
@@ -549,19 +566,20 @@ private fun MovieInfo(
             modifier = Modifier
                 .padding(
                     top = AppDimens.PaddingLarge,
-                )
+                ),
         ) {
             MovieHubLazyRow(
                 items = crews.orEmpty(),
                 itemKey = {
                     it.id
-                }) { crew, _ ->
+                },
+            ) { crew, _ ->
                 PersonItem(
                     context = context,
                     imageUrl = crew.profilePath?.formatProfileImageUrl,
                     name = crew.name,
                     character = crew.job,
-                    contentDescription = crew.originalName.orEmpty()
+                    contentDescription = crew.originalName.orEmpty(),
                 )
             }
         }
@@ -571,18 +589,19 @@ private fun MovieInfo(
             modifier = Modifier
                 .padding(
                     top = AppDimens.PaddingLarge,
-                )
+                ),
         ) {
             MovieHubLazyRow(
                 items = productionCompanies.orEmpty(),
                 itemKey = {
                     it.id
-                }) { productionCompany, _ ->
+                },
+            ) { productionCompany, _ ->
                 CompanyItem(
                     context = context,
                     imageUrl = productionCompany.logoPath?.formatLogoImageUrl,
                     name = productionCompany.name,
-                    contentDescription = productionCompany.name.orEmpty()
+                    contentDescription = productionCompany.name.orEmpty(),
                 )
             }
         }
@@ -603,7 +622,7 @@ private fun GenreChips(
             ?.map(Genre::name)
             ?.forEachIndexed { index, name ->
                 Tag(
-                    onClick = {}
+                    onClick = {},
                 ) {
                     Text(
                         text = name.orEmpty(),

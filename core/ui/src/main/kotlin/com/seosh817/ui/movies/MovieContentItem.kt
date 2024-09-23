@@ -1,9 +1,21 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.ui.movies
 
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,8 +37,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,17 +44,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seosh817.moviehub.core.designsystem.component.DynamicAsyncImage
 import com.seosh817.moviehub.core.designsystem.component.LikeToggleButton
-import com.seosh817.moviehub.core.designsystem.component.LoadingAnimation
 import com.seosh817.moviehub.core.designsystem.theme.AppDimens
 import com.seosh817.moviehub.core.designsystem.theme.Dimens
-import com.seosh817.moviehub.core.model.MovieOverview
-import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.UserMovie
-import com.seosh817.ui.ktx.formatBackdropImageUrl
 import com.seosh817.ui.ktx.formatPosterImageUrl
 
 @Composable
@@ -52,7 +57,7 @@ fun MovieContentItem(
     modifier: Modifier = Modifier,
     context: Context,
     movie: UserMovie,
-    onLikeClick: (Long, Boolean) -> Unit
+    onLikeClick: (Long, Boolean) -> Unit,
 ) {
     Card(
         modifier = modifier
@@ -62,7 +67,7 @@ fun MovieContentItem(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             DynamicAsyncImage(
                 context = context,
@@ -71,17 +76,17 @@ fun MovieContentItem(
                 imageUrl = movie.posterPath?.formatPosterImageUrl,
                 contentDescription = movie.title ?: "",
                 contentScale = ContentScale.Crop,
-                alpha = 1f
+                alpha = 1f,
             )
 
             Box(
                 modifier = Modifier
                     .background(
                         MaterialTheme.colorScheme.inversePrimary
-                            .copy(alpha = 0.5f)
+                            .copy(alpha = 0.5f),
                     )
                     .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter),
             ) {
                 MovieDescription(
                     title = movie.title,
@@ -97,7 +102,7 @@ fun MovieContentItem(
                 checked = movie.isBookmarked,
                 onCheckedClick = {
                     onLikeClick(movie.id, it)
-                }
+                },
             )
         }
     }
@@ -108,11 +113,11 @@ fun MovieDescription(
     title: String?,
     releaseDate: String?,
     voteAverage: Double?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .padding(Dimens.dp_4)
+            .padding(Dimens.dp_4),
     ) {
         Text(
             modifier = Modifier
@@ -122,7 +127,7 @@ fun MovieDescription(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             ),
         )
         Spacer(modifier = Modifier.height(Dimens.dp_4))
@@ -135,7 +140,7 @@ fun MovieDescription(
 fun MovieDescriptionItem(
     icon: ImageVector,
     text: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -147,7 +152,7 @@ fun MovieDescriptionItem(
             text = text ?: "",
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onSurface,
-            )
+            ),
         )
     }
 }

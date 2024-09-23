@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.network.fake
 
 import JvmUnitTestFakeAssetManager
@@ -57,7 +72,7 @@ class FakeMoviesDataSourceTest {
                 title = "Ant-Man and the Wasp: Quantumania",
                 video = false,
                 voteAverage = 6.5,
-                voteCount = 1886
+                voteCount = 1886,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -73,7 +88,7 @@ class FakeMoviesDataSourceTest {
                 title = "The Super Mario Bros. Movie",
                 video = false,
                 voteAverage = 7.5,
-                voteCount = 1456
+                voteCount = 1456,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -89,12 +104,12 @@ class FakeMoviesDataSourceTest {
                 title = "Shazam! Fury of the Gods",
                 video = false,
                 voteAverage = 6.5,
-                voteCount = 1886
+                voteCount = 1886,
             ),
         )
         assertEquals(
             movies,
-            (fakeMoviesDataSource.fetchPopularMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3)
+            (fakeMoviesDataSource.fetchPopularMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3),
         )
     }
 
@@ -125,7 +140,7 @@ class FakeMoviesDataSourceTest {
                 title = "The Godfather",
                 video = false,
                 voteAverage = 8.7,
-                voteCount = 17806
+                voteCount = 17806,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -141,7 +156,7 @@ class FakeMoviesDataSourceTest {
                 title = "The Shawshank Redemption",
                 video = false,
                 voteAverage = 8.7,
-                voteCount = 23656
+                voteCount = 23656,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -157,12 +172,12 @@ class FakeMoviesDataSourceTest {
                 title = "Cuando Sea Joven",
                 video = false,
                 voteAverage = 8.6,
-                voteCount = 213
+                voteCount = 213,
             ),
         )
         assertEquals(
             movies,
-            (fakeMoviesDataSource.fetchTopRatedMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3)
+            (fakeMoviesDataSource.fetchTopRatedMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3),
         )
     }
 
@@ -193,7 +208,7 @@ class FakeMoviesDataSourceTest {
                 title = "Evil Dead Rise",
                 video = false,
                 voteAverage = 7.0,
-                voteCount = 207
+                voteCount = 207,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -209,7 +224,7 @@ class FakeMoviesDataSourceTest {
                 title = "The Pope's Exorcist",
                 video = false,
                 voteAverage = 6.5,
-                voteCount = 143
+                voteCount = 143,
             ),
             NetworkMovieOverview(
                 adult = false,
@@ -225,12 +240,12 @@ class FakeMoviesDataSourceTest {
                 title = "Winnie the Pooh: Blood and Honey",
                 video = false,
                 voteAverage = 5.8,
-                voteCount = 517
+                voteCount = 517,
             ),
         )
         assertEquals(
             movies,
-            (fakeMoviesDataSource.fetchUpcomingMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3)
+            (fakeMoviesDataSource.fetchUpcomingMovies(1) as ResultState.Success<NetworkMoviesResponse>).data.results.take(3),
         )
     }
 
@@ -244,16 +259,19 @@ class FakeMoviesDataSourceTest {
         assertEquals(
             listOf(
                 NetworkGenre(
-                    18, "Drama"
+                    18,
+                    "Drama",
                 ),
                 NetworkGenre(
-                    53, "Thriller"
+                    53,
+                    "Thriller",
                 ),
                 NetworkGenre(
-                    35, "Comedy"
+                    35,
+                    "Comedy",
                 ),
             ),
-            movieDetail.genreEntities
+            movieDetail.genreEntities,
         )
         assertEquals("http://www.foxmovies.com/movies/fight-club", movieDetail.homepage)
         assertEquals(550, movieDetail.id)
@@ -262,7 +280,7 @@ class FakeMoviesDataSourceTest {
         assertEquals("Fight Club", movieDetail.originalTitle)
         assertEquals(
             "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
-            movieDetail.overview
+            movieDetail.overview,
         )
         assertEquals(61.416, movieDetail.popularity)
         assertEquals("/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg", movieDetail.posterPath)
@@ -272,10 +290,10 @@ class FakeMoviesDataSourceTest {
                     508,
                     "/7cxRWzi4LsVm4Utfpr1hfARNurT.png",
                     "Regency Enterprises",
-                    "US"
+                    "US",
                 ),
             ),
-            movieDetail.productionCompanies?.take(1)
+            movieDetail.productionCompanies?.take(1),
         )
         assertEquals("1999-10-15", movieDetail.releaseDate)
         assertEquals(100853753, movieDetail.revenue)
@@ -285,13 +303,14 @@ class FakeMoviesDataSourceTest {
                 NetworkSpokenLanguage(
                     "English",
                     "en",
-                    "English"
-                )
-            ), movieDetail.spokenLanguageEntities
+                    "English",
+                ),
+            ),
+            movieDetail.spokenLanguageEntities,
         )
         assertEquals(
             "Released",
-            movieDetail.status
+            movieDetail.status,
         )
         assertEquals("Mischief. Mayhem. Soap.", movieDetail.tagline)
         assertEquals("Fight Club", movieDetail.title)

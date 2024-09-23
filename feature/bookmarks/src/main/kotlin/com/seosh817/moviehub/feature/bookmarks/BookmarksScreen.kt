@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.feature.bookmarks
 
 import androidx.compose.foundation.background
@@ -18,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.seosh817.moviehub.core.model.MovieOverview
 import com.seosh817.moviehub.core.model.MovieType
 import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
@@ -49,7 +63,7 @@ internal fun BookmarksRoute(
             moviePagingItems.refresh()
         },
         onMovieClick = onMovieClick,
-        onBookmarkClick = viewModel::onBookmarkClick
+        onBookmarkClick = viewModel::onBookmarkClick,
     )
 }
 
@@ -64,12 +78,12 @@ internal fun BookmarksScreen(
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onMovieClick: (MovieType, Long) -> Unit,
     onRefresh: () -> Unit,
-    onBookmarkClick: (UserMovie) -> Unit
+    onBookmarkClick: (UserMovie) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
-        onRefresh = onRefresh
+        onRefresh = onRefresh,
     )
 
     val moviesRefreshErrorMessage = stringResource(id = R.string.movies_refresh_error)
@@ -107,7 +121,7 @@ internal fun BookmarksScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         BookmarkContents(
             isRefreshing = isRefreshing,
@@ -121,7 +135,7 @@ internal fun BookmarksScreen(
             onRefresh = onRefresh,
             onLikeClick = { userMovie ->
                 onBookmarkClick.invoke(userMovie)
-            }
+            },
         )
     }
 
@@ -129,7 +143,7 @@ internal fun BookmarksScreen(
         Box(Modifier.fillMaxSize()) {
             ContentsLoading(
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
     }
