@@ -80,6 +80,12 @@ This project requires The Movie Database (TMDB) API key to access external APIs.
     ```
 3. Build and run the project.
 
+# TODO
+
+- [x] Offline-first caching
+- [ ] Add localization support (Korean, English, Japanese)
+- [ ] Implement Media3 for video playback
+
 # Inspiration
 
 This project is developed with inspiration from the [The Movies2](https://github.com/skydoves/TheMovies2) project.

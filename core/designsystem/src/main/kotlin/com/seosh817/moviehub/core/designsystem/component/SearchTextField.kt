@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.core.designsystem.component
 
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +36,7 @@ fun SearchTextField(
     value: String,
     hint: String,
     onValueChanged: (String) -> Unit,
-    onClickClearKeyword: () -> Unit
+    onClickClearKeyword: () -> Unit,
 ) {
     TextField(
         modifier = modifier,
@@ -35,11 +50,11 @@ fun SearchTextField(
                 IconButton(onClick = onClickClearKeyword) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(id = R.string.textfield_trailing_icon_description)
+                        contentDescription = stringResource(id = R.string.textfield_trailing_icon_description),
                     )
                 }
             }
-        }
+        },
     )
 }
 
@@ -51,7 +66,7 @@ fun SearchTextFieldPreview() {
             value = "Hello world!",
             hint = stringResource(id = R.string.enter_keyword),
             onValueChanged = {},
-            onClickClearKeyword = {}
+            onClickClearKeyword = {},
         )
     }
 }

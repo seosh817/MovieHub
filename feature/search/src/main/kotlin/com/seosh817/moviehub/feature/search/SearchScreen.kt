@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.feature.search
 
 import androidx.compose.foundation.background
@@ -11,10 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
@@ -46,7 +57,6 @@ fun SearchRoute(
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-
     val searchPagingItems: LazyPagingItems<UserMovie> = viewModel.searchImagePagingItems.collectAsLazyPagingItems()
     val query by viewModel.queryStateFlow.collectAsState()
     val searchUiEvent by viewModel.searchUiEvent.collectAsState(initial = null)
@@ -109,14 +119,14 @@ fun SearchScreen(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .statusBarsPadding()
+            .statusBarsPadding(),
     ) {
         SearchTextField(
             modifier = modifier.fillMaxWidth(),
             value = query,
             hint = stringResource(id = R.string.enter_keyword),
             onValueChanged = onTextChanged,
-            onClickClearKeyword = onClearIconClick
+            onClickClearKeyword = onClearIconClick,
         )
 
         SearchContents(
@@ -125,7 +135,7 @@ fun SearchScreen(
             query = query,
             searchMovieItems = searchPagingItems,
             onMovieClick = onMovieClick,
-            onBookmarkClick = onBookmarkClick
+            onBookmarkClick = onBookmarkClick,
         )
     }
 
@@ -133,7 +143,7 @@ fun SearchScreen(
         Box(Modifier.fillMaxSize()) {
             ContentsLoading(
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
     }
@@ -145,9 +155,8 @@ fun SearchContents(
     query: String,
     searchMovieItems: LazyPagingItems<UserMovie>,
     onMovieClick: (Long) -> Unit,
-    onBookmarkClick: (UserMovie, Boolean) -> Unit
+    onBookmarkClick: (UserMovie, Boolean) -> Unit,
 ) {
-
     val lazyListState = rememberLazyListState()
 
     if (query.isEmpty()) {
@@ -186,14 +195,14 @@ fun SearchContents(
                     state = lazyListState,
                     contentPadding = PaddingValues(
                         horizontal = AppDimens.PaddingSmall,
-                        vertical = AppDimens.PaddingSmall
+                        vertical = AppDimens.PaddingSmall,
                     ),
                     verticalArrangement = Arrangement.spacedBy(AppDimens.PaddingSmall),
                 ) {
                     items(
                         count = searchMovieItems.itemCount,
                         key = searchMovieItems.itemKey(),
-                        contentType = searchMovieItems.itemContentType()
+                        contentType = searchMovieItems.itemContentType(),
                     ) { index ->
                         val userMovie: UserMovie? = searchMovieItems[index]
                         if (userMovie != null) {
@@ -208,7 +217,7 @@ fun SearchContents(
                                 userMovie = userMovie,
                                 onClickBookmark = {
                                     onBookmarkClick.invoke(userMovie, !userMovie.isBookmarked)
-                                }
+                                },
                             )
                         }
                     }

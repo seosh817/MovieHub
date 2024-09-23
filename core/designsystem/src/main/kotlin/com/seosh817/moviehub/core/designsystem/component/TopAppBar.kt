@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.core.designsystem.component
 
 import androidx.annotation.StringRes
@@ -79,7 +94,7 @@ fun DetailTopAppBar(
     title: String,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface {
         TopAppBar(
@@ -91,7 +106,7 @@ fun DetailTopAppBar(
                 ) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back)
+                        contentDescription = stringResource(id = R.string.back),
                     )
                 }
             },
@@ -102,11 +117,11 @@ fun DetailTopAppBar(
                     Modifier
                         .align(Alignment.CenterVertically)
                         // Semantics in parent due to https://issuetracker.google.com/184825850
-                        .semantics { contentDescription = shareContentDescription }
+                        .semantics { contentDescription = shareContentDescription },
                 ) {
                     Icon(
                         Icons.Filled.Share,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             },
@@ -119,14 +134,14 @@ fun DetailTopAppBar(
                     textAlign = TextAlign.Center,
                     // As title in TopAppBar has extra inset on the left, need to do this: b/158829169
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 titleContentColor = MovieHubTopAppBarDefaults.titleContentColor(),
                 actionIconContentColor = MovieHubTopAppBarDefaults.actionIconContentColor(),
-            )
+            ),
         )
     }
 }
@@ -135,30 +150,30 @@ fun DetailTopAppBar(
 fun DetailHeaderActions(
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
             .fillMaxSize()
             .systemBarsPadding()
             .padding(top = AppDimens.PaddingSmall),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         val iconModifier = Modifier
             .sizeIn(
                 maxWidth = AppDimens.ToolbarIconSize,
-                maxHeight = AppDimens.ToolbarIconSize
+                maxHeight = AppDimens.ToolbarIconSize,
             )
 
         IconButton(
             onClick = onBackClick,
             modifier = Modifier
                 .padding(start = AppDimens.ToolbarIconPadding)
-                .then(iconModifier)
+                .then(iconModifier),
         ) {
             Icon(
                 Icons.Filled.ArrowBack,
-                contentDescription = stringResource(id = R.string.back)
+                contentDescription = stringResource(id = R.string.back),
             )
         }
         val shareContentDescription =
@@ -170,11 +185,11 @@ fun DetailHeaderActions(
                 .then(iconModifier)
                 .semantics {
                     contentDescription = shareContentDescription
-                }
+                },
         ) {
             Icon(
                 Icons.Filled.Share,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }
@@ -199,7 +214,7 @@ fun DefaultTopAppBar(
                 ) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back)
+                        contentDescription = stringResource(id = R.string.back),
                     )
                 }
             },
@@ -213,14 +228,14 @@ fun DefaultTopAppBar(
                     textAlign = TextAlign.Center,
                     // As title in TopAppBar has extra inset on the left, need to do this: b/158829169
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 titleContentColor = MovieHubTopAppBarDefaults.titleContentColor(),
                 actionIconContentColor = MovieHubTopAppBarDefaults.actionIconContentColor(),
-            )
+            ),
         )
     }
 }
@@ -242,7 +257,7 @@ private fun MainTopAppBarPreview() {
             IconButton(onClick = { }) {
                 Icon(imageVector = Icons.Default.Settings, contentDescription = "Settings")
             }
-        }
+        },
     )
 }
 
@@ -252,7 +267,7 @@ fun DetailTopAppBarPreview() {
     DetailTopAppBar(
         title = "Movie Title",
         onShareClick = { },
-        onBackClick = { }
+        onBackClick = { },
     )
 }
 
@@ -261,7 +276,7 @@ fun DetailTopAppBarPreview() {
 private fun DetailHeaderActionsPreview() {
     DetailHeaderActions(
         onShareClick = { },
-        onBackClick = { }
+        onBackClick = { },
     )
 }
 

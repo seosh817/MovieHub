@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 seosh817 (Seunghwan Seo)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.seosh817.moviehub.feature.settings
 
 import androidx.compose.foundation.background
@@ -28,13 +43,12 @@ import com.seosh817.ui.ContentsSection
 import com.seosh817.ui.settings.SettingsItem
 import com.seosh817.ui.settings.SettingsSwitchItem
 
-
 @Composable
 fun SettingsRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
-    openDialog: (OpenDialog) -> Unit
+    openDialog: (OpenDialog) -> Unit,
 ) {
     val settingsUiState by settingsViewModel.settingsUiState.collectAsStateWithLifecycle()
     val appVersions by settingsViewModel.appVersionsStateFlow.collectAsStateWithLifecycle()
@@ -60,13 +74,13 @@ fun SettingsScreen(
 ) {
     Box(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         when (settingsUiState) {
             is SettingsUiState.Loading -> Box(Modifier.fillMaxSize()) {
                 ContentsLoading(
                     modifier = Modifier
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
 
@@ -103,25 +117,25 @@ fun SettingsContent(
         topBar = {
             DefaultTopAppBar(
                 title = stringResource(id = R.string.settings_title),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             ) {}
-        }
+        },
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .consumeWindowInsets(padding)
+                .consumeWindowInsets(padding),
         ) {
             ContentsSection(
-                title = stringResource(id = R.string.preferences)
+                title = stringResource(id = R.string.preferences),
             ) {
                 SettingsItem(
                     titleText = stringResource(id = R.string.app_theme),
                     valueText = darkThemeMode.name,
                     onClick = {
                         openDialog(OpenDialog.APP_THEME_SETTINGS)
-                    }
+                    },
                 )
 
                 SettingsItem(
@@ -129,7 +143,7 @@ fun SettingsContent(
                     valueText = appLanguage.name,
                     onClick = {
                         openDialog(OpenDialog.APP_LANGUAGE_SETTINGS)
-                    }
+                    },
                 )
 
                 SettingsSwitchItem(
@@ -137,19 +151,18 @@ fun SettingsContent(
                     isChecked = useDynamicColor,
                     onClick = {
                         onUseDynamicColorClick(!useDynamicColor)
-                    }
+                    },
                 )
             }
 
             ContentsSection(
                 modifier = Modifier.padding(top = AppDimens.PaddingLarge),
-                title = stringResource(id = R.string.about)
+                title = stringResource(id = R.string.about),
             ) {
-
                 SettingsItem(
                     titleText = stringResource(id = R.string.app_version),
                     valueText = appVersions.versionName,
-                    onClick = { }
+                    onClick = { },
                 )
             }
         }

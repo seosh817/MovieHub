@@ -50,6 +50,12 @@ jobs:
 
     - name: Set TMDB API Key
       run: echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
+
+    - name: Check spotless
+      run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
+
+    - name: Run detekt
+      run: ./gradlew detekt
       
     - name: Build with Gradle
       run: ./gradlew build
