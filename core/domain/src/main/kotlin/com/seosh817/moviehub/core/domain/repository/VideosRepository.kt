@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.moviehub.core.domain.repository
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
-)
+import com.seosh817.common.result.ResultState
+import com.seosh817.moviehub.core.model.VideoResponse
+
+interface VideosRepository {
+
+    suspend fun fetchVideos(movieId: Long): ResultState<VideoResponse>
+}
