@@ -23,6 +23,7 @@ import com.seosh817.common.result.extension.asResult
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.usecase.GetCreditsUseCase
 import com.seosh817.moviehub.core.domain.usecase.GetMovieDetailUseCase
+import com.seosh817.moviehub.core.domain.usecase.GetVideosUseCase
 import com.seosh817.moviehub.core.domain.usecase.PostBookmarkUseCase
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.MovieDetailResult
@@ -53,6 +54,7 @@ class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getMovieDetailUseCase: GetMovieDetailUseCase,
     getCreditsUseCase: GetCreditsUseCase,
+    getVideosUseCase: GetVideosUseCase,
 ) : ViewModel() {
 
     private val movieType: MovieType = MovieType.fromValue(checkNotNull(savedStateHandle["movieType"]))
@@ -65,7 +67,7 @@ class MovieDetailViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val movieDetailUiStateFlow: StateFlow<MovieDetailUiState> = replaySharedFlow
         .flatMapLatest {
-            movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase, appPreferencesSettingsRepository)
+            movieDetailUiState(movieId, getMovieDetailUseCase, getCreditsUseCase, getVideosUseCase, appPreferencesSettingsRepository)
         }
         .stateIn(
             scope = viewModelScope,
@@ -116,6 +118,7 @@ private fun movieDetailUiState(
     movieId: Long,
     getMovieDetailUseCase: GetMovieDetailUseCase,
     getMovieCreditsUseCase: GetCreditsUseCase,
+    getVideosUseCase: GetVideosUseCase,
     appPreferencesSettingsRepository: AppPreferencesRepository,
 ): Flow<MovieDetailUiState> {
     val appLanguage = appPreferencesSettingsRepository
@@ -127,7 +130,8 @@ private fun movieDetailUiState(
             combine(
                 getMovieDetailUseCase.invoke(movieId, language.value),
                 getMovieCreditsUseCase.invoke(movieId, language.value),
-                ::Pair,
+                getVideosUseCase.invoke(movieId),
+                ::Triple,
             )
         }
         .asResult()
@@ -138,6 +142,7 @@ private fun movieDetailUiState(
                         MovieDetailResult(
                             movieDetail = movieDetailResult.data.first,
                             movieCredits = movieDetailResult.data.second,
+                            movieVideos = movieDetailResult.data.third,
                         ),
                     )
                 }
