@@ -22,6 +22,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -82,6 +83,8 @@ import com.seosh817.moviehub.core.model.Crew
 import com.seosh817.moviehub.core.model.Genre
 import com.seosh817.moviehub.core.model.MovieDetail
 import com.seosh817.moviehub.core.model.ProductionCompany
+import com.seosh817.moviehub.core.model.Video
+import com.seosh817.moviehub.core.model.VideoResponse
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import com.seosh817.ui.ContentsLoading
 import com.seosh817.ui.ContentsSection
@@ -95,6 +98,7 @@ import com.seosh817.ui.person.PersonItem
 import com.seosh817.ui.scroll.ToolbarState
 import com.seosh817.ui.scroll.TransitionScroller
 import com.seosh817.ui.scroll.isShown
+import com.seosh817.ui.video.VideoItem
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
 import com.skydoves.landscapist.coil.CoilImage
@@ -186,6 +190,7 @@ fun MovieDetailScreen(
                     modifier = modifier,
                     movieDetailUiState.movieDetailResult.movieDetail,
                     movieDetailUiState.movieDetailResult.movieCredits,
+                    movieDetailUiState.movieDetailResult.movieVideos,
                     isBookmarked = isBookmarked,
                     onFabClick = {
                         onFabClick(movieDetailUiState.movieDetailResult.movieDetail, !it)
@@ -212,6 +217,7 @@ fun MovieDetails(
     modifier: Modifier = Modifier,
     movieDetail: MovieDetail,
     movieCredits: Credits,
+    movieVideos: VideoResponse,
     isBookmarked: Boolean,
     onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
@@ -271,6 +277,7 @@ fun MovieDetails(
             toolbarState = toolbarState,
             movieDetail = movieDetail,
             movieCredits = movieCredits,
+            movieVideos = movieVideos,
             imageHeight = with(LocalDensity.current) {
                 val candidateHeight = AppDimens.MovieDetailAppBarHeight
                 maxOf(candidateHeight, 1.dp)
@@ -303,6 +310,7 @@ fun MovieDetailContents(
     toolbarState: ToolbarState,
     movieDetail: MovieDetail,
     movieCredits: Credits,
+    movieVideos: VideoResponse,
     imageHeight: Dp,
     onNamePosition: (Float) -> Unit,
     contentAlpha: () -> Float,
@@ -348,6 +356,7 @@ fun MovieDetailContents(
                 releaseDate = movieDetail.releaseDate.orEmpty(),
                 average = movieDetail.voteAverage ?: 0.0,
                 overview = movieDetail.overview.orEmpty(),
+                videos = movieVideos.videos,
                 genres = movieDetail.genreEntities,
                 productionCompanies = movieDetail.productionCompanies,
                 casts = movieCredits.cast,
@@ -455,6 +464,7 @@ private fun MovieInfo(
     releaseDate: String,
     average: Double,
     overview: String,
+    videos: List<Video>,
     productionCompanies: List<ProductionCompany>?,
     genres: List<Genre>?,
     casts: List<Cast>?,
@@ -523,6 +533,36 @@ private fun MovieInfo(
             )
         }
 
+        if (videos.isNotEmpty()) {
+            ContentsSection(
+                title = stringResource(id = R.string.trailers),
+                modifier = Modifier
+                    .padding(
+                        top = AppDimens.PaddingNormal,
+                    ),
+            ) {
+                MovieHubLazyRow(
+                    items = videos,
+                    itemKey = {
+                        it.id
+                    },
+                    horizontalSpace = 8.dp,
+                ) { video, _ ->
+                    VideoItem(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(120.dp)
+                            .clickable {
+                            },
+                        context = context,
+                        key = video.key,
+                        title = video.name,
+                        contentDescription = video.name,
+                    )
+                }
+            }
+        }
+
         if (overview.isNotEmpty()) {
             ContentsSection(
                 title = stringResource(id = R.string.overview),
@@ -538,71 +578,77 @@ private fun MovieInfo(
             }
         }
 
-        ContentsSection(
-            title = stringResource(id = R.string.cast),
-            modifier = Modifier
-                .padding(
-                    top = AppDimens.PaddingLarge,
-                ),
-        ) {
-            MovieHubLazyRow(
-                items = casts.orEmpty(),
-                itemKey = {
-                    it.id
-                },
-            ) { cast, _ ->
-                PersonItem(
-                    context = context,
-                    imageUrl = cast.profilePath?.formatProfileImageUrl,
-                    name = cast.name,
-                    character = cast.character,
-                    contentDescription = cast.name.orEmpty(),
-                )
+        if (!casts.isNullOrEmpty()) {
+            ContentsSection(
+                title = stringResource(id = R.string.cast),
+                modifier = Modifier
+                    .padding(
+                        top = AppDimens.PaddingLarge,
+                    ),
+            ) {
+                MovieHubLazyRow(
+                    items = casts.orEmpty(),
+                    itemKey = {
+                        it.id
+                    },
+                ) { cast, _ ->
+                    PersonItem(
+                        context = context,
+                        imageUrl = cast.profilePath?.formatProfileImageUrl,
+                        name = cast.name,
+                        character = cast.character,
+                        contentDescription = cast.name.orEmpty(),
+                    )
+                }
             }
         }
 
-        ContentsSection(
-            title = stringResource(id = R.string.crew),
-            modifier = Modifier
-                .padding(
-                    top = AppDimens.PaddingLarge,
-                ),
-        ) {
-            MovieHubLazyRow(
-                items = crews.orEmpty(),
-                itemKey = {
-                    it.id
-                },
-            ) { crew, _ ->
-                PersonItem(
-                    context = context,
-                    imageUrl = crew.profilePath?.formatProfileImageUrl,
-                    name = crew.name,
-                    character = crew.job,
-                    contentDescription = crew.originalName.orEmpty(),
-                )
+        if (!crews.isNullOrEmpty()) {
+            ContentsSection(
+                title = stringResource(id = R.string.crew),
+                modifier = Modifier
+                    .padding(
+                        top = AppDimens.PaddingLarge,
+                    ),
+            ) {
+                MovieHubLazyRow(
+                    items = crews.orEmpty(),
+                    itemKey = {
+                        it.id
+                    },
+                ) { crew, _ ->
+                    PersonItem(
+                        context = context,
+                        imageUrl = crew.profilePath?.formatProfileImageUrl,
+                        name = crew.name,
+                        character = crew.job,
+                        contentDescription = crew.originalName.orEmpty(),
+                    )
+                }
             }
         }
 
-        ContentsSection(
-            title = stringResource(id = R.string.production_companies),
-            modifier = Modifier
-                .padding(
-                    top = AppDimens.PaddingLarge,
-                ),
-        ) {
-            MovieHubLazyRow(
-                items = productionCompanies.orEmpty(),
-                itemKey = {
-                    it.id
-                },
-            ) { productionCompany, _ ->
-                CompanyItem(
-                    context = context,
-                    imageUrl = productionCompany.logoPath?.formatLogoImageUrl,
-                    name = productionCompany.name,
-                    contentDescription = productionCompany.name.orEmpty(),
-                )
+        if (!productionCompanies.isNullOrEmpty()) {
+            ContentsSection(
+                title = stringResource(id = R.string.production_companies),
+                modifier = Modifier
+                    .padding(
+                        top = AppDimens.PaddingLarge,
+                    ),
+            ) {
+                MovieHubLazyRow(
+                    items = productionCompanies.orEmpty(),
+                    itemKey = {
+                        it.id
+                    },
+                ) { productionCompany, _ ->
+                    CompanyItem(
+                        context = context,
+                        imageUrl = productionCompany.logoPath?.formatLogoImageUrl,
+                        name = productionCompany.name,
+                        contentDescription = productionCompany.name.orEmpty(),
+                    )
+                }
             }
         }
     }

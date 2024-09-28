@@ -32,7 +32,7 @@ fun ContentsSection(
     body: @Composable () -> Unit,
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = AppDimens.PaddingNormal),
     ) {
@@ -42,7 +42,7 @@ fun ContentsSection(
                 fontWeight = FontWeight.Bold,
             ),
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = AppDimens.PaddingNormal),
+            modifier = modifier.padding(bottom = AppDimens.PaddingNormal),
         )
         body()
     }
