@@ -40,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +59,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -218,11 +220,11 @@ fun MovieDetails(
     onBackClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    var fabYPosition by remember { mutableFloatStateOf(0f) }
     var movieDetailScroller by remember {
         mutableStateOf(TransitionScroller(scrollState, Float.MIN_VALUE))
     }
-    val transitionState =
-        remember(movieDetailScroller) { movieDetailScroller.toolbarTransitionState }
+    val transitionState = remember(movieDetailScroller) { movieDetailScroller.toolbarTransitionState }
     val toolbarState = movieDetailScroller.getToolbarState(density = LocalDensity.current)
 
     // Transition that fades in/out the header with the image and the Toolbar
@@ -232,13 +234,6 @@ fun MovieDetails(
         label = "",
     ) { toolbarTransitionState ->
         if (toolbarTransitionState == ToolbarState.HIDDEN) 0f else 1f
-    }
-
-    val contentAlpha = transition.animateFloat(
-        transitionSpec = { spring(stiffness = Spring.StiffnessLow) },
-        label = "",
-    ) { toolbarTransitionState ->
-        if (toolbarTransitionState == ToolbarState.HIDDEN) 1f else 0f
     }
 
     val toolbarHeightPx = with(LocalDensity.current) {
@@ -262,6 +257,20 @@ fun MovieDetails(
         }
     }
 
+    val imageAlpha by remember {
+        derivedStateOf {
+            val currentScrollPosition = scrollState.value
+            1f - (currentScrollPosition / fabYPosition).coerceIn(0f, 1f)
+        }
+    }
+
+    val contentAlpha = transition.animateFloat(
+        transitionSpec = { spring(stiffness = Spring.StiffnessLow) },
+        label = "",
+    ) { toolbarTransitionState ->
+        if (toolbarTransitionState == ToolbarState.HIDDEN) 1f else 0f
+    }
+
     Box(
         modifier = modifier
             .nestedScroll(nestedScrollConnection),
@@ -280,9 +289,11 @@ fun MovieDetails(
                     movieDetailScroller = movieDetailScroller.copy(transitionPosition = newNamePosition)
                 }
             },
+            imageAlpha = { imageAlpha },
             contentAlpha = { contentAlpha.value },
             isBookmarked = isBookmarked,
             onFabClick = onFabClick,
+            onFabPositioned = { fabYPosition = it },
         )
         MovieToolbar(
             toolbarState = toolbarState,
@@ -305,9 +316,11 @@ fun MovieDetailContents(
     movieCredits: Credits,
     imageHeight: Dp,
     onNamePosition: (Float) -> Unit,
+    imageAlpha: () -> Float,
     contentAlpha: () -> Float,
     isBookmarked: Boolean,
     onFabClick: (Boolean) -> Unit,
+    onFabPositioned: (Float) -> Unit,
 ) {
     Column(Modifier.verticalScroll(scrollState)) {
         ConstraintLayout {
@@ -318,7 +331,7 @@ fun MovieDetailContents(
                 imageHeight = imageHeight,
                 modifier = Modifier
                     .constrainAs(image) { top.linkTo(parent.top) }
-                    .alpha(contentAlpha())
+                    .alpha(imageAlpha())
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(Color.Black, Color.White),
@@ -340,7 +353,10 @@ fun MovieDetailContents(
                             margin = fabEndMargin,
                         )
                     }
-                    .alpha(contentAlpha()),
+                    .alpha(contentAlpha())
+                    .onGloballyPositioned { coordinates ->
+                        onFabPositioned(coordinates.positionInParent().y)
+                    },
             )
 
             MovieInfo(

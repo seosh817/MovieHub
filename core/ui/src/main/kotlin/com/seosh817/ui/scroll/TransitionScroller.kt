@@ -20,7 +20,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 
-private val HeaderTransitionOffset = 160.dp
+val HeaderTransitionOffset = 140.dp
 
 data class TransitionScroller(
     val scrollState: ScrollState,
