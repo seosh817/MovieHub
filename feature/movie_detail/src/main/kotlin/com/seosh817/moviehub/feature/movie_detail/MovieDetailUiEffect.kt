@@ -15,8 +15,7 @@
  */
 package com.seosh817.moviehub.feature.movie_detail
 
-import com.seosh817.moviehub.core.model.MovieDetail
+sealed class MovieDetailUiEffect {
 
-sealed interface MovieDetailUiEvent {
-    data class PostBookMark(val movieDetail: MovieDetail, val isBookmarked: Boolean) : MovieDetailUiEvent
+    data class ShowBookmarkedMessage(val isBookmarked: Boolean, val id: Long) : MovieDetailUiEffect()
 }

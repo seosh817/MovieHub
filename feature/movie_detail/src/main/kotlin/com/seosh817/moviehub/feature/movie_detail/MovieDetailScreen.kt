@@ -110,22 +110,26 @@ internal fun MovieDetailRoute(
     viewModel: MovieDetailViewModel = hiltViewModel(),
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onShareClick: (String) -> Unit,
+    onTrailerClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val movieDetailUiState by viewModel.movieDetailUiStateFlow.collectAsStateWithLifecycle()
     val postBookmarkUiState by viewModel.postBookmarkUiState.collectAsStateWithLifecycle()
-    val movieDetailUiEvent by viewModel.movieDetailUiEvent.collectAsState(initial = null)
+    val movieDetailUiEffect by viewModel.movieDetailUiEffect.collectAsState(initial = null)
     val isBookmarked by viewModel.isBookmarked.collectAsStateWithLifecycle()
 
     MovieDetailScreen(
         modifier = modifier,
         movieDetailUiState = movieDetailUiState,
-        movieDetailUiEvent = movieDetailUiEvent,
         postBookmarkUiState = postBookmarkUiState,
+        movieDetailUiEffect = movieDetailUiEffect,
         isBookmarked = isBookmarked,
         onShowSnackbar = onShowSnackbar,
-        onFabClick = viewModel::updateBookmark,
+        onFabClick = { movieDetail, bookmarked ->
+            viewModel.sendEvent(MovieDetailUiEvent.PostBookMark(movieDetail, bookmarked))
+        },
         onShareClick = onShareClick,
+        onTrailerClick = onTrailerClick,
         onBackClick = onBackClick,
         onRefresh = viewModel::replay,
     )
@@ -135,12 +139,13 @@ internal fun MovieDetailRoute(
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
-    movieDetailUiEvent: MovieDetailUiEvent?,
     postBookmarkUiState: PostBookmarkUiState,
+    movieDetailUiEffect: MovieDetailUiEffect?,
     isBookmarked: Boolean,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
     onFabClick: (MovieDetail, Boolean) -> Unit,
     onShareClick: (String) -> Unit,
+    onTrailerClick: (String) -> Unit,
     onBackClick: () -> Unit,
     onRefresh: () -> Unit,
 ) {
@@ -148,10 +153,10 @@ fun MovieDetailScreen(
     val bookmarkedFailedMessage = stringResource(id = R.string.bookmarked_failed)
     val okText = stringResource(id = R.string.ok)
 
-    LaunchedEffect(key1 = movieDetailUiEvent) {
-        when (movieDetailUiEvent) {
-            is MovieDetailUiEvent.ShowBookmarkedMessage -> {
-                if (!movieDetailUiEvent.isBookmarked) {
+    LaunchedEffect(key1 = movieDetailUiEffect) {
+        when (movieDetailUiEffect) {
+            is MovieDetailUiEffect.ShowBookmarkedMessage -> {
+                if (!movieDetailUiEffect.isBookmarked) {
                     onShowSnackbar(bookmarkedSuccessMessage, okText, SnackbarDuration.Short)
                 } else {
                     onShowSnackbar(bookmarkedFailedMessage, okText, SnackbarDuration.Short)
@@ -197,6 +202,7 @@ fun MovieDetailScreen(
                     },
                     onShareClick = onShareClick,
                     onBackClick = onBackClick,
+                    onTrailerClick = onTrailerClick,
                 )
             }
         }
@@ -221,6 +227,7 @@ fun MovieDetails(
     isBookmarked: Boolean,
     onFabClick: (Boolean) -> Unit,
     onShareClick: (String) -> Unit,
+    onTrailerClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -290,6 +297,7 @@ fun MovieDetails(
             contentAlpha = { contentAlpha.value },
             isBookmarked = isBookmarked,
             onFabClick = onFabClick,
+            onTrailerClick = onTrailerClick,
         )
         MovieToolbar(
             toolbarState = toolbarState,
@@ -316,6 +324,7 @@ fun MovieDetailContents(
     contentAlpha: () -> Float,
     isBookmarked: Boolean,
     onFabClick: (Boolean) -> Unit,
+    onTrailerClick: (String) -> Unit,
 ) {
     Column(Modifier.verticalScroll(scrollState)) {
         ConstraintLayout {
@@ -352,6 +361,10 @@ fun MovieDetailContents(
             )
 
             MovieInfo(
+                modifier = Modifier.constrainAs(info) {
+                    top.linkTo(image.bottom)
+                },
+                toolbarState = toolbarState,
                 name = movieDetail.title.orEmpty(),
                 releaseDate = movieDetail.releaseDate.orEmpty(),
                 average = movieDetail.voteAverage ?: 0.0,
@@ -362,10 +375,7 @@ fun MovieDetailContents(
                 casts = movieCredits.cast,
                 crews = movieCredits.crew,
                 onNamePosition = { onNamePosition(it) },
-                toolbarState = toolbarState,
-                modifier = Modifier.constrainAs(info) {
-                    top.linkTo(image.bottom)
-                },
+                onTrailerClick = { onTrailerClick(it) },
             )
         }
     }
@@ -460,6 +470,8 @@ private fun MovieToolbar(
 
 @Composable
 private fun MovieInfo(
+    modifier: Modifier = Modifier,
+    toolbarState: ToolbarState,
     name: String,
     releaseDate: String,
     average: Double,
@@ -470,8 +482,7 @@ private fun MovieInfo(
     casts: List<Cast>?,
     crews: List<Crew>?,
     onNamePosition: (Float) -> Unit,
-    toolbarState: ToolbarState,
-    modifier: Modifier = Modifier,
+    onTrailerClick: (String) -> Unit,
 ) {
     val context = LocalContext.current
     Column(
@@ -553,6 +564,7 @@ private fun MovieInfo(
                             .width(150.dp)
                             .height(120.dp)
                             .clickable {
+                                onTrailerClick(video.key)
                             },
                         context = context,
                         key = video.key,

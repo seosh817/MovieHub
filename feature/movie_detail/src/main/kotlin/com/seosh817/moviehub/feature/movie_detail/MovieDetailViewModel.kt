@@ -32,6 +32,7 @@ import com.seosh817.moviehub.core.model.UserMovie
 import com.seosh817.moviehub.core.model.state.PostBookmarkUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +45,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -86,9 +89,30 @@ class MovieDetailViewModel @Inject constructor(
     private val _postBookmarkUiState: MutableStateFlow<PostBookmarkUiState> = MutableStateFlow(PostBookmarkUiState.Success)
     val postBookmarkUiState: StateFlow<PostBookmarkUiState> = _postBookmarkUiState.asStateFlow()
 
-    val movieDetailUiEvent: MutableSharedFlow<MovieDetailUiEvent> = MutableSharedFlow()
+    val movieDetailUiEventFlow: MutableSharedFlow<MovieDetailUiEvent> = MutableSharedFlow()
 
-    fun updateBookmark(movieDetail: MovieDetail, isBookmarked: Boolean) = bookmarkUseCase
+    private val _movieDetailUiEffect: Channel<MovieDetailUiEffect> = Channel()
+    val movieDetailUiEffect = _movieDetailUiEffect.receiveAsFlow()
+
+    init {
+        handleMovieDetailUiEvent()
+    }
+
+    private fun handleMovieDetailUiEvent() = movieDetailUiEventFlow
+        .onEach { movieDetailUiEvent ->
+            when (movieDetailUiEvent) {
+                is MovieDetailUiEvent.PostBookMark -> updateBookmark(movieDetailUiEvent.movieDetail, movieDetailUiEvent.isBookmarked)
+            }
+        }
+        .launchIn(viewModelScope)
+
+    fun sendEvent(movieDetailUiEvent: MovieDetailUiEvent) {
+        viewModelScope.launch {
+            movieDetailUiEventFlow.emit(movieDetailUiEvent)
+        }
+    }
+
+    private fun updateBookmark(movieDetail: MovieDetail, isBookmarked: Boolean) = bookmarkUseCase
         .invoke(movieType, UserMovie(movieDetail, isBookmarked))
         .asResult()
         .onStart {
@@ -98,7 +122,7 @@ class MovieDetailViewModel @Inject constructor(
             when (it) {
                 is ResultState.Success -> {
                     _postBookmarkUiState.emit(PostBookmarkUiState.Success)
-                    movieDetailUiEvent.emit(MovieDetailUiEvent.ShowBookmarkedMessage(isBookmarked, movieDetail.id))
+                    _movieDetailUiEffect.send(MovieDetailUiEffect.ShowBookmarkedMessage(isBookmarked, movieDetail.id))
                 }
 
                 is ResultState.Failure<*> -> {

@@ -40,6 +40,7 @@ fun NavController.navigateToMovieDetail(movieType: MovieType, movieId: Long) {
 fun NavGraphBuilder.movieDetailScreen(
     onBackClick: () -> Unit,
     onShareClick: (String) -> Unit,
+    onTrailerClick: (String) -> Unit,
     onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
 ) {
     composable(
@@ -55,6 +56,7 @@ fun NavGraphBuilder.movieDetailScreen(
         MovieDetailRoute(
             onBackClick = onBackClick,
             onShareClick = onShareClick,
+            onTrailerClick = onTrailerClick,
             onShowSnackbar = onShowSnackbar,
         )
     }
