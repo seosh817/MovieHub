@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.moviehub.core.network.service.video
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
-)
+import com.seosh817.moviehub.core.network.model.video.NetworkVideoResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+
+interface VideoService {
+
+    @GET("/3/movie/{movie_id}/videos")
+    suspend fun fetchVideos(@Path("movie_id") movieId: Long): Response<NetworkVideoResponse>
+}

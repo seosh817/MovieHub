@@ -65,6 +65,7 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.bookmarks)
     implementation(projects.feature.search)
+    implementation(projects.feature.viedoPlayer)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -14,17 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <string name="add_movie">Add movie</string>
-    <string name="menu_item_share_movie">share movie</string>
-    <string name="back">back</string>
-    <string name="release_date">Release Date: %s</string>
-    <string name="trailers">Trailers</string>
-    <string name="overview">Overview</string>
-    <string name="cast">Cast</string>
-    <string name="crew">Crew</string>
-    <string name="production_companies">Production Companies</string>
-    <string name="ok">OK</string>
-    <string name="bookmarked_success">Bookmark added successfully</string>
-    <string name="bookmarked_failed">Bookmark removed successfully</string>
-</resources>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

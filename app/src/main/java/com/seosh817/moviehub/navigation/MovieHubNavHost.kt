@@ -32,6 +32,8 @@ import com.seosh817.moviehub.feature.movies.navigation.MOVIES_NAVIGATION_ROUTE
 import com.seosh817.moviehub.feature.movies.navigation.movieScreen
 import com.seosh817.moviehub.feature.search.navigation.searchScreen
 import com.seosh817.moviehub.feature.settings.navigation.settingsScreen
+import com.seosh817.moviehub.feature.viedo_player.navigation.navigateToVideoPlayer
+import com.seosh817.moviehub.feature.viedo_player.navigation.videoPlayerScreen
 
 @Composable
 fun MovieHubNavHost(
@@ -56,6 +58,7 @@ fun MovieHubNavHost(
         movieDetailScreen(
             onBackClick = navController::popBackStack,
             onShareClick = activity::createShareIntent,
+            onTrailerClick = navController::navigateToVideoPlayer,
             onShowSnackbar = onShowSnackbar,
         )
         bookmarksScreen(
@@ -70,6 +73,7 @@ fun MovieHubNavHost(
             onMovieClick = navController::navigateToMovieDetail,
             onShowSnackbar = onShowSnackbar,
         )
+        videoPlayerScreen()
     }
 }
 

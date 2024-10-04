@@ -24,6 +24,7 @@ import com.seosh817.moviehub.core.data.repository.CreditsRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.FavoritesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.MoviesRepositoryImpl
 import com.seosh817.moviehub.core.data.repository.SearchRepositoryImpl
+import com.seosh817.moviehub.core.data.repository.VideosRepositoryImpl
 import com.seosh817.moviehub.core.domain.repository.AppPreferencesRepository
 import com.seosh817.moviehub.core.domain.repository.AppVersionsRepository
 import com.seosh817.moviehub.core.domain.repository.CreditsRepository
@@ -33,6 +34,7 @@ import com.seosh817.moviehub.core.domain.repository.SearchRepository
 import com.seosh817.moviehub.core.domain.repository.UserFavoritesRepository
 import com.seosh817.moviehub.core.domain.repository.UserMoviesRepository
 import com.seosh817.moviehub.core.domain.repository.UserSearchRepository
+import com.seosh817.moviehub.core.domain.repository.VideosRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -54,6 +56,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindCreditsRepository(creditsRepositoryImpl: CreditsRepositoryImpl): CreditsRepository
+
+    @Singleton
+    @Binds
+    fun bindVideosRepository(videosRepositoryImpl: VideosRepositoryImpl): VideosRepository
 
     @Singleton
     @Binds

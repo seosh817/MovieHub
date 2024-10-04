@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.moviehub.core.network.model.video
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class NetworkVideoResponse(
+
+    @SerialName("id") val id: Int,
+    @SerialName("results") val videos: List<NetworkVideo>,
 )

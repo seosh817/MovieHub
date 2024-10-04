@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.ui.ktx
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
-)
+private const val YOUTUBE_THUMBNAIL_URL = "https://img.youtube.com/vi/%s/%s"
+private const val YOUTUBE_MQ_DEFAULT_IMAGE = "hqdefault.jpg"
+
+val String.formatYoutubeThumbnailUrl: String
+    get() = String.format(YOUTUBE_THUMBNAIL_URL, this, YOUTUBE_MQ_DEFAULT_IMAGE)

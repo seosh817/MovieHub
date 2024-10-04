@@ -13,10 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.moviehub.feature.viedo_player
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
-)
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class VideoPlayerViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    val videoUrlStateFlow = savedStateHandle.getStateFlow<String>("videoId", "")
+}

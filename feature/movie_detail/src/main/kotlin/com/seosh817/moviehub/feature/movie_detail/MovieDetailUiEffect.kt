@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seosh817.moviehub.core.model
+package com.seosh817.moviehub.feature.movie_detail
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
-)
+sealed class MovieDetailUiEffect {
+
+    data class ShowBookmarkedMessage(val isBookmarked: Boolean, val id: Long) : MovieDetailUiEffect()
+}

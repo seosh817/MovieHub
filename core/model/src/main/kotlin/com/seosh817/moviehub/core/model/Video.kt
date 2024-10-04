@@ -15,8 +15,16 @@
  */
 package com.seosh817.moviehub.core.model
 
-data class MovieDetailResult(
-    val movieDetail: MovieDetail,
-    val movieCredits: Credits,
-    val movieVideos: VideoResponse,
+data class Video(
+
+    val id: String,
+    val iso6391: String,
+    val iso31661: String,
+    val name: String,
+    val key: String,
+    val site: String,
+    val size: Int,
+    val type: String,
+    val official: Boolean,
+    val publishedAt: String,
 )
