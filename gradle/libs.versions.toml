@@ -48,9 +48,11 @@ protobufPlugin = "0.9.4"
 timber = "5.0.1"
 landscapist = "2.2.11"
 robolectric = "4.11.1"
+webkit = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }

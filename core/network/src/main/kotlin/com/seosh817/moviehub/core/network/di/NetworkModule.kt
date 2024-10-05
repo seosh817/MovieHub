@@ -18,9 +18,11 @@ package com.seosh817.moviehub.core.network.di
 import com.seosh817.moviehub.core.network.impl.CreditsDataSourceImpl
 import com.seosh817.moviehub.core.network.impl.MoviesDataSourceImpl
 import com.seosh817.moviehub.core.network.impl.SearchDataSourceImpl
+import com.seosh817.moviehub.core.network.impl.VideoDataSourceImpl
 import com.seosh817.moviehub.core.network.source.CreditsRemoteDataSource
 import com.seosh817.moviehub.core.network.source.MoviesRemoteDataSource
 import com.seosh817.moviehub.core.network.source.SearchRemoteDataSource
+import com.seosh817.moviehub.core.network.source.VideosRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -42,4 +44,8 @@ interface NetworkModule {
     @Singleton
     @Binds
     fun bindSearchDataSource(searchDataSourceImpl: SearchDataSourceImpl): SearchRemoteDataSource
+
+    @Singleton
+    @Binds
+    fun bindVideoDataSource(videoDataSourceImpl: VideoDataSourceImpl): VideosRemoteDataSource
 }

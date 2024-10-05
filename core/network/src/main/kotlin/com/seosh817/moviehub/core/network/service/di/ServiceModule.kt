@@ -17,6 +17,7 @@ package com.seosh817.moviehub.core.network.service.di
 
 import com.seosh817.moviehub.core.network.service.movie.MovieService
 import com.seosh817.moviehub.core.network.service.search.SearchService
+import com.seosh817.moviehub.core.network.service.video.VideoService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,4 +40,10 @@ object ServiceModule {
     fun provideSearchService(
         retrofit: Retrofit,
     ): SearchService = retrofit.create(SearchService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideVideoService(
+        retrofit: Retrofit,
+    ): VideoService = retrofit.create(VideoService::class.java)
 }

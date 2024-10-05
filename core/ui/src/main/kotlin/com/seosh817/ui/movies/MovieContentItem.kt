@@ -36,8 +36,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -62,7 +60,7 @@ fun MovieContentItem(
     Card(
         modifier = modifier
             .fillMaxSize(),
-        shape = RoundedCornerShape(size = 8.dp),
+        shape = RoundedCornerShape(size = 4.dp),
         elevation = CardDefaults.cardElevation(8.dp),
     ) {
         Box(

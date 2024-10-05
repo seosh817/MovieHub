@@ -19,6 +19,7 @@
     <string name="menu_item_share_movie">share movie</string>
     <string name="back">back</string>
     <string name="release_date">Release Date: %s</string>
+    <string name="trailers">Trailers</string>
     <string name="overview">Overview</string>
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>

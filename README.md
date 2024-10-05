@@ -25,7 +25,7 @@
 
 # Tech-stack
 
-<img src="/previews/preview.gif" align="right" width="320" alt="preview"/>
+<img src="/previews/preview_1.2.0.gif" align="right" width="320" alt="preview"/>
 
 - [Kotlin](https://kotlinlang.org/) - is a modern and pragmatic programming language developed by JetBrains. It is fully interoperable with Java and widely adopted for Android app development.
 - **Asynchronous**:
@@ -84,7 +84,7 @@ This project requires The Movie Database (TMDB) API key to access external APIs.
 
 - [x] Offline-first caching
 - [ ] Add localization support (Korean, English, Japanese)
-- [ ] Implement Media3 for video playback
+- [x] Implement video playback using YouTube IFrame API
 
 # Inspiration
 
