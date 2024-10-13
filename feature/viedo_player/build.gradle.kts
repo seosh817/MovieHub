@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.animation)
     implementation(libs.androidx.webkit)
+    implementation(libs.android.youtube.player.core)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)
