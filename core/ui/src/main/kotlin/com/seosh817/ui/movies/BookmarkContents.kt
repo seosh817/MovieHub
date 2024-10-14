@@ -60,7 +60,7 @@ fun BookmarkContents(
 ) {
     val context = LocalContext.current
 
-    when (moviePagingItems.loadState.mediator?.refresh) {
+    when (moviePagingItems.loadState.refresh) {
         is LoadState.Loading -> {
             ContentsLoading(
                 modifier = Modifier
@@ -80,7 +80,15 @@ fun BookmarkContents(
             )
         }
 
-        else -> {
+        is LoadState.NotLoading -> {
+            if (moviePagingItems.itemCount == 0) {
+                ContentsError(
+                    modifier = Modifier.fillMaxSize(),
+                    message = stringResource(id = R.string.no_bookmark),
+                    cause = stringResource(id = R.string.no_bookmark_cause),
+                    onRefresh = onRefresh,
+                )
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
