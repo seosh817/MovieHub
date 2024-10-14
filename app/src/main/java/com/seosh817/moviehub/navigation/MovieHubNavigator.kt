@@ -15,6 +15,8 @@
  */
 package com.seosh817.moviehub.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
@@ -30,6 +32,8 @@ import com.seosh817.moviehub.feature.movies.navigation.MOVIES_NAVIGATION_ROUTE
 import com.seosh817.moviehub.feature.movies.navigation.navigateToMovies
 import com.seosh817.moviehub.feature.search.navigation.navigateToSearch
 import com.seosh817.moviehub.feature.settings.navigation.navigateToSettings
+import com.seosh817.moviehub.feature.viedo_player.VideoPlayerActivity
+import com.seosh817.moviehub.feature.viedo_player.VideoPlayerActivity.Companion.VIDEO_ID
 import com.seosh817.moviehub.navigation.PrimaryDestination.BOOKMARKS
 import com.seosh817.moviehub.navigation.PrimaryDestination.MOVIES
 
@@ -71,6 +75,14 @@ class MovieHubNavigator(
 
     fun navigateToSearch() {
         navController.navigateToSearch()
+    }
+
+    fun navigateToVideoPlayer(videoId: String) {
+        Intent(navController.context, VideoPlayerActivity::class.java).apply {
+            putExtra(VIDEO_ID, videoId)
+        }.also {
+            navController.context.startActivity(it)
+        }
     }
 }
 
