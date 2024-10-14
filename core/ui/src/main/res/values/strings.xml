@@ -21,4 +21,6 @@
 
     <string name="append_loading">Fetching more data...</string>
     <string name="append_error">Error loading more data. Please try again.</string>
+    <string name="no_bookmark_cause">Start exploring and bookmark intersting content!</string>
+    <string name="no_bookmark">Your bookmark list is empty</string>
 </resources>
