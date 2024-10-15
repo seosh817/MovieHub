@@ -84,7 +84,9 @@ This project requires The Movie Database (TMDB) API key to access external APIs.
 
 - [x] Offline-first caching
 - [ ] Add localization support (Korean, English, Japanese)
+- [x] Add dark and light theme support
 - [x] Implement video playback using YouTube IFrame API
+- [x] Add support for PIP(Picture-in-Picture) in video player
 
 # Inspiration
 
