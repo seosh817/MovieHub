@@ -25,7 +25,7 @@
 
 # Tech-stack
 
-<img src="/previews/preview_1.2.0.gif" align="right" width="320" alt="preview"/>
+<img src="/previews/preview_1.2.2.gif" align="right" width="320" alt="preview"/>
 
 - [Kotlin](https://kotlinlang.org/) - is a modern and pragmatic programming language developed by JetBrains. It is fully interoperable with Java and widely adopted for Android app development.
 - **Asynchronous**:
@@ -65,6 +65,23 @@
   - [Version catalog TOML file format](https://docs.gradle.org/current/userguide/platforms.html) - A convenient method in Gradle for managing dependency versions
 - **Continuous Integration**:
   - [GitHub Actions](https://docs.github.com/en/actions) - A CI tool provided by GitHub for automating workflows.
+
+# ScreenShots
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="50%">Video Playback(Picture-in-Picture) </th>
+      <th width="50%">Dark(Light) theme</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width: 50%;"><img src="/previews/MovieHub_video.gif"/></td>
+      <td style="width: 50%;"><img src="/previews/MovieHub_dark_theme.gif"/></td>
+    </tr>
+  </tbody>
+</table>
 
 # Project Configuration
 
