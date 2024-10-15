@@ -16,7 +16,6 @@
 package com.seosh817.moviehub.navigation
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
