@@ -29,8 +29,8 @@ android {
 
     defaultConfig {
         applicationId = "com.seosh817.moviehub"
-        versionCode = 9
-        versionName = "1.2.1"
+        versionCode = 10
+        versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
