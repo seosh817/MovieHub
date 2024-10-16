@@ -49,7 +49,6 @@ class VideoPlayerActivity : ComponentActivity() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            Log.d("!!!", "backpressed")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 enterPictureInPictureMode(
                     android.app.PictureInPictureParams.Builder().build(),
@@ -110,18 +109,9 @@ class VideoPlayerActivity : ComponentActivity() {
                             ) {
                                 super.onStateChange(youTubePlayer, state)
                                 when (state) {
-                                    PlayerConstants.PlayerState.BUFFERING -> {
-                                        // Handle buffering
-                                    }
-
-                                    PlayerConstants.PlayerState.PLAYING -> {
-                                        // Handle playing
-                                    }
-
-                                    PlayerConstants.PlayerState.ENDED -> {
-                                        // Handle ended
-                                    }
-
+                                    PlayerConstants.PlayerState.BUFFERING -> {}
+                                    PlayerConstants.PlayerState.PLAYING -> {}
+                                    PlayerConstants.PlayerState.ENDED -> {}
                                     else -> {}
                                 }
                             }
@@ -163,7 +153,6 @@ class VideoPlayerActivity : ComponentActivity() {
         DisposableEffect(lifeCycleOwner) {
             val lifecycle = lifeCycleOwner.lifecycle
             val observer = LifecycleEventObserver { _, event ->
-                Log.d("!!!", "event: $event")
                 when (event) {
                     Lifecycle.Event.ON_RESUME -> {
                         youtubePlayer?.play()
