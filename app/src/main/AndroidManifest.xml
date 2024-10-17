@@ -45,7 +45,6 @@
             android:name=".feature.viedo_player.VideoPlayerActivity"
             android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize"
             android:exported="true"
-            android:launchMode="singleTask"
             android:supportsPictureInPicture="true"
             android:excludeFromRecents="true"
             android:parentActivityName=".ui.MainActivity"
